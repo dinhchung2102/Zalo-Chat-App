@@ -7,10 +7,12 @@ import { BASE_UNIT } from "../../constants/screen";
 import { textMediumPlus, textMediumSize } from "../../constants/fontSize";
 import { phoneNumberRegister } from "../../state/RegisterState";
 import { Colors } from "../../styles/Colors";
+import { useNavigation } from "@react-navigation/native";
 
 export default function AuthRegisterModal() {
   const [modalvisible, setModalVisible] = useRecoilState(modalAuthRegister);
   const selectedLanguage = useRecoilValue(languageState)
+  const navigation = useNavigation();
 
   const phoneNumber = useRecoilValue(phoneNumberRegister)
   return (
@@ -32,7 +34,7 @@ export default function AuthRegisterModal() {
           <Text style={{fontSize: textMediumSize, marginTop: BASE_UNIT*0.05,  paddingHorizontal: BASE_UNIT * 0.05}}>{selectedLanguage === 'vie' ? 'Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này': 'hello world'}</Text>
 
           <View style={{paddingTop: BASE_UNIT*0.15, justifyContent:'space-between'}}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate("SignUpOTP")}>
               <Text style={{fontSize: textMediumSize, fontWeight:'400', color: Colors.primary}}>Tiếp tục</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={()=>setModalVisible(false)}>
