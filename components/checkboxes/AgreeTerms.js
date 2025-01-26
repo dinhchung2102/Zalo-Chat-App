@@ -7,8 +7,7 @@ import { BASE_UNIT } from "../../constants/screen";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM_PLUS } from "../../constants/iconSize";
 
-export default function AgreeTerms({ term, textColor }) {
-  const [checked, setChecked] = useState(false);
+export default function AgreeTerms({ term, textColor, checked, setChecked }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity

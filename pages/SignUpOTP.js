@@ -29,6 +29,7 @@ export default function SignUpOTP() {
   const phoneNumber = useRecoilValue(phoneNumberRegister);
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const isOtpValid = otp.join("").length === 6;
 
   // xử lý OTP
   const handleOtpSubmit = (enteredOtp) => {
@@ -103,6 +104,7 @@ export default function SignUpOTP() {
           color={Colors.primary}
           textColor={"white"}
           onPress={() => handleOtpSubmit(otp.join(""))}
+          disabled={isOtpValid ? false : true}
         />
       </View>
       <View

@@ -23,6 +23,14 @@ export default function SignUp() {
   const selectedLanguage = useRecoilValue(languageState);
   const [,setModalState] = useRecoilState(modalAuthRegister);
   const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister)
+  const [checked1, setChecked1] = useState(false);
+  const [checked2, setChecked2] = useState(false);
+
+  const [buttonDisable, setButtonDisable] = useState(false)
+
+  const handleCheck = ()=>{
+    return checked1 && checked2
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -51,10 +59,12 @@ export default function SignUp() {
         <PhoneNumberInput />
       </View>
       <View style={{ marginTop: BASE_UNIT * 0.04 }}>
-        <AgreeTerms term={"Zalo Terms of Service"} textColor={Colors.primary} />
+        <AgreeTerms term={"Zalo Terms of Service"} textColor={Colors.primary} checked={checked1} setChecked={setChecked1}/>
         <AgreeTerms
           term={`Zalo's Social Terms of Service`}
           textColor={Colors.primary}
+          checked={checked2}
+          setChecked={setChecked2}
         />
       </View>
       <View
@@ -69,6 +79,7 @@ export default function SignUp() {
           color={Colors.primary}
           textColor={"white"}
           onPress={()=> setModalState(true)}
+          disabled={!handleCheck()}
         />
       </View>
 

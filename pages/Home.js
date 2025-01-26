@@ -29,6 +29,7 @@ export default function Home() {
           color={"#006DFE"}
           textColor={"white"}
           onPress={() => navigation.navigate("Login")}
+          disabled={false}
         />
         <LargeButton
           text={
@@ -39,6 +40,7 @@ export default function Home() {
           onPress={()=> navigation.navigate('SignUp')}
           color={"#ECEDEF"}
           textColor={"black"}
+          disabled={false}
         />
       </View>
       <SelectLanguageModal />

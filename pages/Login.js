@@ -21,6 +21,10 @@ export default function Login() {
 
   const usernameInputRef = useRef(null);
 
+  const handleCheckNull = () =>{
+    return username != '' && password != '';
+  }
+
   useEffect(() => {
     if (usernameInputRef.current) {
       usernameInputRef.current.focus();
@@ -59,7 +63,7 @@ export default function Login() {
           <LoginInput
             placeholder={selectedLanguage === "vie" ? "Mật khẩu" : "Password"}
             value={password}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={setPassword}
             secureTextEntry={passwordVisible}
             password={true}
           />
@@ -80,7 +84,7 @@ export default function Login() {
             paddingTop: BASE_UNIT * 0.1,
           }}
         >
-          <CircleButton />
+          <CircleButton disabled={!handleCheckNull()} color={handleCheckNull() ? Colors.primary : Colors.grey} />
         </View>
       </View>
 

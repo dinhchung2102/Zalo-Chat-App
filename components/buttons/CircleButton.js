@@ -2,14 +2,13 @@ import { View, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
-import { Colors } from "../../styles/Colors";
 import { BASE_UNIT } from "../../constants/screen";
 
-export default function CircleButton() {
+export default function CircleButton({onPress, disabled, color}) {
   return (
     <View
       style={{
-        backgroundColor: Colors.primary,
+        backgroundColor: color,
         borderRadius: "50%",
         height: BASE_UNIT * 0.13,
         width: BASE_UNIT * 0.13,
@@ -24,6 +23,7 @@ export default function CircleButton() {
           height: "100%",
           justifyContent: "center",
         }}
+        disabled={disabled}
       >
         <MaterialIcons
           name="arrow-forward"
