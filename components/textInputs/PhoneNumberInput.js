@@ -4,9 +4,11 @@ import CountrySelect from "../selects/CountrySelect";
 import { Colors } from "../../styles/Colors";
 import { BASE_UNIT } from "../../constants/screen";
 import { textMediumSize } from "../../constants/fontSize";
+import { useRecoilState } from "recoil";
+import { phoneNumberRegister } from "../../state/RegisterState";
 
 export default function PhoneNumberInput() {
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister)
   return (
     <View
       style={{

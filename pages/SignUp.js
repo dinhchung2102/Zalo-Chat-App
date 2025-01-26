@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SimpleHeader from "../components/headers/SimpleHeader";
 import { BASE_UNIT } from "../constants/screen";
@@ -7,20 +7,26 @@ import {
   textHeaderSize,
   textMediumSize,
 } from "../constants/fontSize";
-import { useRecoilValue } from "recoil";
-import { languageState } from "../state/PrimaryState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { languageState, modalAuthRegister } from "../state/PrimaryState";
 import PhoneNumberInput from "../components/textInputs/PhoneNumberInput";
 import AgreeTerms from "../components/checkboxes/AgreeTerms";
 import { Colors } from "../styles/Colors";
 import LargeButton from "../components/buttons/LargeButton";
 import LinkButton from "../components/buttons/LinkButton";
+import { useNavigation } from "@react-navigation/native";
+import AuthRegisterModal from "../components/modals/AuthRegisterModal";
+import { phoneNumberRegister } from "../state/RegisterState";
 
 export default function SignUp() {
+  const navigation = useNavigation();
   const selectedLanguage = useRecoilValue(languageState);
+  const [,setModalState] = useRecoilState(modalAuthRegister);
+  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister)
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <SimpleHeader iconColor={"black"} backgroundColor={"white"} />
+        <SimpleHeader iconColor={"black"} backgroundColor={"white"} onPress={()=>{navigation.goBack()}} />
       </View>
 
       <Text
@@ -62,6 +68,7 @@ export default function SignUp() {
           text={selectedLanguage === "vie" ? "Tiếp tục" : "Next"}
           color={Colors.primary}
           textColor={"white"}
+          onPress={()=> setModalState(true)}
         />
       </View>
 
@@ -83,8 +90,10 @@ export default function SignUp() {
         <LinkButton
           text={selectedLanguage === "vie" ? "Đăng nhập ngay" : "Login now"}
           textColor={Colors.primary}
+          onPress={()=> navigation.navigate('Login')}
         />
       </View>
+      <AuthRegisterModal number={phoneNumber}/>
     </SafeAreaView>
   );
 }

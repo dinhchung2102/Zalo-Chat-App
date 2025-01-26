@@ -8,7 +8,7 @@ import { textMediumSize } from "../../constants/fontSize";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
 
-export default function ProductDetailModal() {
+export default function SelectLanguageModal() {
   const [modalvisible, setModalVisible] = useRecoilState(modalLanguageState);
   const [selectedLanguage, setSelectLanguage] = useRecoilState(languageState);
 
