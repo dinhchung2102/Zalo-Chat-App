@@ -9,3 +9,8 @@ export const modalLanguageState = atom({
   key: "modalLanguageState",
   default: false
 })
+
+export const modalAuthRegister = atom({
+  key:'modalAuthRegister',
+  default: false
+})

@@ -8,7 +8,7 @@ import { textMediumSize } from "../../constants/fontSize";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
 
-export default function ProductDetailModal() {
+export default function SelectLanguageModal() {
   const [modalvisible, setModalVisible] = useRecoilState(modalLanguageState);
   const [selectedLanguage, setSelectLanguage] = useRecoilState(languageState);
 
@@ -59,7 +59,7 @@ export default function ProductDetailModal() {
             >
               <Text style={{ fontSize: textMediumSize }}>Tiếng Việt</Text>
               {selectedLanguage === "vie" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} />
+                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
               )}
             </TouchableOpacity>
             <TouchableOpacity
@@ -79,7 +79,7 @@ export default function ProductDetailModal() {
             >
               <Text style={{ fontSize: textMediumSize }}>English</Text>
               {selectedLanguage === "eng" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} />
+                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
               )}
             </TouchableOpacity>
           </View>
