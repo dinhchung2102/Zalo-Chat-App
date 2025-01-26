@@ -7,9 +7,7 @@ import { ICON_MEDIUM } from "../../constants/iconSize";
 
 export default function LinkButton({ text, onPress, icon, textColor }) {
   return (
-    <View
-      style={{ marginTop: BASE_UNIT * 0.05, paddingLeft: BASE_UNIT * 0.01 }}
-    >
+    <View style={{ paddingLeft: BASE_UNIT * 0.01 }}>
       <TouchableOpacity
         onPress={onPress}
         style={{ alignItems: "center", flexDirection: "row" }}

@@ -36,6 +36,7 @@ export default function Home() {
               ? "Tạo tài khoản mới"
               : "Create new account"
           }
+          onPress={()=> navigation.navigate('SignUp')}
           color={"#ECEDEF"}
           textColor={"black"}
         />

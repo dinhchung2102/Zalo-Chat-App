@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SimpleHeader from "../components/headers/SimpleHeader";
@@ -32,6 +32,8 @@ export default function Login() {
       <View>
         <SimpleHeader
           text={selectedLanguage === "vie" ? "Đăng nhập" : "Login"}
+          iconColor={'white'}
+          linearPrimary={true}
           onPress={() => {
             navigation.goBack();
           }}
@@ -114,6 +116,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingTop: BASE_UNIT * 1.05,
+    paddingTop: BASE_UNIT * 1.25,
   },
 });
