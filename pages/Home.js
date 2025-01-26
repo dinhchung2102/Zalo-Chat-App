@@ -8,10 +8,13 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import SelectLanguageModal from "../components/modals/SelectLanguageModal";
 import { languageState, modalLanguageState } from "../state/PrimaryState";
 import IntroSwiper from "../components/swipers/IntroSwiper";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Home() {
+  const navigation = useNavigation();
   const selectedLanguage = useRecoilValue(languageState);
   const [, setModalVisible] = useRecoilState(modalLanguageState);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -25,6 +28,7 @@ export default function Home() {
           text={selectedLanguage === "vie" ? "Đăng nhập" : "Login"}
           color={"#006DFE"}
           textColor={"white"}
+          onPress={() => navigation.navigate("Login")}
         />
         <LargeButton
           text={
