@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import { phoneNumberRegister } from "../../state/RegisterState";
 
 export default function PhoneNumberInput() {
-  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister)
+  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister);
   return (
     <View
       style={{
@@ -24,6 +24,8 @@ export default function PhoneNumberInput() {
       <TextInput
         value={phoneNumber}
         onChangeText={setPhoneNumber}
+        autoFocus={true}
+        keyboardType="numeric"
         style={{
           flex: 1,
           marginLeft: BASE_UNIT * 0.03,

@@ -21,9 +21,9 @@ export default function Login() {
 
   const usernameInputRef = useRef(null);
 
-  const handleCheckNull = () =>{
-    return username != '' && password != '';
-  }
+  const handleCheckNull = () => {
+    return username != "" && password != "";
+  };
 
   useEffect(() => {
     if (usernameInputRef.current) {
@@ -36,7 +36,7 @@ export default function Login() {
       <View>
         <SimpleHeader
           text={selectedLanguage === "vie" ? "Đăng nhập" : "Login"}
-          iconColor={'white'}
+          iconColor={"white"}
           linearPrimary={true}
           onPress={() => {
             navigation.goBack();
@@ -58,33 +58,25 @@ export default function Login() {
             value={username}
             onChangeText={(text) => setUsername(text)}
             phoneNumber={true}
+            autoFocus={true}
             ref={usernameInputRef}
           />
           <LoginInput
             placeholder={selectedLanguage === "vie" ? "Mật khẩu" : "Password"}
             value={password}
             onChangeText={setPassword}
-            secureTextEntry={passwordVisible}
             password={true}
           />
-          <LinkButton
-            text={
-              selectedLanguage === "vie"
-                ? "Lấy lại mật khẩu"
-                : "Recover password"
-            }
-            textColor={Colors.primary}
-          />
-        </View>
-
-        <View
-          style={{
-            paddingHorizontal: BASE_UNIT * 0.03,
-            alignItems: "flex-end",
-            paddingTop: BASE_UNIT * 0.1,
-          }}
-        >
-          <CircleButton disabled={!handleCheckNull()} color={handleCheckNull() ? Colors.primary : Colors.grey} />
+          <View style={{ marginTop: BASE_UNIT * 0.02 }}>
+            <LinkButton
+              text={
+                selectedLanguage === "vie"
+                  ? "Lấy lại mật khẩu"
+                  : "Recover password"
+              }
+              textColor={Colors.primary}
+            />
+          </View>
         </View>
       </View>
 
@@ -93,6 +85,19 @@ export default function Login() {
           text={selectedLanguage === "vie" ? "Câu hỏi thường gặp" : "FAQ"}
           textColor={Colors.grey}
           icon={"chevron-right"}
+        />
+      </View>
+      <View
+        style={{
+          alignItems: "flex-end",
+          position: "absolute",
+          bottom: BASE_UNIT * 0.03,
+          right: BASE_UNIT * 0.02,
+        }}
+      >
+        <CircleButton
+          disabled={!handleCheckNull()}
+          color={handleCheckNull() ? Colors.primary : Colors.grey}
         />
       </View>
     </SafeAreaView>
@@ -119,7 +124,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: BASE_UNIT * 0.03,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingTop: BASE_UNIT * 1.25,
+    paddingTop: BASE_UNIT * 1.5,
   },
 });
