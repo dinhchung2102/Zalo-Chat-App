@@ -66,11 +66,12 @@ export default function SignUpOTP() {
           color: Colors.grey,
           textAlign: "center",
           paddingTop: BASE_UNIT * 0.025,
+          paddingHorizontal: BASE_UNIT*0.1
         }}
       >
         {selectedLanguage === "vie"
           ? "Nhập dãy 6 số được gửi đến số điện thoại "
-          : "Enter your phone number"}
+          : "Enter the 6 digit sequence sent to the phone number"}
       </Text>
 
       <Text
@@ -120,8 +121,8 @@ export default function SignUpOTP() {
           style={{ fontSize: textMediumSize, marginBottom: BASE_UNIT * 0.05 }}
         >
           {selectedLanguage === "vie"
-            ? "Để lấy mã xác thực, bạn cần"
-            : "hello world"}
+            ? "Để lấy mã xác thực, bạn cần:"
+            : "To receive the verification code, you need to:"}
         </Text>
         <Text style={{ fontSize: textMediumSize }}>
           {selectedLanguage === "vie" ? (
@@ -133,7 +134,13 @@ export default function SignUpOTP() {
               và làm theo hướng dẫn
             </>
           ) : (
-            "Hello world"
+            <>
+              Text <Text style={{ fontWeight: "bold" }}>ZALO</Text> to{" "}
+              <Text style={{ fontWeight: "bold" }}>6020</Text> (1000đ/SMS)
+              or call hotline{" "}
+              <Text style={{ fontWeight: "bold" }}>19001223</Text>(1000đ/min)
+              and follow the instructions
+            </>
           )}
         </Text>
 
@@ -150,11 +157,11 @@ export default function SignUpOTP() {
           }}
         >
           <LinkButton
-            text={selectedLanguage === "vie" ? "Gửi tin nhắn" : "Send messege"}
+            text={selectedLanguage === "vie" ? "Gửi tin nhắn" : "Send SMS"}
             textColor={Colors.primary}
           />
           <LinkButton
-            text={selectedLanguage === "vie" ? "Gọi tổng đài" : "Call tổng đài"}
+            text={selectedLanguage === "vie" ? "Gọi tổng đài" : "Call hotline"}
             textColor={Colors.primary}
           />
         </View>
@@ -175,7 +182,7 @@ export default function SignUpOTP() {
           text={
             selectedLanguage === "vie"
               ? "Tôi cần hỗ trợ thêm về mã xác thực"
-              : "Login now"
+              : "I still need help with verification codes"
           }
           textColor={Colors.primary}
           onPress={() => navigation.navigate("Login")}

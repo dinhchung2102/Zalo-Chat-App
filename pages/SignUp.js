@@ -59,9 +59,9 @@ export default function SignUp() {
         <PhoneNumberInput />
       </View>
       <View style={{ marginTop: BASE_UNIT * 0.04 }}>
-        <AgreeTerms term={"Zalo Terms of Service"} textColor={Colors.primary} checked={checked1} setChecked={setChecked1}/>
+        <AgreeTerms term={selectedLanguage === 'vie'? 'Điều khoản sử dụng Zalo' : "Zalo Terms of Service"} textColor={Colors.primary} checked={checked1} setChecked={setChecked1}/>
         <AgreeTerms
-          term={`Zalo's Social Terms of Service`}
+          term={selectedLanguage === 'vie' ? 'Điều khoản Mạng xã hội của Zalo' : `Zalo's Social Terms of Service`}
           textColor={Colors.primary}
           checked={checked2}
           setChecked={setChecked2}
@@ -96,10 +96,10 @@ export default function SignUp() {
         <Text style={{ fontSize: textMediumSize }}>
           {selectedLanguage === "vie"
             ? "Bạn đã có tài khoản? "
-            : "Do you have an account"}
+            : "Already have an account?"}
         </Text>
         <LinkButton
-          text={selectedLanguage === "vie" ? "Đăng nhập ngay" : "Login now"}
+          text={selectedLanguage === "vie" ? "Đăng nhập ngay" : "Login"}
           textColor={Colors.primary}
           onPress={()=> navigation.navigate('Login')}
         />

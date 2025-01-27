@@ -29,16 +29,16 @@ export default function AuthRegisterModal() {
         }}
       >
         <View style={styles.viewModal} onStartShouldSetResponder={(e)=> e.stopPropagation()}>
-          <Text style={{fontSize: textMediumPlus, fontWeight:'500', paddingHorizontal: BASE_UNIT * 0.05, paddingTop: BASE_UNIT*0.05}}>Nhận mã xác thực qua số</Text>
+          <Text style={{fontSize: textMediumPlus, fontWeight:'500', paddingHorizontal: BASE_UNIT * 0.05, paddingTop: BASE_UNIT*0.05}}>{selectedLanguage === 'vie' ? 'Nhận mã xác thực qua số' : 'Receive verification code via'}</Text>
           <Text style={{fontSize: textMediumPlus, fontWeight:'500', paddingHorizontal: BASE_UNIT * 0.05}}>{phoneNumber}?</Text>
-          <Text style={{fontSize: textMediumSize, marginTop: BASE_UNIT*0.05,  paddingHorizontal: BASE_UNIT * 0.05}}>{selectedLanguage === 'vie' ? 'Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này': 'hello world'}</Text>
+          <Text style={{fontSize: textMediumSize, marginTop: BASE_UNIT*0.05,  paddingHorizontal: BASE_UNIT * 0.05}}>{selectedLanguage === 'vie' ? 'Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này': 'We will send you verification code via this phone number'}</Text>
 
           <View style={{paddingTop: BASE_UNIT*0.15, justifyContent:'space-between'}}>
             <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate("SignUpOTP")}>
-              <Text style={{fontSize: textMediumSize, fontWeight:'400', color: Colors.primary}}>Tiếp tục</Text>
+              <Text style={{fontSize: textMediumSize, fontWeight:'400', color: Colors.primary}}>{selectedLanguage === 'vie' ? 'Tiếp tục' : 'Next'}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={()=>setModalVisible(false)}>
-              <Text style={{fontSize: textMediumSize, fontWeight:'400'}}>Đổi số khác</Text>
+              <Text style={{fontSize: textMediumSize, fontWeight:'400'}}>{selectedLanguage === 'vie' ? 'Đổi số khác' : 'Change phone number'}</Text>
             </TouchableOpacity>
           </View>
         </View>
