@@ -1,5 +1,5 @@
 import { View, TextInput } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import CountrySelect from "../selects/CountrySelect";
 import { Colors } from "../../styles/Colors";
 import { BASE_UNIT } from "../../constants/screen";

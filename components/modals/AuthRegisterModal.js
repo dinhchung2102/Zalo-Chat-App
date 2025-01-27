@@ -1,4 +1,11 @@
-import { View, StyleSheet, Modal, TouchableOpacity, Pressable, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+  Pressable,
+  Text,
+} from "react-native";
 import React from "react";
 
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -8,13 +15,13 @@ import { textMediumPlus, textMediumSize } from "../../constants/fontSize";
 import { phoneNumberRegister } from "../../state/RegisterState";
 import { Colors } from "../../styles/Colors";
 import { useNavigation } from "@react-navigation/native";
+import { useTextLanguage } from "../../hooks/useTextLanguage";
 
 export default function AuthRegisterModal() {
   const [modalvisible, setModalVisible] = useRecoilState(modalAuthRegister);
-  const selectedLanguage = useRecoilValue(languageState)
   const navigation = useNavigation();
 
-  const phoneNumber = useRecoilValue(phoneNumberRegister)
+  const phoneNumber = useRecoilValue(phoneNumberRegister);
   return (
     <Modal
       animationType="slide"
@@ -28,17 +35,73 @@ export default function AuthRegisterModal() {
           setModalVisible(false);
         }}
       >
-        <View style={styles.viewModal} onStartShouldSetResponder={(e)=> e.stopPropagation()}>
-          <Text style={{fontSize: textMediumPlus, fontWeight:'500', paddingHorizontal: BASE_UNIT * 0.05, paddingTop: BASE_UNIT*0.05}}>{selectedLanguage === 'vie' ? 'Nhận mã xác thực qua số' : 'Receive verification code via'}</Text>
-          <Text style={{fontSize: textMediumPlus, fontWeight:'500', paddingHorizontal: BASE_UNIT * 0.05}}>{phoneNumber}?</Text>
-          <Text style={{fontSize: textMediumSize, marginTop: BASE_UNIT*0.05,  paddingHorizontal: BASE_UNIT * 0.05}}>{selectedLanguage === 'vie' ? 'Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này': 'We will send you verification code via this phone number'}</Text>
+        <View
+          style={styles.viewModal}
+          onStartShouldSetResponder={(e) => e.stopPropagation()}
+        >
+          <Text
+            style={{
+              fontSize: textMediumPlus,
+              fontWeight: "500",
+              paddingHorizontal: BASE_UNIT * 0.05,
+              paddingTop: BASE_UNIT * 0.05,
+            }}
+          >
+            {selectedLanguage === "vie"
+              ? "Nhận mã xác thực qua số"
+              : "Receive verification code via"}
+          </Text>
+          <Text
+            style={{
+              fontSize: textMediumPlus,
+              fontWeight: "500",
+              paddingHorizontal: BASE_UNIT * 0.05,
+            }}
+          >
+            {phoneNumber}?
+          </Text>
+          <Text
+            style={{
+              fontSize: textMediumSize,
+              marginTop: BASE_UNIT * 0.05,
+              paddingHorizontal: BASE_UNIT * 0.05,
+            }}
+          >
+            {selectedLanguage === "vie"
+              ? "Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này"
+              : "We will send you verification code via this phone number"}
+          </Text>
 
-          <View style={{paddingTop: BASE_UNIT*0.15, justifyContent:'space-between'}}>
-            <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate("SignUpOTP")}>
-              <Text style={{fontSize: textMediumSize, fontWeight:'400', color: Colors.primary}}>{selectedLanguage === 'vie' ? 'Tiếp tục' : 'Next'}</Text>
+          <View
+            style={{
+              paddingTop: BASE_UNIT * 0.15,
+              justifyContent: "space-between",
+            }}
+          >
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("SignUpOTP")}
+            >
+              <Text
+                style={{
+                  fontSize: textMediumSize,
+                  fontWeight: "400",
+                  color: Colors.primary,
+                }}
+              >
+                {selectedLanguage === "vie" ? "Tiếp tục" : "Next"}
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={()=>setModalVisible(false)}>
-              <Text style={{fontSize: textMediumSize, fontWeight:'400'}}>{selectedLanguage === 'vie' ? 'Đổi số khác' : 'Change phone number'}</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={{ fontSize: textMediumSize, fontWeight: "400" }}>
+                {useTextLanguage({
+                  vietnamese: "Đổi số khác",
+                  english: "Change phone number",
+                })}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -50,22 +113,22 @@ export default function AuthRegisterModal() {
 const styles = StyleSheet.create({
   modalBackground: {
     flex: 1,
-    justifyContent:'center',
+    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   viewModal: {
-    width: BASE_UNIT*0.8,
+    width: BASE_UNIT * 0.8,
     height: BASE_UNIT * 0.7,
-    borderRadius: '5%',
+    borderRadius: "5%",
     backgroundColor: "white",
   },
-  button:{
-    width:'100%',
-    alignItems:'center',
-    justifyContent:'center',
+  button: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
     borderTopWidth: 1,
     borderTopColor: Colors.lightGrey,
-    height: BASE_UNIT*0.11
-  }
+    height: BASE_UNIT * 0.11,
+  },
 });

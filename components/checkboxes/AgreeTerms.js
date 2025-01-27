@@ -6,11 +6,9 @@ import { Colors } from "../../styles/Colors";
 import { BASE_UNIT } from "../../constants/screen";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM_PLUS } from "../../constants/iconSize";
-import { useRecoilValue } from "recoil";
-import { languageState } from "../../state/PrimaryState";
+import { useTextLanguage } from "../../hooks/useTextLanguage";
 
 export default function AgreeTerms({ term, textColor, checked, setChecked }) {
-  const selectedLanguage = useRecoilValue(languageState)
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -35,7 +33,10 @@ export default function AgreeTerms({ term, textColor, checked, setChecked }) {
         <Text
           style={{ fontSize: textMediumSize, marginLeft: BASE_UNIT * 0.02 }}
         >
-          {selectedLanguage === 'vie' ? 'Tôi đồng ý với' : 'I agree to'}
+          {useTextLanguage({
+            vietnamese: "Tôi đồng ý với",
+            english: "I agree to",
+          })}
         </Text>
       </TouchableOpacity>
 

@@ -7,6 +7,7 @@ import { BASE_UNIT } from "../../constants/screen";
 import { textMediumSize } from "../../constants/fontSize";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
+import { useTextLanguage } from "../../hooks/useTextLanguage";
 
 export default function SelectLanguageModal() {
   const [modalvisible, setModalVisible] = useRecoilState(modalLanguageState);
@@ -40,7 +41,7 @@ export default function SelectLanguageModal() {
                 marginBottom: BASE_UNIT * 0.04,
               }}
             >
-              {selectedLanguage === "vie" ? "Chọn ngôn ngữ" : "Select language"}
+              {useTextLanguage({vietnamese:"Chọn ngôn ngữ" , english: "Select Language"})}
             </Text>
             <TouchableOpacity
               onPress={() => {

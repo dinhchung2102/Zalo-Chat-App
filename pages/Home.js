@@ -6,13 +6,13 @@ import { BASE_UNIT } from "../constants/screen";
 import LargeButton from "../components/buttons/LargeButton";
 import { useRecoilState, useRecoilValue } from "recoil";
 import SelectLanguageModal from "../components/modals/SelectLanguageModal";
-import { languageState, modalLanguageState } from "../state/PrimaryState";
+import { modalLanguageState } from "../state/PrimaryState";
 import IntroSwiper from "../components/swipers/IntroSwiper";
 import { useNavigation } from "@react-navigation/native";
+import { useTextLanguage } from "../hooks/useTextLanguage";
 
 export default function Home() {
   const navigation = useNavigation();
-  const selectedLanguage = useRecoilValue(languageState);
   const [, setModalVisible] = useRecoilState(modalLanguageState);
 
   return (
@@ -25,19 +25,18 @@ export default function Home() {
       </View>
       <View style={styles.footer}>
         <LargeButton
-          text={selectedLanguage === "vie" ? "Đăng nhập" : "Login"}
+          text={useTextLanguage({ vietnamese: "Đăng nhập", english: "Login" })}
           color={"#006DFE"}
           textColor={"white"}
           onPress={() => navigation.navigate("Login")}
           disabled={false}
         />
         <LargeButton
-          text={
-            selectedLanguage === "vie"
-              ? "Tạo tài khoản mới"
-              : "Create new account"
-          }
-          onPress={()=> navigation.navigate('SignUp')}
+          text={useTextLanguage({
+            vietnamese: "Tạo tài khoản mới",
+            english: "Create new account",
+          })}
+          onPress={() => navigation.navigate("SignUp")}
           color={"#ECEDEF"}
           textColor={"black"}
           disabled={false}
