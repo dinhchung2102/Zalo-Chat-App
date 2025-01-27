@@ -59,6 +59,7 @@ export default function OTPInPut({ otp, setOtp, onSubmit }) {
           onChangeText={(text) => handleOtpChange(text, index)}
           onFocus={() => handleFocus(index)}
           onBlur={handleBlur}
+          autoFocus={index === 0 ? true : false}
         />
       ))}
     </View>
