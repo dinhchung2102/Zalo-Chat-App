@@ -85,6 +85,7 @@ export default function Login() {
           text={selectedLanguage === "vie" ? "Câu hỏi thường gặp" : "FAQ"}
           textColor={Colors.grey}
           icon={"chevron-right"}
+          onPress={() => navigation.navigate("FAQ")}
         />
       </View>
       <View
