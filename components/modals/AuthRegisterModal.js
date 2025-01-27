@@ -47,9 +47,9 @@ export default function AuthRegisterModal() {
               paddingTop: BASE_UNIT * 0.05,
             }}
           >
-            {selectedLanguage === "vie"
-              ? "Nhận mã xác thực qua số"
-              : "Receive verification code via"}
+            {
+              useTextLanguage({vietnamese: "Nhận mã xác thực qua số",english:"Receive verification code via"})
+          }
           </Text>
           <Text
             style={{
@@ -67,9 +67,9 @@ export default function AuthRegisterModal() {
               paddingHorizontal: BASE_UNIT * 0.05,
             }}
           >
-            {selectedLanguage === "vie"
-              ? "Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này"
-              : "We will send you verification code via this phone number"}
+            {
+              useTextLanguage({vietnamese:"Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này" , english:"We will send you verification code via this phone number" })
+            }
           </Text>
 
           <View
@@ -89,7 +89,8 @@ export default function AuthRegisterModal() {
                   color: Colors.primary,
                 }}
               >
-                {selectedLanguage === "vie" ? "Tiếp tục" : "Next"}
+                {useTextLanguage({vietnamese: "Tiếp tục", english:"Next"})
+               }
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
