@@ -15,6 +15,7 @@ export default function Login() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [securePassword, setSecurePassword] = useState(true)
 
   const usernameInputRef = useRef(null);
 
@@ -69,6 +70,7 @@ export default function Login() {
             value={password}
             onChangeText={setPassword}
             password={true}
+            securePassword={securePassword}
           />
           <View style={{ marginTop: BASE_UNIT * 0.02 }}>
             <LinkButton

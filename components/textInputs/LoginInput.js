@@ -56,7 +56,7 @@ const LoginInput = forwardRef(
           }}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
-          keyboardType={phoneNumber ? "phone-pad" : "ascii-capable"}
+          keyboardType={phoneNumber ? "phone-pad" : "default"}
         />
         {password && (
           <TouchableOpacity onPress={togglePasswordVisibility}>
