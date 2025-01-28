@@ -19,6 +19,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../constants/iconSize";
 import OTPInPut from "../components/textInputs/OTPInPut";
 import { useTextLanguage } from "../hooks/useTextLanguage";
+import HeaderText from "../components/texts/HeaderText";
+import HeaderDesText from "../components/texts/HeaderDesText";
 
 export default function SignUpOTP() {
   const navigation = useNavigation();
@@ -45,34 +47,24 @@ export default function SignUpOTP() {
         />
       </View>
 
-      <Text
-        style={{
-          fontSize: textHeaderSize,
-          fontWeight: "500",
-          textAlign: "center",
-          paddingTop: BASE_UNIT * 0.04,
-        }}
-      >
-        {useTextLanguage({
-          vietnamese: "Nhập mã xác thực",
-          english: "Enter your phone number",
-        })}
-      </Text>
+      <View style={{ paddingTop: BASE_UNIT * 0.04 }}>
+        <HeaderText
+          text={useTextLanguage({
+            vietnamese: "Nhập mã xác thực",
+            english: "Enter your phone number",
+          })}
+        />
+      </View>
 
-      <Text
-        style={{
-          fontSize: textMediumSize,
-          color: Colors.grey,
-          textAlign: "center",
-          paddingTop: BASE_UNIT * 0.025,
-          paddingHorizontal: BASE_UNIT * 0.1,
-        }}
-      >
-        {useTextLanguage({
-          vietnamese: "Nhập dãy 6 số được gửi đến điện thoại",
-          english: "Enter the 6 digit sequence sent to the phone number",
-        })}
-      </Text>
+      <View style={{ paddingTop: BASE_UNIT * 0.025 }}>
+        <HeaderDesText
+          text={useTextLanguage({
+            vietnamese: "Nhập dãy 6 số được gửi đến điện thoại",
+            english: "Enter the 6 digit sequence sent to the phone number",
+          })}
+          color={Colors.grey}
+        />
+      </View>
 
       <Text
         style={{
@@ -104,7 +96,10 @@ export default function SignUpOTP() {
           text={useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
           color={Colors.primary}
           textColor={"white"}
-          onPress={() => handleOtpSubmit(otp.join(""))}
+          onPress={() => {
+            handleOtpSubmit(otp.join(""));
+            navigation.navigate("SignUpZaloName");
+          }}
           disabled={isOtpValid ? false : true}
         />
       </View>

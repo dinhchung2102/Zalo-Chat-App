@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import AuthRegisterModal from "../components/modals/AuthRegisterModal";
 import { phoneNumberRegister } from "../state/RegisterState";
 import { useTextLanguage } from "../hooks/useTextLanguage";
+import HeaderText from "../components/texts/HeaderText";
 
 export default function SignUp() {
   const navigation = useNavigation();
@@ -39,19 +40,14 @@ export default function SignUp() {
         />
       </View>
 
-      <Text
-        style={{
-          fontSize: textHeaderSize,
-          fontWeight: "500",
-          textAlign: "center",
-          paddingTop: BASE_UNIT * 0.04,
-        }}
-      >
-        {useTextLanguage({
-          vietnamese: "Nhập số điện thoại",
-          english: "Enter your phone number",
-        })}
-      </Text>
+      <View style={{ paddingTop: BASE_UNIT * 0.04 }}>
+        <HeaderText
+          text={useTextLanguage({
+            vietnamese: "Nhập số điện thoại",
+            english: "Enter your phone number",
+          })}
+        />
+      </View>
 
       <View
         style={{
