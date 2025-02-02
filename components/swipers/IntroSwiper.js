@@ -16,7 +16,7 @@ export default function IntroSwiper() {
       <Swiper
         loop={true}
         showsPagination={true}
-        paginationStyle={{ bottom: BASE_UNIT * 0.01 }}
+        paginationStyle={{ bottom: BASE_UNIT * 0.2 }}
       >
         {dataForSelectedLanguage.map((item) => {
           return (

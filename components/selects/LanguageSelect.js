@@ -1,14 +1,12 @@
 import React from "react";
-import { useRecoilState } from "recoil";
-import { languageState } from "../../state/PrimaryState";
 import { BASE_UNIT } from "../../constants/screen";
 import { Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { fontMediumSize } from "../../constants/fontSize";
 import { ICON_MEDIUM } from "../../constants/iconSize";
+import { useTextLanguage } from "../../hooks/useTextLanguage";
 
 export default function LanguageSelect({ onPress }) {
-  const [selectedLanguage, setSelectLanguage] = useRecoilState(languageState);
   return (
     <View
       style={{
@@ -31,7 +29,7 @@ export default function LanguageSelect({ onPress }) {
         <Text
           style={{ fontSize: fontMediumSize, marginRight: BASE_UNIT * 0.03 }}
         >
-          {selectedLanguage === "vie" ? "Tiếng Việt" : "English"}
+          {useTextLanguage({ vietnamese: "Tiếng Việt", english: "English" })}
         </Text>
         <MaterialIcons
           name="keyboard-arrow-down"

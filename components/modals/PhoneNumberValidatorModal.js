@@ -9,7 +9,7 @@ import {
 import React from "react";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { languageState, modalAuthRegister } from "../../state/PrimaryState";
+import { languageState, modalAuthRegister, modalValidatorPhoneNumber } from "../../state/PrimaryState";
 import { BASE_UNIT } from "../../constants/screen";
 import { textMediumPlus, textMediumSize } from "../../constants/fontSize";
 import { phoneNumberRegister } from "../../state/RegisterState";
@@ -17,8 +17,8 @@ import { Colors } from "../../styles/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 
-export default function AuthRegisterModal() {
-  const [modalvisible, setModalVisible] = useRecoilState(modalAuthRegister);
+export default function PhoneNumberValidatorModal() {
+  const [modalvisible, setModalVisible] = useRecoilState(modalValidatorPhoneNumber);
   const navigation = useNavigation();
 
   const phoneNumber = useRecoilValue(phoneNumberRegister);
@@ -48,17 +48,8 @@ export default function AuthRegisterModal() {
             }}
           >
             {
-              useTextLanguage({vietnamese: "Nhận mã xác thực qua số",english:"Receive verification code via"})
+              useTextLanguage({vietnamese: "Số điện thoại không hợp lệ",english:"Receive verification code via"})
           }
-          </Text>
-          <Text
-            style={{
-              fontSize: textMediumPlus,
-              fontWeight: "500",
-              paddingHorizontal: BASE_UNIT * 0.05,
-            }}
-          >
-            {phoneNumber}?
           </Text>
           <Text
             style={{
@@ -68,19 +59,19 @@ export default function AuthRegisterModal() {
             }}
           >
             {
-              useTextLanguage({vietnamese:"Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này" , english:"We will send you verification code via this phone number" })
+              useTextLanguage({vietnamese:`Vui lòng nhập đúng định dạng số điện thoại`, english:"We will send you verification code via this phone number" })
             }
           </Text>
 
           <View
             style={{
-              paddingTop: BASE_UNIT * 0.15,
+              paddingTop: BASE_UNIT * 0.05,
               justifyContent: "space-between",
             }}
           >
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("SignUpOTP")}
+              onPress={() => setModalVisible(false)}
             >
               <Text
                 style={{
@@ -91,17 +82,6 @@ export default function AuthRegisterModal() {
               >
                 {useTextLanguage({vietnamese: "Tiếp tục", english:"Next"})
                }
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => setModalVisible(false)}
-            >
-              <Text style={{ fontSize: textMediumSize, fontWeight: "400" }}>
-                {useTextLanguage({
-                  vietnamese: "Đổi số khác",
-                  english: "Change phone number",
-                })}
               </Text>
             </TouchableOpacity>
           </View>
@@ -120,7 +100,7 @@ const styles = StyleSheet.create({
   },
   viewModal: {
     width: BASE_UNIT * 0.8,
-    height: BASE_UNIT * 0.7,
+    height: BASE_UNIT * 0.43,
     borderRadius: "5%",
     backgroundColor: "white",
   },

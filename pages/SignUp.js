@@ -3,12 +3,9 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SimpleHeader from "../components/headers/SimpleHeader";
 import { BASE_UNIT } from "../constants/screen";
-import {
-  textHeaderSize,
-  textMediumSize,
-} from "../constants/fontSize";
+import { textHeaderSize, textMediumSize } from "../constants/fontSize";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { languageState, modalAuthRegister } from "../state/PrimaryState";
+import { languageState, modalAuthRegister, modalValidatorPhoneNumber } from "../state/PrimaryState";
 import PhoneNumberInput from "../components/textInputs/PhoneNumberInput";
 import AgreeTerms from "../components/checkboxes/AgreeTerms";
 import { Colors } from "../styles/Colors";
@@ -17,38 +14,43 @@ import LinkButton from "../components/buttons/LinkButton";
 import { useNavigation } from "@react-navigation/native";
 import AuthRegisterModal from "../components/modals/AuthRegisterModal";
 import { phoneNumberRegister } from "../state/RegisterState";
+import { useTextLanguage } from "../hooks/useTextLanguage";
+import HeaderText from "../components/texts/HeaderText";
+import { validatePhoneNumber } from "../utils/phoneValidator";
+import PhoneNumberValidatorModal from "../components/modals/PhoneNumberValidatorModal";
 
 export default function SignUp() {
   const navigation = useNavigation();
   const selectedLanguage = useRecoilValue(languageState);
-  const [,setModalState] = useRecoilState(modalAuthRegister);
-  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister)
+  const [, setModalState] = useRecoilState(modalAuthRegister);
+  const [, setModalValidator] = useRecoilState(modalValidatorPhoneNumber)
+  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister);
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
 
-  const [buttonDisable, setButtonDisable] = useState(false)
-
-  const handleCheck = ()=>{
-    return checked1 && checked2
-  }
+  const handleCheck = () => {
+    return checked1 && checked2;
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <SimpleHeader iconColor={"black"} backgroundColor={"white"} onPress={()=>{navigation.goBack()}} />
+        <SimpleHeader
+          iconColor={"black"}
+          backgroundColor={"white"}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        />
       </View>
 
-      <Text
-        style={{
-          fontSize: textHeaderSize,
-          fontWeight: "500",
-          textAlign: "center",
-          paddingTop: BASE_UNIT * 0.04,
-        }}
-      >
-        {selectedLanguage === "vie"
-          ? "Nhập số điện thoại "
-          : "Enter your phone number"}
-      </Text>
+      <View style={{ paddingTop: BASE_UNIT * 0.04 }}>
+        <HeaderText
+          text={useTextLanguage({
+            vietnamese: "Nhập số điện thoại",
+            english: "Enter your phone number",
+          })}
+        />
+      </View>
 
       <View
         style={{
@@ -59,9 +61,20 @@ export default function SignUp() {
         <PhoneNumberInput />
       </View>
       <View style={{ marginTop: BASE_UNIT * 0.04 }}>
-        <AgreeTerms term={selectedLanguage === 'vie'? 'Điều khoản sử dụng Zalo' : "Zalo Terms of Service"} textColor={Colors.primary} checked={checked1} setChecked={setChecked1}/>
         <AgreeTerms
-          term={selectedLanguage === 'vie' ? 'Điều khoản Mạng xã hội của Zalo' : `Zalo's Social Terms of Service`}
+          term={useTextLanguage({
+            vietnamese: "Điều khoản sử dụng Zalo",
+            english: "Zalo Terms of Service",
+          })}
+          textColor={Colors.primary}
+          checked={checked1}
+          setChecked={setChecked1}
+        />
+        <AgreeTerms
+          term={useTextLanguage({
+            vietnamese: "Điều khoản Mạng xã hội của Zalo",
+            english: `Zalo's Social Terms of Service`,
+          })}
           textColor={Colors.primary}
           checked={checked2}
           setChecked={setChecked2}
@@ -75,10 +88,14 @@ export default function SignUp() {
         }}
       >
         <LargeButton
-          text={selectedLanguage === "vie" ? "Tiếp tục" : "Next"}
+          text={useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
           color={Colors.primary}
           textColor={"white"}
-          onPress={()=> setModalState(true)}
+          onPress={() => {
+            if(validatePhoneNumber(phoneNumber))
+              setModalState(true)
+            else
+              setModalValidator(true) }}
           disabled={!handleCheck()}
         />
       </View>
@@ -94,17 +111,22 @@ export default function SignUp() {
         }}
       >
         <Text style={{ fontSize: textMediumSize }}>
-          {selectedLanguage === "vie"
-            ? "Bạn đã có tài khoản? "
-            : "Already have an account?"}
+          {useTextLanguage({
+            vietnamese: "Bạn đã có tài khoản?",
+            english: "Already have an account",
+          })}
         </Text>
         <LinkButton
-          text={selectedLanguage === "vie" ? "Đăng nhập ngay" : "Login"}
+          text={useTextLanguage({
+            vietnamese: "Đăng nhập ngay",
+            english: "Login",
+          })}
           textColor={Colors.primary}
-          onPress={()=> navigation.navigate('Login')}
+          onPress={() => navigation.navigate("Login")}
         />
       </View>
-      <AuthRegisterModal number={phoneNumber}/>
+      <AuthRegisterModal number={phoneNumber} />
+        <PhoneNumberValidatorModal/>
     </SafeAreaView>
   );
 }

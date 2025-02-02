@@ -2,7 +2,7 @@ import React from "react";
 import { BASE_UNIT } from "../../constants/screen";
 import { Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { fontMediumSize, textMediumSize } from "../../constants/fontSize";
+import { textMediumSize } from "../../constants/fontSize";
 import { ICON_MEDIUM } from "../../constants/iconSize";
 import { Colors } from "../../styles/Colors";
 

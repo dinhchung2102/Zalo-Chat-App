@@ -5,6 +5,8 @@ import { RecoilRoot } from "recoil";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import SignUpOTP from "./pages/SignUpOTP";
+import FAQ from "./pages/FAQ";
+import SignUpZaloName from "./pages/SignUpZaloName";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -19,6 +21,8 @@ export default function App() {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
           <Stack.Screen name="SignUpOTP" component={SignUpOTP} />
+          <Stack.Screen name="FAQ" component={FAQ} />
+          <Stack.Screen name="SignUpZaloName" component={SignUpZaloName} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
