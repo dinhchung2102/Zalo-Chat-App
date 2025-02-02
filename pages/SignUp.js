@@ -5,7 +5,7 @@ import SimpleHeader from "../components/headers/SimpleHeader";
 import { BASE_UNIT } from "../constants/screen";
 import { textHeaderSize, textMediumSize } from "../constants/fontSize";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { languageState, modalAuthRegister } from "../state/PrimaryState";
+import { languageState, modalAuthRegister, modalValidatorPhoneNumber } from "../state/PrimaryState";
 import PhoneNumberInput from "../components/textInputs/PhoneNumberInput";
 import AgreeTerms from "../components/checkboxes/AgreeTerms";
 import { Colors } from "../styles/Colors";
@@ -16,11 +16,14 @@ import AuthRegisterModal from "../components/modals/AuthRegisterModal";
 import { phoneNumberRegister } from "../state/RegisterState";
 import { useTextLanguage } from "../hooks/useTextLanguage";
 import HeaderText from "../components/texts/HeaderText";
+import { validatePhoneNumber } from "../utils/phoneValidator";
+import PhoneNumberValidatorModal from "../components/modals/PhoneNumberValidatorModal";
 
 export default function SignUp() {
   const navigation = useNavigation();
   const selectedLanguage = useRecoilValue(languageState);
   const [, setModalState] = useRecoilState(modalAuthRegister);
+  const [, setModalValidator] = useRecoilState(modalValidatorPhoneNumber)
   const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister);
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
@@ -88,7 +91,11 @@ export default function SignUp() {
           text={useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
           color={Colors.primary}
           textColor={"white"}
-          onPress={() => setModalState(true)}
+          onPress={() => {
+            if(validatePhoneNumber(phoneNumber))
+              setModalState(true)
+            else
+              setModalValidator(true) }}
           disabled={!handleCheck()}
         />
       </View>
@@ -119,6 +126,7 @@ export default function SignUp() {
         />
       </View>
       <AuthRegisterModal number={phoneNumber} />
+        <PhoneNumberValidatorModal/>
     </SafeAreaView>
   );
 }

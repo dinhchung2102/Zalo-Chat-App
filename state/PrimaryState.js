@@ -14,3 +14,8 @@ export const modalAuthRegister = atom({
   key:'modalAuthRegister',
   default: false
 })
+
+export const modalValidatorPhoneNumber = atom({
+  key:"modalValidatorPhoneNumber",
+  default: false
+})
