@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BASE_UNIT } from "../constants/screen";
 import HeaderText from "../components/texts/HeaderText";
@@ -9,8 +9,27 @@ import { Colors } from "../styles/Colors";
 import BorderInput from "../components/textInputs/BorderInput";
 import LargeButton from "../components/buttons/LargeButton";
 import RuleList from "../components/list/RuleList";
+import { validateUsernameLength, validateUsernameNotNumber } from "../utils/nameValidator";
 
 export default function SignUpZaloName() {
+  const [nameLength, setNameLength] = useState(false);
+  const [nameNotNumber, setNameNotNumber] = useState(false);
+
+  const handleNameChange = (name) => {
+    const isValidLength = validateUsernameLength(name);
+    const isValidNotNumber = validateUsernameNotNumber(name);
+
+    setNameLength(isValidLength);
+    setNameNotNumber(isValidNotNumber);
+
+  };
+
+  const disableButton = () =>{
+    if(nameLength && nameNotNumber)
+      return false;
+    return true;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -37,6 +56,7 @@ export default function SignUpZaloName() {
             vietnamese: "Nguyễn Văn A",
             english: "Nguyen Van A",
           })}
+          onChangeText={handleNameChange}
           borderColor={Colors.primary}
         />
         <RuleList
@@ -44,12 +64,14 @@ export default function SignUpZaloName() {
             vietnamese: "Dài từ 2 đến 40 ký tự",
             english: "Hello hihi",
           })}
+          valid={nameLength}
         />
         <RuleList
           rule={useTextLanguage({
-            vietnamese: "Không chứa số",
+            vietnamese: "Không chứa số và ký tự đặc biệt",
             english: "Hello hihi",
           })}
+          valid={nameNotNumber}
         />
         <RuleList
           rule={useTextLanguage({
@@ -57,12 +79,16 @@ export default function SignUpZaloName() {
             english: "Hello hihi",
           })}
           term={"Quy định đặt tên Zalo"}
+          valid={true}
         />
       </View>
 
       <View style={styles.viewButton}>
         <LargeButton
           text={useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
+          disabled={disableButton()}
+          color={Colors.primary}
+          textColor={'white'}
         />
       </View>
     </SafeAreaView>
