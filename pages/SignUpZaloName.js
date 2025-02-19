@@ -10,8 +10,10 @@ import BorderInput from "../components/textInputs/BorderInput";
 import LargeButton from "../components/buttons/LargeButton";
 import RuleList from "../components/list/RuleList";
 import { validateUsernameLength, validateUsernameNotNumber } from "../utils/nameValidator";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SignUpZaloName() {
+  const navigation = useNavigation();
   const [nameLength, setNameLength] = useState(false);
   const [nameNotNumber, setNameNotNumber] = useState(false);
 
@@ -89,6 +91,7 @@ export default function SignUpZaloName() {
           disabled={disableButton()}
           color={Colors.primary}
           textColor={'white'}
+          onPress={()=>navigation.navigate("SignUpAddProfile")}
         />
       </View>
     </SafeAreaView>
