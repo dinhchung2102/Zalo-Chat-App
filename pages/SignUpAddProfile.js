@@ -10,19 +10,12 @@ import LargeButton from '../components/buttons/LargeButton'
 import { useTextLanguage } from "../hooks/useTextLanguage";
 import { useNavigation } from '@react-navigation/native'
 import SelectGenderModal from '../components/modals/SelectGenderModal'
-import SelectBirthdayModal from '../components/modals/SelectBirthdayModal'
 
 export default function SignUpAddProfile() {
   const navigation = useNavigation();
 
   const [selectedGender, setSelectedGender] = useState("nothing");
   const [modalGenderVisible, setModalGenderVisible] = useState(false);
-
-  const [selectedDate, setSelectedDate] = useState('Sinh nhật');
-  const [modalDateVisible, setModalDateVisible] = useState(false);
-
-
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,7 +24,7 @@ export default function SignUpAddProfile() {
         <HeaderText text={useTextLanguage({vietnamese: "Thêm thông tin cá nhân", english:"add profile"})}/>
       </View>
       <View style={styles.content}>
-        <BirthdaySelect onPress={()=>{setModalDateVisible(true)}} selectedDate={selectedDate} />
+        <BirthdaySelect/>
         
         <GenderSelect onPress={()=>{setModalGenderVisible(true)}} selectedGender={selectedGender}/>
       </View>
@@ -40,7 +33,6 @@ export default function SignUpAddProfile() {
         <LargeButton text={useTextLanguage({vietnamese: "Tiếp tục", english:"Next"})} onPress={()=> navigation.navigate("testDatePicker")}/>
       </View>
       <SelectGenderModal modalVisible={modalGenderVisible} setModalVisible={setModalGenderVisible} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>
-      <SelectBirthdayModal modalVisible={modalDateVisible} setModalVisible={setModalDateVisible} selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
     </SafeAreaView>
   )
 }
