@@ -9,6 +9,7 @@ import { textMediumSize } from "../../constants/fontSize";
 
 export default function SimpleHeader({
   text,
+  textColor = "white",
   onPress,
   linearPrimary,
   iconColor,
@@ -53,7 +54,16 @@ export default function SimpleHeader({
           />
         </TouchableOpacity>
 
-        <Text style={styles.text}>{text}</Text>
+        <Text
+          style={{
+            marginLeft: BASE_UNIT * 0.04,
+            fontSize: textMediumSize,
+            fontWeight: "500",
+            color: textColor
+          }}
+        >
+          {text}
+        </Text>
       </View>
     );
   }
@@ -66,11 +76,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: BASE_UNIT * 0.13,
     paddingHorizontal: BASE_UNIT * 0.02,
-  },
-  text: {
-    marginLeft: BASE_UNIT * 0.04,
-    color: "white",
-    fontSize: textMediumSize,
-    fontWeight: "500",
   },
 });
