@@ -24,7 +24,7 @@ export default function SignUpAddProfile() {
         <HeaderText text={useTextLanguage({vietnamese: "Thêm thông tin cá nhân", english:"add profile"})}/>
       </View>
       <View style={styles.content}>
-        <BirthdaySelect/>
+        <BirthdaySelect />
         <GenderSelect onPress={()=>{setModalGenderVisible(true)}} selectedGender={selectedGender}/>
       </View>
       <View style={styles.footer}>
