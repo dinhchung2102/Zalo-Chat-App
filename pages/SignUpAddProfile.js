@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SimpleHeader from '../components/headers/SimpleHeader'
@@ -17,7 +17,6 @@ export default function SignUpAddProfile() {
   const [selectedGender, setSelectedGender] = useState("nothing");
   const [modalGenderVisible, setModalGenderVisible] = useState(false);
 
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -26,11 +25,9 @@ export default function SignUpAddProfile() {
       </View>
       <View style={styles.content}>
         <BirthdaySelect />
-        
         <GenderSelect onPress={()=>{setModalGenderVisible(true)}} selectedGender={selectedGender}/>
       </View>
       <View style={styles.footer}>
-
         <LargeButton text={useTextLanguage({vietnamese: "Tiếp tục", english:"Next"})} onPress={()=> navigation.navigate("testDatePicker")}/>
       </View>
       <SelectGenderModal modalVisible={modalGenderVisible} setModalVisible={setModalGenderVisible} selectedGender={selectedGender} setSelectedGender={setSelectedGender}/>
