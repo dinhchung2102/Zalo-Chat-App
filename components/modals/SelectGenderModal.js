@@ -6,7 +6,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 
-export default function SelectGenderModal({selectedGender, setSelectedGender, modalVisible, setModalVisible}) {
+export default function SelectGenderModal({onPress, selectedGender, setSelectedGender, modalVisible, setModalVisible}) {
 
   return (
     <Modal
@@ -17,9 +17,7 @@ export default function SelectGenderModal({selectedGender, setSelectedGender, mo
     >
       <TouchableOpacity
         style={styles.modalBackground}
-        onPress={() => {
-          setModalVisible(false);
-        }}
+        onPress={onPress}
       >
         <View style={styles.viewModal}>
           <View
