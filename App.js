@@ -8,6 +8,7 @@ import SignUpOTP from "./pages/SignUpOTP";
 import FAQ from "./pages/FAQ";
 import SignUpZaloName from "./pages/SignUpZaloName";
 import SignUpAddProfile from "./pages/SignUpAddProfile";
+import HomeMessage from "./pages/HomeMessage";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -15,7 +16,7 @@ export default function App() {
     <RecoilRoot>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="SignUpAddProfile"
+          initialRouteName="HomeMessage"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Home" component={Home} />
@@ -25,6 +26,7 @@ export default function App() {
           <Stack.Screen name="FAQ" component={FAQ} />
           <Stack.Screen name="SignUpZaloName" component={SignUpZaloName} />
           <Stack.Screen name="SignUpAddProfile" component={SignUpAddProfile}/>
+          <Stack.Screen name="HomeMessage" component={HomeMessage}/>
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
