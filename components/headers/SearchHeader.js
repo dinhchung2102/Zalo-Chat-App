@@ -21,7 +21,9 @@ export default function SearchHeader({
   iconColor,
   backgroundColor,
   iconName,
-  iconName2
+  iconNameSize,
+  iconName2,
+  iconName2Size
 }) {
   if (linearPrimary) {
     return (
@@ -65,7 +67,7 @@ export default function SearchHeader({
         <TouchableOpacity>
           <MaterialIcons
             name={iconName2}
-            size={ICON_LARGE * 0.95}
+            size={iconName2Size || ICON_LARGE * 0.95}
             color={iconColor}
           />
         </TouchableOpacity>

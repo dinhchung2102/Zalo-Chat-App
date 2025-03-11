@@ -19,3 +19,8 @@ export const modalValidatorPhoneNumber = atom({
   key:"modalValidatorPhoneNumber",
   default: false
 })
+
+export const navigationState = atom({
+  key: "navigationState",
+  default: "message"
+})

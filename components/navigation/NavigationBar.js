@@ -1,43 +1,20 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { BASE_UNIT } from "../../constants/screen";
 import { Colors } from "../../styles/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
+import { useNavigation } from "@react-navigation/native";
+import { useRecoilState } from "recoil";
+import { navigationState } from "../../state/PrimaryState";
 
 export default function NavigationBar() {
-  const [message, setMessage] = useState(true);
-  const [contact, setContact] = useState(false);
-  const [explore, setExplore] = useState(false);
-  const [diary, setDiary] = useState(false);
-  const [profile, setProfile] = useState(false);
+  const navigation = useNavigation();
+  const [navState, setNavigationState] = useRecoilState(navigationState);
 
+  // Hàm thay đổi trạng thái navState
   const handleNavigation = (type) => {
-    setMessage(false);
-    setContact(false);
-    setExplore(false);
-    setDiary(false);
-    setProfile(false);
-
-    switch (type) {
-      case "message":
-        setMessage(true);
-        break;
-      case "contact":
-        setContact(true);
-        break;
-      case "explore":
-        setExplore(true);
-        break;
-      case "diary":
-        setDiary(true);
-        break;
-      case "profile":
-        setProfile(true);
-        break;
-      default:
-        break;
-    }
+    setNavigationState(type);
   };
 
   return (
@@ -53,16 +30,18 @@ export default function NavigationBar() {
         borderTopWidth: BASE_UNIT * 0.0025,
       }}
     >
+      {/* Icon Message */}
       <TouchableOpacity
         onPress={() => {
           handleNavigation("message");
+          navigation.navigate("HomeMessage");
         }}
         style={{ alignItems: "center" }}
       >
         <MaterialIcons
-          name={message ? "messenger" : "messenger-outline"}
+          name={navState === "message" ? "messenger" : "messenger-outline"}
           size={ICON_MEDIUM * 1.3}
-          color={message ? Colors.primary : Colors.grey}
+          color={navState === "message" ? Colors.primary : Colors.grey}
         />
         <View
           style={{
@@ -79,7 +58,7 @@ export default function NavigationBar() {
         >
           <Text style={{ color: "white" }}>49</Text>
         </View>
-        {message ? (
+        {navState === "message" ? (
           <View>
             <Text style={{ fontWeight: "700", color: Colors.primary }}>
               Tin nhắn
@@ -87,6 +66,8 @@ export default function NavigationBar() {
           </View>
         ) : null}
       </TouchableOpacity>
+
+      {/* Icon Contact */}
       <TouchableOpacity
         onPress={() => {
           handleNavigation("contact");
@@ -96,9 +77,9 @@ export default function NavigationBar() {
         <MaterialIcons
           name="contacts"
           size={ICON_MEDIUM * 1.3}
-          color={contact ? Colors.primary : Colors.grey}
+          color={navState === "contact" ? Colors.primary : Colors.grey}
         />
-        {contact ? (
+        {navState === "contact" ? (
           <View>
             <Text style={{ fontWeight: "700", color: Colors.primary }}>
               Liên hệ
@@ -106,6 +87,8 @@ export default function NavigationBar() {
           </View>
         ) : null}
       </TouchableOpacity>
+
+      {/* Icon Explore */}
       <TouchableOpacity
         onPress={() => {
           handleNavigation("explore");
@@ -113,11 +96,11 @@ export default function NavigationBar() {
         style={{ alignItems: "center" }}
       >
         <MaterialIcons
-          name={explore ? "grid-view" : "grid-view"}
+          name="grid-view"
           size={ICON_MEDIUM * 1.3}
-          color={explore ? Colors.primary : Colors.grey}
+          color={navState === "explore" ? Colors.primary : Colors.grey}
         />
-        {explore ? (
+        {navState === "explore" ? (
           <View>
             <Text style={{ fontWeight: "700", color: Colors.primary }}>
               Khám phá
@@ -125,6 +108,8 @@ export default function NavigationBar() {
           </View>
         ) : null}
       </TouchableOpacity>
+
+      {/* Icon Diary */}
       <TouchableOpacity
         onPress={() => {
           handleNavigation("diary");
@@ -132,11 +117,11 @@ export default function NavigationBar() {
         style={{ alignItems: "center" }}
       >
         <MaterialIcons
-          name={diary ? "access-time-filled" : "access-time"}
+          name={navState === "diary" ? "access-time-filled" : "access-time"}
           size={ICON_MEDIUM * 1.3}
-          color={diary ? Colors.primary : Colors.grey}
+          color={navState === "diary" ? Colors.primary : Colors.grey}
         />
-        {diary ? (
+        {navState === "diary" ? (
           <View>
             <Text style={{ fontWeight: "700", color: Colors.primary }}>
               Nhật ký
@@ -144,18 +129,21 @@ export default function NavigationBar() {
           </View>
         ) : null}
       </TouchableOpacity>
+
+      {/* Icon Profile */}
       <TouchableOpacity
         onPress={() => {
           handleNavigation("profile");
+          navigation.navigate("Profile");
         }}
         style={{ alignItems: "center" }}
       >
         <MaterialIcons
-          name={profile ? "person" : "person-outline"}
-          color={profile ? Colors.primary : Colors.grey}
+          name={navState === "profile" ? "person" : "person-outline"}
+          color={navState === "profile" ? Colors.primary : Colors.grey}
           size={ICON_MEDIUM * 1.3}
         />
-        {profile ? (
+        {navState === "profile" ? (
           <View>
             <Text style={{ fontWeight: "700", color: Colors.primary }}>
               Cá nhân
