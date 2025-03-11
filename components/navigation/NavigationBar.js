@@ -40,23 +40,23 @@ export default function NavigationBar() {
       >
         <MaterialIcons
           name={navState === "message" ? "messenger" : "messenger-outline"}
-          size={ICON_MEDIUM * 1.3}
+          size={ICON_MEDIUM*1.1}
           color={navState === "message" ? Colors.primary : Colors.grey}
         />
         <View
           style={{
             position: "absolute",
             backgroundColor: "red",
-            height: ICON_MEDIUM * 0.8,
-            width: ICON_MEDIUM * 0.8,
-            top: -BASE_UNIT * 0.006,
-            right: -BASE_UNIT * 0.003,
+            height: ICON_MEDIUM * 0.6,
+            width: ICON_MEDIUM * 0.6,
+            top: -BASE_UNIT * 0.01,
+            right: BASE_UNIT*0.001,
             borderRadius: BASE_UNIT,
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Text style={{ color: "white" }}>49</Text>
+          <Text style={{ color: "white", fontSize: BASE_UNIT*0.025 }}>49</Text>
         </View>
         {navState === "message" ? (
           <View>
@@ -76,7 +76,7 @@ export default function NavigationBar() {
       >
         <MaterialIcons
           name="contacts"
-          size={ICON_MEDIUM * 1.3}
+          size={ICON_MEDIUM * 1.1}
           color={navState === "contact" ? Colors.primary : Colors.grey}
         />
         {navState === "contact" ? (
@@ -97,7 +97,7 @@ export default function NavigationBar() {
       >
         <MaterialIcons
           name="grid-view"
-          size={ICON_MEDIUM * 1.3}
+          size={ICON_MEDIUM * 1.1}
           color={navState === "explore" ? Colors.primary : Colors.grey}
         />
         {navState === "explore" ? (
@@ -118,7 +118,7 @@ export default function NavigationBar() {
       >
         <MaterialIcons
           name={navState === "diary" ? "access-time-filled" : "access-time"}
-          size={ICON_MEDIUM * 1.3}
+          size={ICON_MEDIUM * 1.1}
           color={navState === "diary" ? Colors.primary : Colors.grey}
         />
         {navState === "diary" ? (
@@ -141,7 +141,7 @@ export default function NavigationBar() {
         <MaterialIcons
           name={navState === "profile" ? "person" : "person-outline"}
           color={navState === "profile" ? Colors.primary : Colors.grey}
-          size={ICON_MEDIUM * 1.3}
+          size={ICON_MEDIUM * 1.2}
         />
         {navState === "profile" ? (
           <View>
