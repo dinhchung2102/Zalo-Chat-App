@@ -15,12 +15,13 @@ import { textMediumSize } from "../../constants/fontSize";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 
 export default function SearchHeader({
-  text,
   textColor = "white",
   onPress,
   linearPrimary,
   iconColor,
   backgroundColor,
+  iconName,
+  iconName2
 }) {
   if (linearPrimary) {
     return (
@@ -46,7 +47,6 @@ export default function SearchHeader({
             flex: 1,
             color: textColor,
           }}
-          value={text}
           placeholderTextColor={Colors.grey}
           placeholder={useTextLanguage({
             vietnamese: "Tìm kiếm",
@@ -56,7 +56,7 @@ export default function SearchHeader({
 
         <TouchableOpacity style={{ marginRight: BASE_UNIT * 0.05 }}>
           <MaterialIcons
-            name="qr-code-scanner"
+            name={iconName}
             size={ICON_LARGE * 0.7}
             color={iconColor}
           />
@@ -64,7 +64,7 @@ export default function SearchHeader({
 
         <TouchableOpacity>
           <MaterialIcons
-            name="add"
+            name={iconName2}
             size={ICON_LARGE * 0.95}
             color={iconColor}
           />
@@ -99,7 +99,6 @@ export default function SearchHeader({
             flex: 1,
             color: textColor,
           }}
-          value={text}
           placeholderTextColor={Colors.grey}
           placeholder={useTextLanguage({
             vietnamese: "Tìm kiếm",

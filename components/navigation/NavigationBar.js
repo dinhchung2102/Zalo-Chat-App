@@ -151,7 +151,7 @@ export default function NavigationBar() {
         style={{ alignItems: "center" }}
       >
         <MaterialIcons
-          name="person-outline"
+          name={profile ? "person" : "person-outline"}
           color={profile ? Colors.primary : Colors.grey}
           size={ICON_MEDIUM * 1.3}
         />
