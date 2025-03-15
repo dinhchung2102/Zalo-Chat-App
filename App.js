@@ -10,6 +10,7 @@ import SignUpZaloName from "./pages/SignUpZaloName";
 import SignUpAddProfile from "./pages/SignUpAddProfile";
 import HomeMessage from "./pages/HomeMessage";
 import Profile from "./pages/Profile";
+import UpdateAvatar from "./pages/UpdateAvatar";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -17,7 +18,7 @@ export default function App() {
     <RecoilRoot>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="HomeMessage"
+          initialRouteName="Home"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Home" component={Home} />
@@ -27,6 +28,7 @@ export default function App() {
           <Stack.Screen name="FAQ" component={FAQ} />
           <Stack.Screen name="SignUpZaloName" component={SignUpZaloName} />
           <Stack.Screen name="SignUpAddProfile" component={SignUpAddProfile} />
+          <Stack.Screen name="UpdateAvatar" component={UpdateAvatar}/>
           <Stack.Screen
             options={{
               animation: 'none',

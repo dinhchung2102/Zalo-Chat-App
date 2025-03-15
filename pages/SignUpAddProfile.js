@@ -26,14 +26,16 @@ export default function SignUpAddProfile() {
   const [successModalVisible, setSuccessModalVisible] = useState(false);
 
   const handleDisableButton = () => {
-    if (selectedGender != "nothing" && selectedDate.getFullYear() < currentDate.getFullYear())
+    if (
+      selectedGender != "nothing" &&
+      selectedDate.getFullYear() < currentDate.getFullYear()
+    )
       setButtonDisable(false);
-    else
-      setButtonDisable(true)
+    else setButtonDisable(true);
   };
 
   useEffect(() => {
-    handleDisableButton(); 
+    handleDisableButton();
   }, [selectedGender, selectedDate]);
 
   return (
@@ -48,7 +50,11 @@ export default function SignUpAddProfile() {
         />
       </View>
       <View style={styles.content}>
-        <BirthdaySelect minimumAge={15} dateValue={selectedDate} setDateValue={setSelectedDate} />
+        <BirthdaySelect
+          minimumAge={15}
+          dateValue={selectedDate}
+          setDateValue={setSelectedDate}
+        />
         <GenderSelect
           onPress={() => {
             handleDisableButton();
@@ -77,7 +83,12 @@ export default function SignUpAddProfile() {
         setSelectedGender={setSelectedGender}
       />
 
-        <CreateAccountCompleted visible={successModalVisible} onClose={() => setSuccessModalVisible(false)}/>
+      <CreateAccountCompleted
+        visible={successModalVisible}
+        onClose={() => {setSuccessModalVisible(false)
+          navigation.navigate('UpdateAvatar')
+        }}
+      />
     </SafeAreaView>
   );
 }

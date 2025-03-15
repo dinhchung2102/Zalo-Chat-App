@@ -11,9 +11,14 @@ import LargeButton from "../components/buttons/LargeButton";
 import RuleList from "../components/list/RuleList";
 import { validateUsernameLength, validateUsernameNotNumber } from "../utils/nameValidator";
 import { useNavigation } from "@react-navigation/native";
+import { useRecoilState } from "recoil";
+import { nameRegister } from "../state/RegisterState";
 
 export default function SignUpZaloName() {
   const navigation = useNavigation();
+
+  const [, setNameRegister] = useRecoilState(nameRegister)
+
   const [nameLength, setNameLength] = useState(false);
   const [nameNotNumber, setNameNotNumber] = useState(false);
 
@@ -23,6 +28,7 @@ export default function SignUpZaloName() {
 
     setNameLength(isValidLength);
     setNameNotNumber(isValidNotNumber);
+    setNameRegister(name)
 
   };
 
