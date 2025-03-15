@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderText from "../components/texts/HeaderText";
 import { BASE_UNIT, width } from "../constants/screen";
@@ -10,9 +10,12 @@ import { getShortNameRegister } from "../utils/getShortName";
 import { Colors } from "../styles/Colors";
 import { textLargeSize, textMediumPlus } from "../constants/fontSize";
 import LargeButton from "../components/buttons/LargeButton";
+import ConfirmNoAvt from "../components/modals/ConfirmNoAvt";
 
 export default function UpdateAvatar() {
   const nameRegisterState = useRecoilValue(nameRegister);
+
+  const [modalSkipVisible, setModalSkipVisible] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -30,8 +33,19 @@ export default function UpdateAvatar() {
 
     <View style={styles.footer}>
     <LargeButton text={'Cập nhật'} color={Colors.primary} disabled={false} textColor={'white'}/>
-    <LargeButton text={'Bỏ qua'} color={'white'} disabled={false} />
+    <LargeButton text={'Bỏ qua'} color={'white'} disabled={false} onPress={() => setModalSkipVisible(true)} />
     </View>
+
+    <ConfirmNoAvt
+        visible={modalSkipVisible}
+        title="Bạn chưa có ảnh đại diện"
+        text="Trải nghiệm một vài tính năng có thể sẽ bị ảnh hưởng. Vẫn bỏ qua bước này?"
+        onSkip={() => setModalSkipVisible(false)}
+        onAddPhoto={() => {
+          console.log("Thêm ảnh");
+          setModalSkipVisible(false);
+        }}
+      />
       
     </SafeAreaView>
   );
