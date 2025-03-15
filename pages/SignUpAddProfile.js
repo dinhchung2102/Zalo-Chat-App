@@ -11,6 +11,7 @@ import { useTextLanguage } from "../hooks/useTextLanguage";
 import { useNavigation } from "@react-navigation/native";
 import SelectGenderModal from "../components/modals/SelectGenderModal";
 import { Colors } from "../styles/Colors";
+import CreateAccountCompleted from "../components/modals/CreateAccountCompleted";
 
 export default function SignUpAddProfile() {
   const navigation = useNavigation();
@@ -22,15 +23,19 @@ export default function SignUpAddProfile() {
   const [modalGenderVisible, setModalGenderVisible] = useState(false);
   const [buttonDisable, setButtonDisable] = useState(true);
 
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
+
   const handleDisableButton = () => {
-    if (selectedGender != "nothing" && selectedDate.getFullYear() < currentDate.getFullYear())
+    if (
+      selectedGender != "nothing" &&
+      selectedDate.getFullYear() < currentDate.getFullYear()
+    )
       setButtonDisable(false);
-    else
-      setButtonDisable(true)
+    else setButtonDisable(true);
   };
 
   useEffect(() => {
-    handleDisableButton(); 
+    handleDisableButton();
   }, [selectedGender, selectedDate]);
 
   return (
@@ -45,7 +50,11 @@ export default function SignUpAddProfile() {
         />
       </View>
       <View style={styles.content}>
-        <BirthdaySelect minimumAge={15} dateValue={selectedDate} setDateValue={setSelectedDate} />
+        <BirthdaySelect
+          minimumAge={15}
+          dateValue={selectedDate}
+          setDateValue={setSelectedDate}
+        />
         <GenderSelect
           onPress={() => {
             handleDisableButton();
@@ -60,9 +69,7 @@ export default function SignUpAddProfile() {
           textColor={"white"}
           color={Colors.primary}
           text={useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
-          onPress={() => {
-            console.log("hihi");
-          }}
+          onPress={() => setSuccessModalVisible(true)}
         />
       </View>
       <SelectGenderModal
@@ -74,6 +81,13 @@ export default function SignUpAddProfile() {
         setModalVisible={setModalGenderVisible}
         selectedGender={selectedGender}
         setSelectedGender={setSelectedGender}
+      />
+
+      <CreateAccountCompleted
+        visible={successModalVisible}
+        onClose={() => {setSuccessModalVisible(false)
+          navigation.navigate('UpdateAvatar')
+        }}
       />
     </SafeAreaView>
   );
