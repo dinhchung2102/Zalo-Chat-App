@@ -11,11 +11,13 @@ import { Colors } from "../styles/Colors";
 import { textLargeSize, textMediumPlus } from "../constants/fontSize";
 import LargeButton from "../components/buttons/LargeButton";
 import ConfirmNoAvt from "../components/modals/ConfirmNoAvt";
+import SelectPhotoModal from "../components/modals/SelectPhotoModal";
 
 export default function UpdateAvatar() {
   const nameRegisterState = useRecoilValue(nameRegister);
 
   const [modalSkipVisible, setModalSkipVisible] = useState(false);
+  const [modalSelectPhotoVisible, setSelectPhotoVisible] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -26,17 +28,29 @@ export default function UpdateAvatar() {
         <NoteText text={"Đặt ảnh đại diện để mọi người dễ nhận ra bạn"} />
       </View>
 
-
       <View style={styles.imageDefault}>
-        <Text style={styles.text}>{getShortNameRegister(nameRegisterState)}</Text>
+        <Text style={styles.text}>
+          {getShortNameRegister(nameRegisterState)}
+        </Text>
       </View>
 
-    <View style={styles.footer}>
-    <LargeButton text={'Cập nhật'} color={Colors.primary} disabled={false} textColor={'white'}/>
-    <LargeButton text={'Bỏ qua'} color={'white'} disabled={false} onPress={() => setModalSkipVisible(true)} />
-    </View>
+      <View style={styles.footer}>
+        <LargeButton
+          text={"Cập nhật"}
+          color={Colors.primary}
+          disabled={false}
+          textColor={"white"}
+          onPress={()=> {setSelectPhotoVisible(true)}}
+        />
+        <LargeButton
+          text={"Bỏ qua"}
+          color={"white"}
+          disabled={false}
+          onPress={() => setModalSkipVisible(true)}
+        />
+      </View>
 
-    <ConfirmNoAvt
+      <ConfirmNoAvt
         visible={modalSkipVisible}
         title="Bạn chưa có ảnh đại diện"
         text="Trải nghiệm một vài tính năng có thể sẽ bị ảnh hưởng. Vẫn bỏ qua bước này?"
@@ -46,7 +60,19 @@ export default function UpdateAvatar() {
           setModalSkipVisible(false);
         }}
       />
-      
+
+      <SelectPhotoModal
+        visible={modalSelectPhotoVisible}
+        onClose={() => setSelectPhotoVisible(false)}
+        onTakePhoto={() => {
+          console.log("Chụp ảnh mới");
+          setSelectPhotoVisible(false);
+        }}
+        onPickPhoto={() => {
+          console.log("Chọn ảnh trên máy");
+          setSelectPhotoVisible(false);
+        }}
+      />
     </SafeAreaView>
   );
 }
@@ -56,28 +82,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     paddingHorizontal: BASE_UNIT * 0.05,
-    alignItems:'center'
+    alignItems: "center",
   },
   header: {
     marginTop: BASE_UNIT * 0.1,
     alignItems: "center",
   },
-  imageDefault:{
-    backgroundColor:Colors.primary,
-    width: BASE_UNIT*0.3,
-    height:BASE_UNIT*0.3,
-    borderRadius: BASE_UNIT*0.3,
-    alignItems:'center',
-    justifyContent:'center',
-    marginTop: BASE_UNIT*0.1
+  imageDefault: {
+    backgroundColor: Colors.primary,
+    width: BASE_UNIT * 0.3,
+    height: BASE_UNIT * 0.3,
+    borderRadius: BASE_UNIT * 0.3,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: BASE_UNIT * 0.1,
   },
-  text:{
-    color:'white',
-    fontSize: textMediumPlus*1.5
+  text: {
+    color: "white",
+    fontSize: textMediumPlus * 1.5,
   },
-  footer:{
+  footer: {
     flex: 1,
-    justifyContent:'flex-end',
-    paddingBottom: BASE_UNIT*0.1
-  }
+    justifyContent: "flex-end",
+    paddingBottom: BASE_UNIT * 0.1,
+  },
 });
