@@ -31,7 +31,16 @@ export default function SimpleHeader({
           />
         </TouchableOpacity>
 
-        <Text style={styles.text}>{text}</Text>
+        <Text
+          style={{
+            marginLeft: BASE_UNIT * 0.04,
+            fontSize: textMediumSize,
+            fontWeight: "500",
+            color: textColor,
+          }}
+        >
+          {text}
+        </Text>
       </LinearGradient>
     );
   } else {
@@ -59,7 +68,7 @@ export default function SimpleHeader({
             marginLeft: BASE_UNIT * 0.04,
             fontSize: textMediumSize,
             fontWeight: "500",
-            color: textColor
+            color: textColor,
           }}
         >
           {text}
