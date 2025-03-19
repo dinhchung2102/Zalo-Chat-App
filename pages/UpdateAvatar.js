@@ -1,23 +1,67 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderText from "../components/texts/HeaderText";
-import { BASE_UNIT, width } from "../constants/screen";
+import { BASE_UNIT } from "../constants/screen";
 import NoteText from "../components/texts/NoteText";
 import { useRecoilValue } from "recoil";
 import { nameRegister } from "../state/RegisterState";
 import { getShortNameRegister } from "../utils/getShortName";
 import { Colors } from "../styles/Colors";
-import { textLargeSize, textMediumPlus } from "../constants/fontSize";
+import { textMediumPlus } from "../constants/fontSize";
 import LargeButton from "../components/buttons/LargeButton";
 import ConfirmNoAvt from "../components/modals/ConfirmNoAvt";
 import SelectPhotoModal from "../components/modals/SelectPhotoModal";
+import * as ImagePicker from "expo-image-picker";
 
 export default function UpdateAvatar() {
   const nameRegisterState = useRecoilValue(nameRegister);
 
   const [modalSkipVisible, setModalSkipVisible] = useState(false);
   const [modalSelectPhotoVisible, setSelectPhotoVisible] = useState(false);
+
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const takePhoto = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      alert("Bạn cần cấp quyền để sử dụng camera!");
+      return;
+    }
+
+    let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -28,11 +72,15 @@ export default function UpdateAvatar() {
         <NoteText text={"Đặt ảnh đại diện để mọi người dễ nhận ra bạn"} />
       </View>
 
-      <View style={styles.imageDefault}>
-        <Text style={styles.text}>
-          {getShortNameRegister(nameRegisterState)}
-        </Text>
-      </View>
+      {image ? (
+        <Image source={{ uri: image }} style={styles.imageDefault} />
+      ) : (
+        <View style={styles.imageDefault}>
+          <Text style={styles.text}>
+            {getShortNameRegister(nameRegisterState)}
+          </Text>
+        </View>
+      )}
 
       <View style={styles.footer}>
         <LargeButton
@@ -40,7 +88,9 @@ export default function UpdateAvatar() {
           color={Colors.primary}
           disabled={false}
           textColor={"white"}
-          onPress={()=> {setSelectPhotoVisible(true)}}
+          onPress={() => {
+            setSelectPhotoVisible(true);
+          }}
         />
         <LargeButton
           text={"Bỏ qua"}
@@ -64,13 +114,15 @@ export default function UpdateAvatar() {
       <SelectPhotoModal
         visible={modalSelectPhotoVisible}
         onClose={() => setSelectPhotoVisible(false)}
-        onTakePhoto={() => {
-          console.log("Chụp ảnh mới");
-          setSelectPhotoVisible(false);
-        }}
         onPickPhoto={() => {
           console.log("Chọn ảnh trên máy");
           setSelectPhotoVisible(false);
+          pickImage();
+        }}
+        onTakePhoto={() => {
+          console.log("Chụp ảnh");
+          setSelectPhotoVisible(false);
+          takePhoto();
         }}
       />
     </SafeAreaView>
@@ -105,5 +157,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     paddingBottom: BASE_UNIT * 0.1,
+  },
+  camera: {
+    width: BASE_UNIT,
+    height: BASE_UNIT * 2.2,
+    position: "absolute",
+  },
+  cameraContainer: {
+    flex: 1,
+    backgroundColor: "transparent",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 20,
+    height: BASE_UNIT,
+  },
+  button: {
+    alignItems: "center",
+  },
+  message: {
+    textAlign: "center",
+    paddingBottom: 10,
   },
 });

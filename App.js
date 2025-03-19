@@ -18,7 +18,7 @@ export default function App() {
     <RecoilRoot>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName="UpdateAvatar"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Home" component={Home} />
