@@ -16,6 +16,8 @@ import { phoneNumberRegister } from "../../state/RegisterState";
 import { Colors } from "../../styles/Colors";
 import { useNavigation } from "@react-navigation/native";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
+import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
+import { sendOTP } from "../../api/auth/register";
 
 export default function AuthRegisterModal() {
   const [modalvisible, setModalVisible] = useRecoilState(modalAuthRegister);
@@ -80,7 +82,11 @@ export default function AuthRegisterModal() {
           >
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("SignUpOTP")}
+              onPress={() => {
+                console.log(formatPhoneNumber(phoneNumber));
+                sendOTP(formatPhoneNumber(phoneNumber));
+                navigation.navigate("SignUpOTP")
+              }}
             >
               <Text
                 style={{
@@ -95,7 +101,8 @@ export default function AuthRegisterModal() {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => setModalVisible(false)}
+              onPress={() => {
+                setModalVisible(false)}}
             >
               <Text style={{ fontSize: textMediumSize, fontWeight: "400" }}>
                 {useTextLanguage({
