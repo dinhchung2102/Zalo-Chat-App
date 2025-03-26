@@ -16,7 +16,7 @@ export default function HomeMessage() {
         linearPrimary={true}
         iconColor={"white"}
         textColor="white"
-        iconName={'qr-code-scanner'}
+        iconName={'qr-code-outline'}
         iconName2={'add'}
       />
       <View

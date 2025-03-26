@@ -20,12 +20,16 @@ import LargeButton from "../components/buttons/LargeButton";
 import ConfirmNoAvt from "../components/modals/ConfirmNoAvt";
 import SelectPhotoModal from "../components/modals/SelectPhotoModal";
 import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
 
 export default function UpdateAvatar() {
   const nameRegisterState = useRecoilValue(nameRegister);
+  const navigation = useNavigation();
 
   const [modalSkipVisible, setModalSkipVisible] = useState(false);
   const [modalSelectPhotoVisible, setSelectPhotoVisible] = useState(false);
+
+
 
   const [image, setImage] = useState(null);
 
@@ -96,7 +100,10 @@ export default function UpdateAvatar() {
           text={"Bỏ qua"}
           color={"white"}
           disabled={false}
-          onPress={() => setModalSkipVisible(true)}
+          onPress={()=>
+            setModalSkipVisible(true)
+            //navigation.navigate("Home")
+            }
         />
       </View>
 

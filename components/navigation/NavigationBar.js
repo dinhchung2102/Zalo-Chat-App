@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { BASE_UNIT } from "../../constants/screen";
 import { Colors } from "../../styles/Colors";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilState } from "recoil";
@@ -36,27 +36,40 @@ export default function NavigationBar() {
           handleNavigation("message");
           navigation.navigate("HomeMessage");
         }}
-        style={{ alignItems: "center" }}
+        style={{
+          alignItems: "center",
+          height: "100%",
+          width: BASE_UNIT * 0.15,
+          justifyContent: "center",
+        }}
       >
-        <MaterialIcons
-          name={navState === "message" ? "messenger" : "messenger-outline"}
-          size={ICON_MEDIUM*1.1}
-          color={navState === "message" ? Colors.primary : Colors.grey}
-        />
-        <View
-          style={{
-            position: "absolute",
-            backgroundColor: "red",
-            height: ICON_MEDIUM * 0.6,
-            width: ICON_MEDIUM * 0.6,
-            top: -BASE_UNIT * 0.01,
-            right: BASE_UNIT*0.001,
-            borderRadius: BASE_UNIT,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text style={{ color: "white", fontSize: BASE_UNIT*0.025 }}>49</Text>
+        <View style={{ position: "relative" }}>
+          <Ionicons
+            name={
+              navState === "message"
+                ? "chatbubble-ellipses-sharp"
+                : "chatbubble-ellipses-outline"
+            }
+            size={ICON_MEDIUM * 1.1}
+            color={navState === "message" ? Colors.primary : Colors.grey}
+          />
+          <View
+            style={{
+              position: "absolute",
+              backgroundColor: "red",
+              height: ICON_MEDIUM * 0.6,
+              width: ICON_MEDIUM * 0.8,
+              borderRadius: BASE_UNIT,
+              alignItems: "center",
+              justifyContent: "center",
+              right: -ICON_MEDIUM * 0.2,
+              top: 0,
+            }}
+          >
+            <Text style={{ color: "white", fontSize: BASE_UNIT * 0.025 }}>
+              49
+            </Text>
+          </View>
         </View>
         {navState === "message" ? (
           <View>
@@ -95,8 +108,8 @@ export default function NavigationBar() {
         }}
         style={{ alignItems: "center" }}
       >
-        <MaterialIcons
-          name="grid-view"
+        <Ionicons
+          name={navState === "explore" ? "grid-sharp" : "grid-outline"}
           size={ICON_MEDIUM * 1.1}
           color={navState === "explore" ? Colors.primary : Colors.grey}
         />
@@ -116,8 +129,8 @@ export default function NavigationBar() {
         }}
         style={{ alignItems: "center" }}
       >
-        <MaterialIcons
-          name={navState === "diary" ? "access-time-filled" : "access-time"}
+        <Ionicons
+          name={navState === "diary" ? "time-sharp" : "time-outline"}
           size={ICON_MEDIUM * 1.1}
           color={navState === "diary" ? Colors.primary : Colors.grey}
         />
@@ -138,10 +151,10 @@ export default function NavigationBar() {
         }}
         style={{ alignItems: "center" }}
       >
-        <MaterialIcons
+        <Ionicons
           name={navState === "profile" ? "person" : "person-outline"}
           color={navState === "profile" ? Colors.primary : Colors.grey}
-          size={ICON_MEDIUM * 1.2}
+          size={ICON_MEDIUM * 1.1}
         />
         {navState === "profile" ? (
           <View>
