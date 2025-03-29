@@ -17,7 +17,7 @@ export const emailRegister = atom({
 
 export const passwordRegister = atom({
     key:"passwordRegister",
-    default:''
+    default:'Abcd@12345'
 })
 
 export const genderRegister = atom({

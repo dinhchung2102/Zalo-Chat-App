@@ -33,7 +33,7 @@ export const verifyOTP = async (phone, otpCode) => {
 export const signup = async (name, phone, selectedDate, password, tempToken, gender) => {
   try {
     const response = await apiClient.post("/auth/signup", {
-      fullname: name,
+      fullName: name,
       phoneNumber: phone,
       dateOfBirth: selectedDate,
       gender: gender,

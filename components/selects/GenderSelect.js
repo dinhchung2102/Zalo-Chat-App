@@ -8,11 +8,11 @@ import { textMediumSize } from '../../constants/fontSize'
 
 export default function GenderSelect({onPress, selectedGender}) {
   const handleSelectGender = (selectedGender)=>{
-    if(selectedGender === "none")
+    if(selectedGender === "None")
       return "Không chia sẻ"
-    else if(selectedGender === "male")
+    else if(selectedGender === "Male")
       return "Nam"
-    else if(selectedGender === "female")
+    else if(selectedGender === "Female")
       return "Nữ"
     else
       return "Giới tính"

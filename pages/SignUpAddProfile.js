@@ -12,13 +12,26 @@ import { useNavigation } from "@react-navigation/native";
 import SelectGenderModal from "../components/modals/SelectGenderModal";
 import { Colors } from "../styles/Colors";
 import CreateAccountCompleted from "../components/modals/CreateAccountCompleted";
+import { useRecoilValue } from "recoil";
+import { nameRegister, passwordRegister, phoneNumberRegister } from "../state/RegisterState";
+import { signup } from "../api/auth/register";
+import { getTempToken } from "../utils/asyncStorage";
 
 export default function SignUpAddProfile() {
   const navigation = useNavigation();
   const currentDate = new Date();
+  
+  const name = useRecoilValue(nameRegister);
+  const phone = useRecoilValue(phoneNumberRegister);
+  const password = useRecoilValue(passwordRegister);
+
+
+
 
   const [selectedGender, setSelectedGender] = useState("nothing");
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const formatDate = selectedDate.toLocaleDateString("en-CA");
+  
 
   const [modalGenderVisible, setModalGenderVisible] = useState(false);
   const [buttonDisable, setButtonDisable] = useState(true);
@@ -37,6 +50,30 @@ export default function SignUpAddProfile() {
   useEffect(() => {
     handleDisableButton();
   }, [selectedGender, selectedDate]);
+
+  const handleSignup = async () => {
+    try {
+      const tempToken = await getTempToken();
+      console.log(
+        "Thông tin đăng ký:",
+        {
+        name,
+        phone,
+        formatDate,
+        password,
+        tempToken,
+        selectedGender
+        }
+      );
+      const result = await signup(name, phone, formatDate, password, tempToken, selectedGender);
+      Alert.alert("Thành công", "Đăng ký thành công!");
+      console.log("Đăng ký thành công:", result);
+    } catch (error) {
+      Alert.alert("Lỗi", error);
+      console.error("Lỗi khi đăng ký:", error);
+    }
+  };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,7 +106,10 @@ export default function SignUpAddProfile() {
           textColor={"white"}
           color={Colors.primary}
           text={useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
-          onPress={() => setSuccessModalVisible(true)}
+          onPress={() => {
+            setSuccessModalVisible(true)
+            handleSignup();
+          }}
         />
       </View>
       <SelectGenderModal

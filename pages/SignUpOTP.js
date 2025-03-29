@@ -30,7 +30,7 @@ export default function SignUpOTP() {
   const navigation = useNavigation();
   const selectedLanguage = useRecoilValue(languageState);
   const [, setModalState] = useRecoilState(modalAuthRegister);
-  const phoneNumber = useRecoilValue(phoneNumberRegister);
+  const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister);
   const [successModalVisible, setSuccessModalVisible] = useState(false);
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -44,7 +44,7 @@ export default function SignUpOTP() {
   const handleVerifyOTP = async (phoneNumber, otp) => {
     try {
       const result = await verifyOTP(formatPhoneNumber(phoneNumber), otp);
-      console.log(phoneNumber, otp);
+      setPhoneNumber(formatPhoneNumber(phoneNumber));
       console.log("result", result);
       
       if (result && result.tempToken) {
