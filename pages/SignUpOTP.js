@@ -21,12 +21,17 @@ import OTPInPut from "../components/textInputs/OTPInPut";
 import { useTextLanguage } from "../hooks/useTextLanguage";
 import HeaderText from "../components/texts/HeaderText";
 import HeaderDesText from "../components/texts/HeaderDesText";
+import { verifyOTP } from "../api/auth/register";
+import { getTempToken, saveTempToken } from "../utils/asyncStorage";
+import OtpErrorModal from "../components/modals/OtpErrorModal";
+import { formatPhoneNumber } from "../utils/formatPhoneNumber";
 
 export default function SignUpOTP() {
   const navigation = useNavigation();
   const selectedLanguage = useRecoilValue(languageState);
   const [, setModalState] = useRecoilState(modalAuthRegister);
   const phoneNumber = useRecoilValue(phoneNumberRegister);
+  const [successModalVisible, setSuccessModalVisible] = useState(false);
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const isOtpValid = otp.join("").length === 6;
@@ -35,6 +40,27 @@ export default function SignUpOTP() {
   const handleOtpSubmit = (enteredOtp) => {
     console.log("OTP submitted: ", enteredOtp);
   };
+
+  const handleVerifyOTP = async (phoneNumber, otp) => {
+    try {
+      const result = await verifyOTP(formatPhoneNumber(phoneNumber), otp);
+      console.log(phoneNumber, otp);
+      console.log("result", result);
+      
+      if (result && result.tempToken) {
+        await saveTempToken(result.tempToken);
+        console.log(await getTempToken());
+        return true;
+      } else {
+        console.log("OTP verification failed.");
+        return false;
+      }
+    } catch (error) {
+      console.log("Error verifying OTP:", error);
+      return false;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -96,9 +122,19 @@ export default function SignUpOTP() {
           text={useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
           color={Colors.primary}
           textColor={"white"}
-          onPress={() => {
+          onPress={async () => {
             handleOtpSubmit(otp.join(""));
-            navigation.navigate("SignUpZaloName");
+            console.log(otp.join(""));
+            console.log("phoneNumber", phoneNumber);
+            
+            const success = await handleVerifyOTP(phoneNumber, otp.join(""));
+            if (success) {
+              navigation.navigate("SignUpZaloName");
+            }
+            else {
+              setSuccessModalVisible(true);
+              console.log("OTP verification failed here.");
+            }
           }}
           disabled={isOtpValid ? false : true}
         />
@@ -192,6 +228,12 @@ export default function SignUpOTP() {
           onPress={() => navigation.navigate("Login")}
         />
       </View>
+      <OtpErrorModal
+      visible={successModalVisible}
+      onClose={() => {setSuccessModalVisible(false)
+        
+      }}
+      />
     </SafeAreaView>
   );
 }
