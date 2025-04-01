@@ -83,8 +83,8 @@ export default function AuthRegisterModal() {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                console.log(formatPhoneNumber(phoneNumber));
                 sendOTP(formatPhoneNumber(phoneNumber));
+                setModalVisible(false)
                 navigation.navigate("SignUpOTP")
               }}
             >

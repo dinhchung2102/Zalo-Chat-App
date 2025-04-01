@@ -24,3 +24,8 @@ export const genderRegister = atom({
     key: "genderRegister",
     default: ''
 })
+
+export const profilePicRegister = atom({
+    key:"profilePic",
+    default:''
+})
