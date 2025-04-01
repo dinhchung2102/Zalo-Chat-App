@@ -38,7 +38,7 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
             </Text>
             <TouchableOpacity
               onPress={() => {
-                setSelectedGender("male");
+                setSelectedGender("Male");
                 setModalVisible(false);
               }}
               style={{
@@ -52,13 +52,13 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
               }}
             >
               <Text style={{ fontSize: textMediumSize }}>Nam</Text>
-              {selectedGender === "male" && (
+              {selectedGender === "Male" && (
                 <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
               )}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setSelectedGender("female");
+                setSelectedGender("Female");
                 setModalVisible(false);
               }}
               style={{
@@ -72,13 +72,13 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
               }}
             >
               <Text style={{ fontSize: textMediumSize }}>Nữ</Text>
-              {selectedGender === "female" && (
+              {selectedGender === "Female" && (
                 <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
               )}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setSelectedGender("none");
+                setSelectedGender("None");
                 setModalVisible(false);
               }}
               style={{
@@ -92,7 +92,7 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
               }}
             >
               <Text style={{ fontSize: textMediumSize }}>Không chia sẻ</Text>
-              {selectedGender === "none" && (
+              {selectedGender === "None" && (
                 <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
               )}
             </TouchableOpacity>

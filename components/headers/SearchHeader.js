@@ -6,7 +6,7 @@ import {
   TextInput,
 } from "react-native";
 import React from "react";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { ICON_LARGE, ICON_MEDIUM } from "../../constants/iconSize";
 import { LinearGradient } from "expo-linear-gradient";
 import { BASE_UNIT } from "../../constants/screen";
@@ -34,11 +34,9 @@ export default function SearchHeader({
         colors={[Colors.primary, "#00BCFA"]}
       >
         <TouchableOpacity onPress={onPress}>
-          <MaterialIcons
-            name="search"
+          <Ionicons name="search-outline"
             size={ICON_LARGE * 0.8}
-            color={iconColor}
-          />
+            color={iconColor}/>
         </TouchableOpacity>
 
         <TextInput
@@ -57,7 +55,7 @@ export default function SearchHeader({
         />
 
         <TouchableOpacity style={{ marginRight: BASE_UNIT * 0.05 }}>
-          <MaterialIcons
+          <Ionicons
             name={iconName}
             size={ICON_LARGE * 0.7}
             color={iconColor}
@@ -65,7 +63,7 @@ export default function SearchHeader({
         </TouchableOpacity>
 
         <TouchableOpacity>
-          <MaterialIcons
+          <Ionicons
             name={iconName2}
             size={iconName2Size || ICON_LARGE * 0.95}
             color={iconColor}

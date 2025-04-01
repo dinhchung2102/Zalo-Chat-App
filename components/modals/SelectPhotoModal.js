@@ -20,6 +20,10 @@ const SelectPhotoModal = ({ visible, onClose, onTakePhoto, onPickPhoto }) => {
             <MaterialIcons
               name="add-a-photo"
               size={ICON_MEDIUM_PLUS}
+
+
+
+              
               color={Colors.grey}
             />
             <Text style={styles.optionText}>Chụp ảnh mới</Text>

@@ -24,6 +24,7 @@ export default function CircleButton({onPress, disabled, color}) {
           justifyContent: "center",
         }}
         disabled={disabled}
+        onPress={onPress}
       >
         <MaterialIcons
           name="arrow-forward"

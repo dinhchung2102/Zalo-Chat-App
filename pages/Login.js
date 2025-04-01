@@ -106,6 +106,7 @@ export default function Login() {
         <CircleButton
           disabled={!handleCheckNull()}
           color={handleCheckNull() ? Colors.primary : Colors.grey}
+          onPress={()=>{navigation.navigate('HomeMessage')}}
         />
       </View>
     </SafeAreaView>

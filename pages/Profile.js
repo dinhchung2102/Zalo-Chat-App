@@ -52,9 +52,9 @@ export default function Profile() {
             size={ICON_MEDIUM}
             color={Colors.primary}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> 
+        
       </TouchableOpacity>
-
       <View style={{ paddingVertical: BASE_UNIT * 0.015 }}>
         <FeatureButton
           feature={"zCloud"}
