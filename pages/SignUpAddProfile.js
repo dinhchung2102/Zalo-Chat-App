@@ -12,11 +12,12 @@ import { useNavigation } from "@react-navigation/native";
 import SelectGenderModal from "../components/modals/SelectGenderModal";
 import { Colors } from "../styles/Colors";
 import CreateAccountCompleted from "../components/modals/CreateAccountCompleted";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { nameRegister, passwordRegister, phoneNumberRegister } from "../state/RegisterState";
 import { signup } from "../api/auth/register";
 import { getTempToken, saveLoginResult } from "../utils/asyncStorage";
 import { login } from "../api/auth/login";
+import BorderInput from "../components/textInputs/BorderInput";
 
 export default function SignUpAddProfile() {
   const navigation = useNavigation();
@@ -24,7 +25,7 @@ export default function SignUpAddProfile() {
   
   const name = useRecoilValue(nameRegister);
   const phone = useRecoilValue(phoneNumberRegister);
-  const password = useRecoilValue(passwordRegister);
+  const [password, setPassword] = useRecoilState(passwordRegister);
 
   const [selectedGender, setSelectedGender] = useState("nothing");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -52,19 +53,20 @@ export default function SignUpAddProfile() {
   const handleSignup = async () => {
     try {
       const tempToken = await getTempToken();
-      // console.log(
-      //   "Thông tin đăng ký:",
-      //   {
-      //   name,
-      //   phone,
-      //   formatDate,
-      //   password,
-      //   tempToken,
-      //   selectedGender
-      //   }
-      // );
+      console.log(
+        "Thông tin đăng ký:",
+        {
+        name,
+        phone,
+        formatDate,
+        password,
+        tempToken,
+        selectedGender
+        }
+      );
       const result = await signup(name, phone, formatDate, password, tempToken, selectedGender);
       // console.log("Đăng ký thành công:", result);
+
 
       try {
         const loginResult = await login(phone, password);
