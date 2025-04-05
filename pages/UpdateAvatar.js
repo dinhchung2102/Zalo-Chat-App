@@ -11,8 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderText from "../components/texts/HeaderText";
 import { BASE_UNIT } from "../constants/screen";
 import NoteText from "../components/texts/NoteText";
-import { useRecoilValue } from "recoil";
-import { nameRegister } from "../state/RegisterState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { nameRegister, profilePicRegister } from "../state/RegisterState";
 import { getShortNameRegister } from "../utils/getShortName";
 import { Colors } from "../styles/Colors";
 import { textMediumPlus } from "../constants/fontSize";
@@ -21,15 +21,16 @@ import ConfirmNoAvt from "../components/modals/ConfirmNoAvt";
 import SelectPhotoModal from "../components/modals/SelectPhotoModal";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import { updateAvatar } from "../api/auth/update.avt";
+import { getLoginResult, getUserId } from "../utils/asyncStorage";
 
 export default function UpdateAvatar() {
   const nameRegisterState = useRecoilValue(nameRegister);
+  const [,setProfilePicRegister] = useRecoilState(profilePicRegister);
   const navigation = useNavigation();
 
   const [modalSkipVisible, setModalSkipVisible] = useState(false);
   const [modalSelectPhotoVisible, setSelectPhotoVisible] = useState(false);
-
-
 
   const [image, setImage] = useState(null);
 
@@ -45,6 +46,10 @@ export default function UpdateAvatar() {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      const resultUpdate = await updateAvatar(getUserId(), result.assets[0].uri);
+      setProfilePicRegister(resultUpdate.profilePic);
+      //console.log(resultUpdate.profilePic);
+      navigation.navigate("HomeMessage");
     }
   };
 
@@ -63,6 +68,9 @@ export default function UpdateAvatar() {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+      const resultUpdate = await updateAvatar(getUserId(), result.assets[0].uri);
+      setProfilePicRegister(resultUpdate.profilePic)
+      navigation.navigate("HomeMessage");
     }
   };
 
@@ -100,10 +108,10 @@ export default function UpdateAvatar() {
           text={"Bỏ qua"}
           color={"white"}
           disabled={false}
-          onPress={()=>
-            setModalSkipVisible(true)
+          onPress={
+            () => setModalSkipVisible(true)
             //navigation.navigate("Home")
-            }
+          }
         />
       </View>
 

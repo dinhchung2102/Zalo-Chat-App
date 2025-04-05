@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import uuid from 'react-native-uuid'
 
 export const phoneNumberRegister = atom({
     key:"phoneNumberRegister",
@@ -17,10 +18,15 @@ export const emailRegister = atom({
 
 export const passwordRegister = atom({
     key:"passwordRegister",
-    default:'Abcd@12345'
+    default: uuid.v4()
 })
 
 export const genderRegister = atom({
     key: "genderRegister",
     default: ''
+})
+
+export const profilePicRegister = atom({
+    key:"profilePic",
+    default:''
 })

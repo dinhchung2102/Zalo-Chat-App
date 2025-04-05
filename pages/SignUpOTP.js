@@ -36,16 +36,10 @@ export default function SignUpOTP() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const isOtpValid = otp.join("").length === 6;
 
-  // xử lý OTP
-  const handleOtpSubmit = (enteredOtp) => {
-    console.log("OTP submitted: ", enteredOtp);
-  };
-
   const handleVerifyOTP = async (phoneNumber, otp) => {
     try {
       const result = await verifyOTP(formatPhoneNumber(phoneNumber), otp);
       setPhoneNumber(formatPhoneNumber(phoneNumber));
-      console.log("result", result);
       
       if (result && result.tempToken) {
         await saveTempToken(result.tempToken);
@@ -108,7 +102,7 @@ export default function SignUpOTP() {
           paddingTop: BASE_UNIT * 0.05,
         }}
       >
-        <OTPInPut otp={otp} setOtp={setOtp} onSubmit={handleOtpSubmit} />
+        <OTPInPut otp={otp} setOtp={setOtp}/>
       </View>
 
       <View
@@ -123,10 +117,6 @@ export default function SignUpOTP() {
           color={Colors.primary}
           textColor={"white"}
           onPress={async () => {
-            handleOtpSubmit(otp.join(""));
-            console.log(otp.join(""));
-            console.log("phoneNumber", phoneNumber);
-            
             const success = await handleVerifyOTP(phoneNumber, otp.join(""));
             if (success) {
               navigation.navigate("SignUpZaloName");

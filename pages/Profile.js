@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import NavigationBar from "../components/navigation/NavigationBar";
 import SearchHeader from "../components/headers/SearchHeader";
@@ -9,13 +9,16 @@ import { Colors } from "../styles/Colors";
 import { BASE_UNIT } from "../constants/screen";
 import { textMediumSize } from "../constants/fontSize";
 import FeatureButton from "../components/buttons/FeatureButton";
+import { getLoginResult } from "../utils/asyncStorage";
+import { useRecoilValue } from "recoil";
+import { nameRegister, profilePicRegister } from "../state/RegisterState";
 
 export default function Profile() {
-  const userDetail = {
-    _id: 1,
-    name: "Võ Đình Chung",
-    avatar: "ádasdasd",
-  };
+  const profilePic = useRecoilValue(profilePicRegister);
+  const name = useRecoilValue(nameRegister)
+  
+  
+  
   return (
     <SafeAreaView style={styles.container}>
       <SearchHeader
@@ -34,7 +37,7 @@ export default function Profile() {
         }}
       >
         <Image
-          source={{ uri: userDetail.avatar }}
+          source={{ uri: profilePic }}
           style={{
             height: ICON_LARGE,
             width: ICON_LARGE,
@@ -43,7 +46,7 @@ export default function Profile() {
           }}
         />
         <View style={{ paddingLeft: BASE_UNIT * 0.04, flex: 1 }}>
-          <Text style={{ fontSize: textMediumSize }}>{userDetail.name}</Text>
+          <Text style={{ fontSize: textMediumSize }}>{name}</Text>
           <Text style={{ color: Colors.grey }}>Xem trang cá nhân</Text>
         </View>
         <TouchableOpacity>
@@ -52,8 +55,7 @@ export default function Profile() {
             size={ICON_MEDIUM}
             color={Colors.primary}
           />
-        </TouchableOpacity> 
-        
+        </TouchableOpacity>
       </TouchableOpacity>
       <View style={{ paddingVertical: BASE_UNIT * 0.015 }}>
         <FeatureButton
