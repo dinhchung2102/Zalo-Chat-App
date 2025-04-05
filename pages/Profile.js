@@ -10,15 +10,34 @@ import { BASE_UNIT } from "../constants/screen";
 import { textMediumSize } from "../constants/fontSize";
 import FeatureButton from "../components/buttons/FeatureButton";
 import { getLoginResult } from "../utils/asyncStorage";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { nameRegister, profilePicRegister } from "../state/RegisterState";
+import { getShortNameRegister } from "../utils/getShortName";
 
 export default function Profile() {
-  const profilePic = useRecoilValue(profilePicRegister);
-  const name = useRecoilValue(nameRegister)
-  
-  
-  
+  const [profilePic, setProfilePic] = useRecoilState(profilePicRegister); 
+  const name = useRecoilValue(nameRegister);
+
+  const [loginResult, setLoginResult] = useState(null);
+
+  useEffect(() => {
+    const fetchLoginResult = async () => {
+      const result = await getLoginResult();
+      setLoginResult(result);
+      //console.log(result);
+    };
+
+    fetchLoginResult();
+  }, []);
+
+  useEffect(() => {
+    if (loginResult && loginResult.user && profilePic === "") {
+      if (loginResult.user.profilePic !== "") {
+        setProfilePic(loginResult.user.profilePic);
+      }
+    }
+  }, [loginResult, profilePic, setProfilePic]);
+
   return (
     <SafeAreaView style={styles.container}>
       <SearchHeader
@@ -36,15 +55,31 @@ export default function Profile() {
           paddingHorizontal: BASE_UNIT * 0.02,
         }}
       >
-        <Image
-          source={{ uri: profilePic }}
-          style={{
-            height: ICON_LARGE,
-            width: ICON_LARGE,
-            borderRadius: ICON_LARGE,
-            backgroundColor: "red",
-          }}
-        />
+        {profilePic === "" ? (
+          <View
+            style={{
+              height: ICON_LARGE,
+              width: ICON_LARGE,
+              borderRadius: ICON_LARGE,
+              backgroundColor: Colors.primary,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ color: "white" }}>{getShortNameRegister(name)}</Text>
+          </View>
+        ) : (
+          <Image
+            source={{ uri: profilePic }}
+            style={{
+              height: ICON_LARGE,
+              width: ICON_LARGE,
+              borderRadius: ICON_LARGE,
+              backgroundColor: Colors.primary,
+            }}
+          />
+        )}
+
         <View style={{ paddingLeft: BASE_UNIT * 0.04, flex: 1 }}>
           <Text style={{ fontSize: textMediumSize }}>{name}</Text>
           <Text style={{ color: Colors.grey }}>Xem trang cá nhân</Text>
@@ -93,6 +128,7 @@ export default function Profile() {
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

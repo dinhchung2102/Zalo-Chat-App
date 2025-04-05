@@ -53,17 +53,17 @@ export default function SignUpAddProfile() {
   const handleSignup = async () => {
     try {
       const tempToken = await getTempToken();
-      console.log(
-        "Thông tin đăng ký:",
-        {
-        name,
-        phone,
-        formatDate,
-        password,
-        tempToken,
-        selectedGender
-        }
-      );
+      // console.log(
+      //   "Thông tin đăng ký:",
+      //   {
+      //   name,
+      //   phone,
+      //   formatDate,
+      //   password,
+      //   tempToken,
+      //   selectedGender
+      //   }
+      // );
       const result = await signup(name, phone, formatDate, password, tempToken, selectedGender);
       // console.log("Đăng ký thành công:", result);
 

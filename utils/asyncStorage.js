@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const saveTempToken = async (token) => {
   try {
     await AsyncStorage.setItem("tempToken", token);
-    console.log("Token đã lưu vào AsyncStorage: ", token);
+    //console.log("Token đã lưu vào AsyncStorage: ", token);
   } catch (error) {
     console.error("Lỗi khi lưu token:", error);
   }

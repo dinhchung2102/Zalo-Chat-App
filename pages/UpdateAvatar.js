@@ -42,7 +42,7 @@ export default function UpdateAvatar() {
       quality: 1,
     });
 
-    console.log(result);
+    //console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -119,7 +119,10 @@ export default function UpdateAvatar() {
         visible={modalSkipVisible}
         title="Bạn chưa có ảnh đại diện"
         text="Trải nghiệm một vài tính năng có thể sẽ bị ảnh hưởng. Vẫn bỏ qua bước này?"
-        onSkip={() => setModalSkipVisible(false)}
+        onSkip={async() => {
+          await setModalSkipVisible(false)
+          navigation.navigate("HomeMessage")
+        }}
         onAddPhoto={() => {
           console.log("Thêm ảnh");
           setModalSkipVisible(false);

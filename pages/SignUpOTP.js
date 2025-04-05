@@ -43,7 +43,7 @@ export default function SignUpOTP() {
       
       if (result && result.tempToken) {
         await saveTempToken(result.tempToken);
-        console.log(await getTempToken());
+        // console.log(await getTempToken());
         return true;
       } else {
         console.log("OTP verification failed.");
