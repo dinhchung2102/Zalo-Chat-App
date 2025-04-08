@@ -1,11 +1,11 @@
 import { StatusBar, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SearchHeader from "../components/headers/SearchHeader";
-import MessageTitleRender from "../components/renderItems/MessageTitleRender";
-import { BASE_UNIT } from "../constants/screen";
-import NavigationBar from "../components/navigation/NavigationBar";
-import { Colors } from "../styles/Colors";
+import SearchHeader from "../../components/headers/SearchHeader";
+import MessageTitleRender from "../../components/renderItems/MessageTitleRender";
+import { BASE_UNIT } from "../../constants/screen";
+import NavigationBar from "../../components/navigation/NavigationBar";
+import { Colors } from "../../styles/Colors";
 
 export default function HomeMessage() {
 

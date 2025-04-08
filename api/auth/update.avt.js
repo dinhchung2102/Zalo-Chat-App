@@ -21,7 +21,7 @@ export const updateAvatar = async (userId, imageUri) => {
     formData.append("folder", "zalo-folder");
 
     // Gửi request
-    const res = await apiClient.put("/auth/update-profile", formData, {
+    const res = await apiClient.put("/auth/update-avatar", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

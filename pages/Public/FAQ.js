@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import SimpleWebView from "../components/webviews/SimpleWebView";
-import SimpleHeader from "../components/headers/SimpleHeader";
+import SimpleWebView from "../../components/webviews/SimpleWebView";
+import SimpleHeader from "../../components/headers/SimpleHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Colors } from "../styles/Colors";
+import { Colors } from "../../styles/Colors";
 import { useRecoilValue } from "recoil";
-import { languageState } from "../state/PrimaryState";
+import { languageState } from "../../state/PrimaryState";
 import { useNavigation } from "@react-navigation/native";
 
 export default function FAQ() {

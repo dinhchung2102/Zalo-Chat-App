@@ -8,21 +8,21 @@ import {
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderText from "../components/texts/HeaderText";
-import { BASE_UNIT } from "../constants/screen";
-import NoteText from "../components/texts/NoteText";
+import HeaderText from "../../components/texts/HeaderText";
+import { BASE_UNIT } from "../../constants/screen";
+import NoteText from "../../components/texts/NoteText";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { nameRegister, profilePicRegister } from "../state/RegisterState";
-import { getShortNameRegister } from "../utils/getShortName";
-import { Colors } from "../styles/Colors";
-import { textMediumPlus } from "../constants/fontSize";
-import LargeButton from "../components/buttons/LargeButton";
-import ConfirmNoAvt from "../components/modals/ConfirmNoAvt";
-import SelectPhotoModal from "../components/modals/SelectPhotoModal";
+import { nameRegister, profilePicRegister } from "../../state/RegisterState";
+import { getShortNameRegister } from "../../utils/getShortName";
+import { Colors } from "../../styles/Colors";
+import { textMediumPlus } from "../../constants/fontSize";
+import LargeButton from "../../components/buttons/LargeButton";
+import ConfirmNoAvt from "../../components/modals/ConfirmNoAvt";
+import SelectPhotoModal from "../../components/modals/SelectPhotoModal";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
-import { updateAvatar } from "../api/auth/update.avt";
-import { getLoginResult, getUserId } from "../utils/asyncStorage";
+import { updateAvatar } from "../../api/auth/update.avt";
+import { getLoginResult, getUserId } from "../../utils/asyncStorage";
 
 export default function UpdateAvatar() {
   const nameRegisterState = useRecoilValue(nameRegister);
@@ -42,7 +42,7 @@ export default function UpdateAvatar() {
       quality: 1,
     });
 
-    console.log(result);
+    //console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -119,7 +119,10 @@ export default function UpdateAvatar() {
         visible={modalSkipVisible}
         title="Bạn chưa có ảnh đại diện"
         text="Trải nghiệm một vài tính năng có thể sẽ bị ảnh hưởng. Vẫn bỏ qua bước này?"
-        onSkip={() => setModalSkipVisible(false)}
+        onSkip={async() => {
+          await setModalSkipVisible(false)
+          navigation.navigate("HomeMessage")
+        }}
         onAddPhoto={() => {
           console.log("Thêm ảnh");
           setModalSkipVisible(false);

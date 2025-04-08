@@ -4,6 +4,6 @@ export const validateUsernameLength = (username) => {
 }
 
 export const validateUsernameNotNumber = (username) => {
-    const pattern = /^[A-Za-z\s]{2,40}$/;
+    const pattern = /^[A-Za-zÀ-ẪĐ-ỹ\s]{2,40}$/; 
     return pattern.test(username);
-}
+};

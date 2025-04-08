@@ -60,7 +60,7 @@ export default function AuthRegisterModal() {
               paddingHorizontal: BASE_UNIT * 0.05,
             }}
           >
-            {phoneNumber}?
+            {formatPhoneNumber(phoneNumber)}?
           </Text>
           <Text
             style={{

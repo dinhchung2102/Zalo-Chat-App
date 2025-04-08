@@ -1,23 +1,23 @@
 import { View, StyleSheet, Text } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../components/headers/SimpleHeader";
-import { BASE_UNIT } from "../constants/screen";
-import { textHeaderSize, textMediumSize } from "../constants/fontSize";
+import SimpleHeader from "../../components/headers/SimpleHeader";
+import { BASE_UNIT } from "../../constants/screen";
+import { textHeaderSize, textMediumSize } from "../../constants/fontSize";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { languageState, modalAuthRegister, modalValidatorPhoneNumber } from "../state/PrimaryState";
-import PhoneNumberInput from "../components/textInputs/PhoneNumberInput";
-import AgreeTerms from "../components/checkboxes/AgreeTerms";
-import { Colors } from "../styles/Colors";
-import LargeButton from "../components/buttons/LargeButton";
-import LinkButton from "../components/buttons/LinkButton";
+import { languageState, modalAuthRegister, modalValidatorPhoneNumber } from "../../state/PrimaryState";
+import PhoneNumberInput from "../../components/textInputs/PhoneNumberInput";
+import AgreeTerms from "../../components/checkboxes/AgreeTerms";
+import { Colors } from "../../styles/Colors";
+import LargeButton from "../../components/buttons/LargeButton";
+import LinkButton from "../../components/buttons/LinkButton";
 import { useNavigation } from "@react-navigation/native";
-import AuthRegisterModal from "../components/modals/AuthRegisterModal";
-import { phoneNumberRegister } from "../state/RegisterState";
-import { useTextLanguage } from "../hooks/useTextLanguage";
-import HeaderText from "../components/texts/HeaderText";
-import { validatePhoneNumber } from "../utils/phoneValidator";
-import PhoneNumberValidatorModal from "../components/modals/PhoneNumberValidatorModal";
+import AuthRegisterModal from "../../components/modals/AuthRegisterModal";
+import { phoneNumberRegister } from "../../state/RegisterState";
+import { useTextLanguage } from "../../hooks/useTextLanguage";
+import HeaderText from "../../components/texts/HeaderText";
+import { validatePhoneNumber } from "../../utils/phoneValidator";
+import PhoneNumberValidatorModal from "../../components/modals/PhoneNumberValidatorModal";
 
 export default function SignUp() {
   const navigation = useNavigation();
