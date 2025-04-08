@@ -11,6 +11,7 @@ import SignUpAddProfile from "./pages/SignUpAddProfile";
 import HomeMessage from "./pages/HomeMessage";
 import Profile from "./pages/Profile";
 import UpdateAvatar from "./pages/UpdateAvatar";
+import Contacts from "./pages/Contacts";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -28,10 +29,10 @@ export default function App() {
           <Stack.Screen name="FAQ" component={FAQ} />
           <Stack.Screen name="SignUpZaloName" component={SignUpZaloName} />
           <Stack.Screen name="SignUpAddProfile" component={SignUpAddProfile} />
-          <Stack.Screen name="UpdateAvatar" component={UpdateAvatar}/>
+          <Stack.Screen name="UpdateAvatar" component={UpdateAvatar} />
           <Stack.Screen
             options={{
-              animation: 'none',
+              animation: "none",
             }}
             name="HomeMessage"
             component={HomeMessage}
@@ -42,6 +43,13 @@ export default function App() {
             }}
             name="Profile"
             component={Profile}
+          />
+          <Stack.Screen
+            options={{
+              animation: "none",
+            }}
+            name="Contacts" // Thêm Contacts vào Stack
+            component={Contacts}
           />
         </Stack.Navigator>
       </NavigationContainer>

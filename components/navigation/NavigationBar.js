@@ -11,10 +11,11 @@ import { navigationState } from "../../state/PrimaryState";
 export default function NavigationBar() {
   const navigation = useNavigation();
   const [navState, setNavigationState] = useRecoilState(navigationState);
-
-  // Hàm thay đổi trạng thái navState
-  const handleNavigation = (type) => {
+  const handleNavigation = (type, screen) => {
     setNavigationState(type);
+    if (screen) {
+      navigation.navigate(screen);
+    }
   };
 
   return (
@@ -32,10 +33,7 @@ export default function NavigationBar() {
     >
       {/* Icon Message */}
       <TouchableOpacity
-        onPress={() => {
-          handleNavigation("message");
-          navigation.navigate("HomeMessage");
-        }}
+        onPress={() => handleNavigation("message", "HomeMessage")}
         style={{
           alignItems: "center",
           height: "100%",
@@ -72,19 +70,15 @@ export default function NavigationBar() {
           </View>
         </View>
         {navState === "message" ? (
-          <View>
-            <Text style={{ fontWeight: "700", color: Colors.primary }}>
-              Tin nhắn
-            </Text>
-          </View>
+          <Text style={{ fontWeight: "700", color: Colors.primary }}>
+            Tin nhắn
+          </Text>
         ) : null}
       </TouchableOpacity>
 
       {/* Icon Contact */}
       <TouchableOpacity
-        onPress={() => {
-          handleNavigation("contact");
-        }}
+        onPress={() => handleNavigation("contact", "Contacts")}
         style={{ alignItems: "center" }}
       >
         <MaterialIcons
@@ -93,19 +87,13 @@ export default function NavigationBar() {
           color={navState === "contact" ? Colors.primary : Colors.grey}
         />
         {navState === "contact" ? (
-          <View>
-            <Text style={{ fontWeight: "700", color: Colors.primary }}>
-              Liên hệ
-            </Text>
-          </View>
+          <Text style={{ fontWeight: "700", color: Colors.primary }}>
+            Liên hệ
+          </Text>
         ) : null}
       </TouchableOpacity>
-
-      {/* Icon Explore */}
       <TouchableOpacity
-        onPress={() => {
-          handleNavigation("explore");
-        }}
+        onPress={() => handleNavigation("explore")}
         style={{ alignItems: "center" }}
       >
         <Ionicons
@@ -114,19 +102,13 @@ export default function NavigationBar() {
           color={navState === "explore" ? Colors.primary : Colors.grey}
         />
         {navState === "explore" ? (
-          <View>
-            <Text style={{ fontWeight: "700", color: Colors.primary }}>
-              Khám phá
-            </Text>
-          </View>
+          <Text style={{ fontWeight: "700", color: Colors.primary }}>
+            Khám phá
+          </Text>
         ) : null}
       </TouchableOpacity>
-
-      {/* Icon Diary */}
       <TouchableOpacity
-        onPress={() => {
-          handleNavigation("diary");
-        }}
+        onPress={() => handleNavigation("diary")}
         style={{ alignItems: "center" }}
       >
         <Ionicons
@@ -135,20 +117,15 @@ export default function NavigationBar() {
           color={navState === "diary" ? Colors.primary : Colors.grey}
         />
         {navState === "diary" ? (
-          <View>
-            <Text style={{ fontWeight: "700", color: Colors.primary }}>
-              Nhật ký
-            </Text>
-          </View>
+          <Text style={{ fontWeight: "700", color: Colors.primary }}>
+            Nhật ký
+          </Text>
         ) : null}
       </TouchableOpacity>
 
       {/* Icon Profile */}
       <TouchableOpacity
-        onPress={() => {
-          handleNavigation("profile");
-          navigation.navigate("Profile");
-        }}
+        onPress={() => handleNavigation("profile", "Profile")}
         style={{ alignItems: "center" }}
       >
         <Ionicons
@@ -157,11 +134,9 @@ export default function NavigationBar() {
           size={ICON_MEDIUM * 1.1}
         />
         {navState === "profile" ? (
-          <View>
-            <Text style={{ fontWeight: "700", color: Colors.primary }}>
-              Cá nhân
-            </Text>
-          </View>
+          <Text style={{ fontWeight: "700", color: Colors.primary }}>
+            Cá nhân
+          </Text>
         ) : null}
       </TouchableOpacity>
     </View>

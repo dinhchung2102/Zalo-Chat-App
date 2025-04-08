@@ -11,7 +11,7 @@ export default function MessageTitleRender() {
       _id: 1,
       name: "Cloud của tôi",
       avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
+      text: "Bạn: helloworlf",
     },
     {
       _id: 2,
