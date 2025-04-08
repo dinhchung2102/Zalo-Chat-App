@@ -12,15 +12,28 @@ import HomeMessage from "./pages/HomeMessage";
 import Profile from "./pages/Profile";
 import UpdateAvatar from "./pages/UpdateAvatar";
 import Contacts from "./pages/Contacts";
+import Explore from "./pages/Explore";
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  const Stack = createStackNavigator();
   return (
     <RecoilRoot>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Home"
-          screenOptions={{ headerShown: false }}
+          screenOptions={{
+            headerShown: false,
+            cardStyleInterpolator: ({ current }) => ({
+              cardStyle: {
+                opacity: current.progress,
+              },
+            }),
+            transitionSpec: {
+              open: { animation: "timing", config: { duration: 300 } },
+              close: { animation: "timing", config: { duration: 300 } },
+            },
+          }}
         >
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={Login} />
@@ -29,28 +42,11 @@ export default function App() {
           <Stack.Screen name="FAQ" component={FAQ} />
           <Stack.Screen name="SignUpZaloName" component={SignUpZaloName} />
           <Stack.Screen name="SignUpAddProfile" component={SignUpAddProfile} />
+          <Stack.Screen name="HomeMessage" component={HomeMessage} />
+          <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="UpdateAvatar" component={UpdateAvatar} />
-          <Stack.Screen
-            options={{
-              animation: "none",
-            }}
-            name="HomeMessage"
-            component={HomeMessage}
-          />
-          <Stack.Screen
-            options={{
-              animation: "none",
-            }}
-            name="Profile"
-            component={Profile}
-          />
-          <Stack.Screen
-            options={{
-              animation: "none",
-            }}
-            name="Contacts" // Thêm Contacts vào Stack
-            component={Contacts}
-          />
+          <Stack.Screen name="Contacts" component={Contacts} />
+          <Stack.Screen name="Explore" component={Explore} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

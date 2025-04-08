@@ -11,6 +11,7 @@ import { navigationState } from "../../state/PrimaryState";
 export default function NavigationBar() {
   const navigation = useNavigation();
   const [navState, setNavigationState] = useRecoilState(navigationState);
+
   const handleNavigation = (type, screen) => {
     setNavigationState(type);
     if (screen) {
@@ -92,8 +93,10 @@ export default function NavigationBar() {
           </Text>
         ) : null}
       </TouchableOpacity>
+
+      {/* Icon Explore */}
       <TouchableOpacity
-        onPress={() => handleNavigation("explore")}
+        onPress={() => handleNavigation("explore", "Explore")} // Thêm điều hướng đến Explore
         style={{ alignItems: "center" }}
       >
         <Ionicons
@@ -107,6 +110,8 @@ export default function NavigationBar() {
           </Text>
         ) : null}
       </TouchableOpacity>
+
+      {/* Icon Diary */}
       <TouchableOpacity
         onPress={() => handleNavigation("diary")}
         style={{ alignItems: "center" }}
