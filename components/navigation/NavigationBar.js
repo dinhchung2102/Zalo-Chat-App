@@ -96,7 +96,7 @@ export default function NavigationBar() {
 
       {/* Icon Explore */}
       <TouchableOpacity
-        onPress={() => handleNavigation("explore", "Explore")} // Thêm điều hướng đến Explore
+        onPress={() => handleNavigation("explore", "Explore")}
         style={{ alignItems: "center" }}
       >
         <Ionicons
@@ -113,7 +113,7 @@ export default function NavigationBar() {
 
       {/* Icon Diary */}
       <TouchableOpacity
-        onPress={() => handleNavigation("diary")}
+        onPress={() => handleNavigation("diary", "Diary")}
         style={{ alignItems: "center" }}
       >
         <Ionicons
