@@ -12,6 +12,7 @@ import HomeMessage from "./pages/Chat/HomeMessage";
 import Profile from "./pages/User/Profile";
 import UpdateAvatar from "./pages/SignUp/UpdateAvatar";
 import ProfileUser from "./pages/User/ProfileUser";
+import ProfileSetting from "./pages/User/ProfileSetting";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -45,6 +46,7 @@ export default function App() {
             component={Profile}
           />
           <Stack.Screen name="ProfileUser" component={ProfileUser}/>
+          <Stack.Screen name="ProfileSetting" component={ProfileSetting}/>
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
