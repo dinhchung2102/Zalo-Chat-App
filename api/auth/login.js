@@ -1,3 +1,4 @@
+import { saveLoginResult } from "../../utils/asyncStorage";
 import apiClient from "../apiClient";
 
 export const login = async (phone, password) => {
@@ -5,19 +6,22 @@ export const login = async (phone, password) => {
     const response = await apiClient.post("/auth/login", {
       phoneNumber: phone,
       password: password,
+      deviceType: "app",
     });
 
     console.log("Đăng nhập thành công:", response.data);
-    return response.data;
+    saveLoginResult(response.data); 
+    return response;
   } catch (error) {
     if (error.response) {
-      console.error(
-        "Lỗi khi đăng nhập:",
-        error.response.data?.message || error.message
-      );
-      throw error.response.data?.message || "Login failed";
+      // console.error(
+      //   "Lỗi khi đăng nhập:",
+      //   error.response.data?.message || error.message
+      // );
+      console.log("error response:", error.response.data?.message);
+      return error.response.data?.message;  
     }
     console.error("Lỗi khi kết nối tới server:", error.message);
-    throw "Không thể kết nối đến server";
+    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
   }
 };

@@ -13,8 +13,10 @@ import { getLoginResult } from "../../utils/asyncStorage";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { nameRegister, profilePicRegister } from "../../state/RegisterState";
 import { getShortNameRegister } from "../../utils/getShortName";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Profile() {
+  const navigation = useNavigation();
   const [profilePic, setProfilePic] = useRecoilState(profilePicRegister); 
   const name = useRecoilValue(nameRegister);
 
@@ -24,7 +26,7 @@ export default function Profile() {
     const fetchLoginResult = async () => {
       const result = await getLoginResult();
       setLoginResult(result);
-      //console.log(result);
+      console.log(result);
     };
 
     fetchLoginResult();
@@ -37,6 +39,14 @@ export default function Profile() {
       }
     }
   }, [loginResult, profilePic, setProfilePic]);
+  
+  if (!loginResult) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text>Đang tải thông tin người dùng...</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,6 +64,7 @@ export default function Profile() {
           paddingVertical: BASE_UNIT * 0.03,
           paddingHorizontal: BASE_UNIT * 0.02,
         }}
+        onPress={()=>{navigation.navigate("ProfileUser")}}
       >
         {profilePic === "" ? (
           <View
@@ -66,7 +77,7 @@ export default function Profile() {
               justifyContent: "center",
             }}
           >
-            <Text style={{ color: "white" }}>{getShortNameRegister(name)}</Text>
+            <Text style={{ color: "white" }}>{getShortNameRegister(name) || getShortNameRegister(loginResult.user.fullName)}</Text>
           </View>
         ) : (
           <Image
@@ -81,7 +92,7 @@ export default function Profile() {
         )}
 
         <View style={{ paddingLeft: BASE_UNIT * 0.04, flex: 1 }}>
-          <Text style={{ fontSize: textMediumSize }}>{name}</Text>
+          <Text style={{ fontSize: textMediumSize }}>{name || loginResult.user.fullName }</Text>
           <Text style={{ color: Colors.grey }}>Xem trang cá nhân</Text>
         </View>
         <TouchableOpacity>
