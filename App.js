@@ -1,7 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Home from "./pages/Home";
 import { RecoilRoot } from "recoil";
+
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import SignUpOTP from "./pages/SignUpOTP";
@@ -14,6 +15,8 @@ import UpdateAvatar from "./pages/UpdateAvatar";
 import Contacts from "./pages/Contacts";
 import Explore from "./pages/Explore";
 import Diary from "./pages/Diary";
+import AccountSecurity from "./pages/AccountSecurity";
+import ChangePassword from "./pages/ChangePassword";
 
 const Stack = createStackNavigator();
 
@@ -49,6 +52,8 @@ export default function App() {
           <Stack.Screen name="Contacts" component={Contacts} />
           <Stack.Screen name="Explore" component={Explore} />
           <Stack.Screen name="Diary" component={Diary} />
+          <Stack.Screen name="AccountSecurity" component={AccountSecurity} />
+          <Stack.Screen name="ChangePassword" component={ChangePassword} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

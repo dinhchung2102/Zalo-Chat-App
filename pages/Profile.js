@@ -11,14 +11,14 @@ import { textMediumSize } from "../constants/fontSize";
 import FeatureButton from "../components/buttons/FeatureButton";
 import { getLoginResult } from "../utils/asyncStorage";
 import { useRecoilValue } from "recoil";
+import { useNavigation } from "@react-navigation/native"; // ✅ THÊM DÒNG NÀY
 import { nameRegister, profilePicRegister } from "../state/RegisterState";
 
 export default function Profile() {
+  const navigation = useNavigation();
   const profilePic = useRecoilValue(profilePicRegister);
-  const name = useRecoilValue(nameRegister)
-  
-  
-  
+  const name = useRecoilValue(nameRegister);
+
   return (
     <SafeAreaView style={styles.container}>
       <SearchHeader
@@ -83,7 +83,11 @@ export default function Profile() {
         />
       </View>
       <View style={{ paddingVertical: BASE_UNIT * 0.015 }}>
-        <FeatureButton feature={"Tài khoản và bảo mật"} icon={"security"} />
+        <FeatureButton
+          feature={"Tài khoản và bảo mật"}
+          icon={"security"}
+          onPress={() => navigation.navigate("AccountSecurity")}
+        />
         <FeatureButton feature={"Quyền riêng tư"} icon={"lock-person"} />
       </View>
 
