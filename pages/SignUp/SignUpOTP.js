@@ -93,7 +93,7 @@ export default function SignUpOTP() {
           textAlign: "center",
         }}
       >
-        {phoneNumber}
+        {formatPhoneNumber(phoneNumber)}
       </Text>
       <View
         style={{

@@ -9,6 +9,7 @@ import LinkButton from "../components/buttons/LinkButton";
 import CircleButton from "../components/buttons/CircleButton";
 import { Colors } from "../styles/Colors";
 import { useTextLanguage } from "../hooks/useTextLanguage";
+import { login } from "../api/auth/login";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -16,6 +17,8 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [securePassword, setSecurePassword] = useState(true)
+
+  const [error, setError] = useState(null);
 
   const usernameInputRef = useRef(null);
 
@@ -28,6 +31,23 @@ export default function Login() {
       usernameInputRef.current.focus();
     }
   }, []);
+
+  const handleLogin = async () => {
+    if (handleCheckNull()) {
+      try {
+        const response = await login(username, password);
+        if(response.status == 200){
+          navigation.navigate("HomeMessage");
+        }
+        else {
+          setError(response);
+        }
+          
+      } catch (err) {
+        console.log(err);
+      }
+  }};
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -72,6 +92,11 @@ export default function Login() {
             password={true}
             securePassword={securePassword}
           />
+          {error && (
+            <Text style={{ color: 'red', fontStyle: 'itali' }}>
+              {error}
+            </Text>
+          )}
           <View style={{ marginTop: BASE_UNIT * 0.02 }}>
             <LinkButton
               text={useTextLanguage({
@@ -106,10 +131,13 @@ export default function Login() {
         <CircleButton
           disabled={!handleCheckNull()}
           color={handleCheckNull() ? Colors.primary : Colors.grey}
-          onPress={()=>{navigation.navigate('HomeMessage')}}
+          onPress={async()=>{
+            await handleLogin();
+            }}
         />
       </View>
     </SafeAreaView>
+    
   );
 }
 const styles = StyleSheet.create({
