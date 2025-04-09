@@ -70,7 +70,7 @@ export default function SignUpAddProfile() {
 
       try {
         const loginResult = await login(phone, password);
-        saveLoginResult(loginResult);
+        saveLoginResult(loginResult.data);
       } catch (error) {
         console.error("Lỗi khi đăng nhập:", error);
       }
