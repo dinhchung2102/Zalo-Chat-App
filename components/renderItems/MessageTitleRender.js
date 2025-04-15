@@ -1,52 +1,35 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BASE_UNIT } from "../../constants/screen";
 import { textMediumSize } from "../../constants/fontSize";
 import { Colors } from "../../styles/Colors";
+import { getLoginResult } from "../../utils/asyncStorage";
+import { getListConversation } from '../../api/chat/conversation'
+import { getTimeAlong } from "../../utils/getTimeAlong";
+import { useTextLanguage } from "../../hooks/useTextLanguage";
 
 export default function MessageTitleRender() {
+    const [dataConversations, setDataConversations] = useState([]);
+    const locale = useTextLanguage({vietnamese: 'vi', english: 'en'})
+  
+    useEffect(() => {
+      const fetchLoginResult = async () => {
+        const result = await getLoginResult();  
+  
+        if (result && result.token) {  
+          const conversations = await getListConversation(result.token); 
+          setDataConversations(conversations.data);  
+          console.log(conversations.data);
+          
+        }
+      };
+  
+      fetchLoginResult();
+    }, []);  // Chạy chỉ một lần khi component mount
   //Sample data test render item:
-  const testData = [
-    {
-      _id: 1,
-      name: "Cloud của tôi",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 2,
-      name: "Nguyễn Văn A",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 3,
-      name: "Nguyễn Văn B",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 4,
-      name: "Lê Văn C",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 5,
-      name: "Đặng Văn D",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 6,
-      name: "Lê Khánh F",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-  ];
   return (
     <View style={styles.container}>
-      {testData.map((item) => {
+      {dataConversations.map((item) => {
         return (
           <TouchableOpacity
             key={item._id}
@@ -67,7 +50,7 @@ export default function MessageTitleRender() {
               }}
             >
               <Image
-                source={{ uri: item.avt }}
+                source={{ uri: item.avatar }}
                 style={{ width: BASE_UNIT * 0.1, height: BASE_UNIT * 0.1 }}
               />
             </View>
@@ -92,15 +75,15 @@ export default function MessageTitleRender() {
                     marginBottom: BASE_UNIT * 0.01,
                   }}
                 >
-                  {item.name}
+                  {item.groupName || item.name}
                 </Text>
-                <Text style={{ color: Colors.grey }}>1 giờ</Text>
+                <Text style={{ color: Colors.grey }}>{getTimeAlong(item.updatedAt,locale)}</Text>
               </View>
 
               <Text
                 style={{ fontSize: textMediumSize * 0.9, color: Colors.grey }}
               >
-                {item.text}
+                {item.lastMessage || ""}
               </Text>
             </View>
           </TouchableOpacity>

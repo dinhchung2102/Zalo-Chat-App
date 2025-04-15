@@ -13,6 +13,9 @@ import Profile from "./pages/User/Profile";
 import UpdateAvatar from "./pages/SignUp/UpdateAvatar";
 import ProfileUser from "./pages/User/ProfileUser";
 import ProfileSetting from "./pages/User/ProfileSetting";
+import Contact from "./pages/Contact";
+import Explore from "./pages/Explore";
+import Diary from "./pages/Diary";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -47,6 +50,9 @@ export default function App() {
           />
           <Stack.Screen name="ProfileUser" component={ProfileUser}/>
           <Stack.Screen name="ProfileSetting" component={ProfileSetting}/>
+          <Stack.Screen name="Contact" component={Contact}/>
+          <Stack.Screen name="Explore" component={Explore}/>
+          <Stack.Screen name="Diary" component={Diary}/>
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
