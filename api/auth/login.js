@@ -1,10 +1,11 @@
 import { saveLoginResult } from "../../utils/asyncStorage";
 import apiClient from "../apiClient";
+import {formatPhoneNumber} from "../../utils/formatPhoneNumber"
 
 export const login = async (phone, password) => {
   try {
     const response = await apiClient.post("/auth/login", {
-      phoneNumber: phone,
+      phoneNumber: formatPhoneNumber(phone),
       password: password,
       deviceType: "app",
     });

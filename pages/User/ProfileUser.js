@@ -166,8 +166,16 @@ export default function ProfileUser() {
             </TouchableOpacity>
           </View>
         ) : (
-          <TouchableOpacity>
+          <TouchableOpacity style={{
+            height: 95,
+            width: 95,
+            borderRadius: 50,
+            position: "absolute",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
             <Image
+            source={{uri: loginResult.user.profilePic}}
               style={{
                 height: 95,
                 width: 95,

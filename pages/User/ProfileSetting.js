@@ -8,6 +8,7 @@ import { textMediumSize } from '../../constants/fontSize'
 import { Colors } from '../../styles/Colors'
 import { useNavigation } from '@react-navigation/native'
 import { getLoginResult } from '../../utils/asyncStorage'
+import { logout } from '../../api/auth/logout'
 
 export default function ProfileSetting() {
   const navigation = useNavigation();
@@ -53,7 +54,15 @@ export default function ProfileSetting() {
 
 
       <View style={{marginTop: BASE_UNIT*0.05, paddingHorizontal: BASE_UNIT*0.05, width:'100%'}}>
-        <TouchableOpacity style={{}}>
+        <TouchableOpacity style={{}} onPress={
+          async()=>{
+            const resultLogout = await logout();
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Home' }],
+            });
+          }
+        }>
           <Text style={{fontSize: textMediumSize, color:'red', fontWeight:'600'}}>Đăng xuất</Text>
         </TouchableOpacity>
       </View>
