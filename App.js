@@ -16,6 +16,7 @@ import ProfileSetting from "./pages/User/ProfileSetting";
 import Contact from "./pages/Contact";
 import Explore from "./pages/Explore";
 import Diary from "./pages/Diary";
+import RequestFriend from "./pages/ContactTab/RequestFriend";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -53,6 +54,7 @@ export default function App() {
           <Stack.Screen name="Contact" component={Contact}/>
           <Stack.Screen name="Explore" component={Explore}/>
           <Stack.Screen name="Diary" component={Diary}/>
+          <Stack.Screen name="RequestFriend" component={RequestFriend}/>
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

@@ -4,28 +4,27 @@ import { BASE_UNIT } from "../../constants/screen";
 import { textMediumSize } from "../../constants/fontSize";
 import { Colors } from "../../styles/Colors";
 import { getLoginResult } from "../../utils/asyncStorage";
-import { getListConversation } from '../../api/chat/conversation'
+import { getListConversation } from "../../api/chat/conversation";
 import { getTimeAlong } from "../../utils/getTimeAlong";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 
 export default function MessageTitleRender() {
-    const [dataConversations, setDataConversations] = useState([]);
-    const locale = useTextLanguage({vietnamese: 'vi', english: 'en'})
-  
-    useEffect(() => {
-      const fetchLoginResult = async () => {
-        const result = await getLoginResult();  
-  
-        if (result && result.token) {  
-          const conversations = await getListConversation(result.token); 
-          setDataConversations(conversations.data);  
-          console.log(conversations.data);
-          
-        }
-      };
-  
-      fetchLoginResult();
-    }, []);  // Chạy chỉ một lần khi component mount
+  const [dataConversations, setDataConversations] = useState([]);
+  const locale = useTextLanguage({ vietnamese: "vi", english: "en" });
+
+  useEffect(() => {
+    const fetchLoginResult = async () => {
+      const result = await getLoginResult();
+
+      if (result && result.token) {
+        const conversations = await getListConversation(result.token);
+        setDataConversations(conversations.data);
+        console.log(conversations.data);
+      }
+    };
+
+    fetchLoginResult();
+  }, []); // Chạy chỉ một lần khi component mount
   //Sample data test render item:
   return (
     <View style={styles.container}>
@@ -41,7 +40,7 @@ export default function MessageTitleRender() {
           >
             <View
               style={{
-                backgroundColor: "blue",
+                backgroundColor: Colors.primary,
                 height: BASE_UNIT * 0.15,
                 width: BASE_UNIT * 0.15,
                 alignItems: "center",
@@ -49,10 +48,39 @@ export default function MessageTitleRender() {
                 borderRadius: BASE_UNIT * 0.15,
               }}
             >
-              <Image
-                source={{ uri: item.avatar || 'https://imgur.com/1L0lWDZ.png' }}
-                style={{ width: BASE_UNIT * 0.1, height: BASE_UNIT * 0.1 }}
-              />
+              {item.avatar ? (
+                <Image
+                  source={{ uri: item.avatar }}
+                  style={{
+                    width: BASE_UNIT * 0.15,
+                    height: BASE_UNIT * 0.15,
+                    borderRadius: BASE_UNIT * 0.15,
+                  }}
+                />
+              ) : item.participants.length === 1 ? (
+                <Image
+                  source={{
+                    uri: "https://imgur.com/1L0lWDZ.png", // hoặc link nào bạn muốn dùng mặc định
+                  }}
+                  style={{
+                    width: BASE_UNIT * 0.12,
+                    height: BASE_UNIT * 0.12,
+                  }}
+                />
+              ) : (
+                <View
+                  style={{
+                    width: BASE_UNIT * 0.15,
+                    height: BASE_UNIT * 0.15,
+                    borderRadius: BASE_UNIT * 0.15,
+                    backgroundColor: "red",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  {/* Nếu muốn hiển thị chữ viết tắt hoặc icon nhóm thì thêm ở đây */}
+                </View>
+              )}
             </View>
             <View
               style={{
@@ -77,7 +105,9 @@ export default function MessageTitleRender() {
                 >
                   {item.groupName || item.name}
                 </Text>
-                <Text style={{ color: Colors.grey }}>{getTimeAlong(item.updatedAt,locale)}</Text>
+                <Text style={{ color: Colors.grey }}>
+                  {getTimeAlong(item.updatedAt, locale)}
+                </Text>
               </View>
 
               <Text
