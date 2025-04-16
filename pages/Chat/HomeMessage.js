@@ -8,7 +8,6 @@ import NavigationBar from "../../components/navigation/NavigationBar";
 import { Colors } from "../../styles/Colors";
 
 export default function HomeMessage() {
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.primary}/>

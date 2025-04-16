@@ -50,7 +50,7 @@ export default function MessageTitleRender() {
               }}
             >
               <Image
-                source={{ uri: item.avatar }}
+                source={{ uri: item.avatar || 'https://imgur.com/1L0lWDZ.png' }}
                 style={{ width: BASE_UNIT * 0.1, height: BASE_UNIT * 0.1 }}
               />
             </View>
