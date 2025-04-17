@@ -13,8 +13,10 @@ import { BASE_UNIT } from "../../constants/screen";
 import { Colors } from "../../styles/Colors";
 import { textMediumSize } from "../../constants/fontSize";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
-import { findUser } from '../../api/friend/findUser'
+import { findUser } from "../../api/friend/findUser";
 import { useNavigation } from "@react-navigation/native";
+import { useRecoilState } from "recoil";
+import { findUserState } from "../../state/FriendState";
 
 export default function SearchHeader({
   textColor = "white",
@@ -28,7 +30,7 @@ export default function SearchHeader({
   iconName2Size,
 }) {
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [userData, setUserData] = useState(null);
+  const [, setUserData] = useRecoilState(findUserState);
   const [errorMessage, setErrorMessage] = useState("");
   const navigation = useNavigation();
 
@@ -40,7 +42,7 @@ export default function SearchHeader({
     try {
       const result = await findUser(phoneNumber);
       console.log("Kết quả từ findUser:", result);
-      navigation.navigate('SearchUser')
+      navigation.navigate("SearchUser");
       if (result) {
         setUserData(result);
         setErrorMessage("");
@@ -49,11 +51,10 @@ export default function SearchHeader({
       }
     } catch (error) {
       setErrorMessage(error.message || "Có lỗi xảy ra!");
-      console.log("Lỗi khi tìm kiếm:", error); 
+      console.log("Lỗi khi tìm kiếm:", error);
     }
   };
-  
-  
+
   if (linearPrimary) {
     return (
       <LinearGradient

@@ -22,6 +22,11 @@ import { loginResultState } from "../../state/PrimaryState";
 import { sendFile, sendMessage } from "../../api/chat/messages";
 import useSocketEvents from "../../hooks/useSocketEvents";
 import { getShortNameRegister } from "../../utils/getShortName";
+import {
+  pickImageFromLibrary,
+  takePhotoWithCamera,
+} from "../../utils/imageHandle";
+import ImagePickerModal from "../../components/modals/ImagePickerModal";
 
 export default function PersonChat() {
   const route = useRoute();
@@ -36,16 +41,23 @@ export default function PersonChat() {
   const [messageList, setMessageList] = useState(messagesData.data);
 
   const handleSendFile = async () => {
-    const conversationId = "chuaco";
+    const conversationId = messagesData.data[0].conversationId;
     const senderId = loginResult.user._id;
-    loginResult.token;
-    const file = selectedFile; // lấy từ input hoặc picker
-
+    const token = loginResult.token;
+    const file = selectedFile;
+    //console.log(`[DEBUG]: {conversationId: ${conversationId}, senderId: ${senderId}, token: ${token}, file: ${file}}`);
     const response = await sendFile(conversationId, file, senderId, token);
-    console.log("Kết quả gửi file:", response);
+    //console.log("[DEBUG]: Kết quả gửi file:", response);
   };
 
-  console.log(messageList);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleImageSelected = async (image) => {
+    console.log("Ảnh đã chọn:", image.uri);
+    await setSelectedFile(image); // Update the selected file state
+    handleSendFile();
+  };
 
   useSocketEvents(loginResult.user._id, (newMessage) => {
     if (newMessage.conversationId === messagesData.data[0].conversationId) {
@@ -64,7 +76,7 @@ export default function PersonChat() {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   }, [messageList]);
 
-  // console.log("<<<Login result>>>",loginResult);
+  // console.log("[DEBUG]: loginResult:",loginResult);
   // const conversation = useRecoilValue(conversationState)
   // console.log("<<ConversationState: Lấy hết ko đúng>>", conversation);
 
@@ -121,22 +133,39 @@ export default function PersonChat() {
                   padding: BASE_UNIT * 0.01,
                 }}
               >
-                <View
-                  style={{
-                    backgroundColor: "#d4f1ff",
-                    padding: BASE_UNIT * 0.02,
-                    borderRadius: BASE_UNIT * 0.02,
-                    maxWidth: BASE_UNIT * 0.7,
-                    marginLeft: isFirstMessageFromSender ? BASE_UNIT * 0.12 : 0,
-                    minHeight: BASE_UNIT * 0.12,
-                    borderWidth: 1,
-                    borderColor: "#d2e7f2",
-                  }}
-                >
-                  <Text style={{ fontSize: textMediumSize }}>
-                    {item.content}
-                  </Text>
-                </View>
+                {item.messageType === "image" ? (
+                  <TouchableOpacity>
+                    <Image
+                      source={{ uri: item.fileInfo.fileUrl }}
+                      resizeMode="contain"
+                      style={{
+                        width: BASE_UNIT * 0.5,
+                        height: undefined,
+                        aspectRatio: 1,
+                        borderRadius: BASE_UNIT * 0.03,
+                      }}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <View
+                    style={{
+                      backgroundColor: "#d4f1ff",
+                      padding: BASE_UNIT * 0.02,
+                      borderRadius: BASE_UNIT * 0.02,
+                      maxWidth: BASE_UNIT * 0.7,
+                      marginLeft: isFirstMessageFromSender
+                        ? BASE_UNIT * 0.12
+                        : 0,
+                      minHeight: BASE_UNIT * 0.12,
+                      borderWidth: 1,
+                      borderColor: "#d2e7f2",
+                    }}
+                  >
+                    <Text style={{ fontSize: textMediumSize }}>
+                      {item.content}
+                    </Text>
+                  </View>
+                )}
               </View>
             );
           } else {
@@ -258,7 +287,10 @@ export default function PersonChat() {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity style={{ marginLeft: BASE_UNIT * 0.05 }}>
+            <TouchableOpacity
+              style={{ marginLeft: BASE_UNIT * 0.05 }}
+              onPress={() => setModalVisible(true)}
+            >
               <Ionicons
                 name="image-outline"
                 size={ICON_MEDIUM_PLUS}
@@ -268,6 +300,11 @@ export default function PersonChat() {
           </>
         )}
       </Pressable>
+      <ImagePickerModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onImageSelected={handleImageSelected}
+      />
     </SafeAreaView>
   );
 }

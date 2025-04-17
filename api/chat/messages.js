@@ -41,9 +41,19 @@ export const sendMessage = async (conversationId, messageText, token) => {
 
 export const sendFile = async (conversationId, file, senderId, token) => {
   try {
+    // Kiểm tra file trước khi gửi
+    if (!file || !file.uri) {
+      console.error("❌ File không hợp lệ hoặc thiếu URI!");
+      return { error: "File không hợp lệ!" };
+    }
+
     const formData = new FormData();
     formData.append("conversationId", conversationId);
-    formData.append("file", file);
+    formData.append("file", {
+      uri: file.uri,
+      name: file.name || 'file.jpg',  // Đặt tên mặc định nếu file không có tên
+      type: file.type || 'image/jpeg',  // Đặt loại mặc định nếu file không có loại
+    });
     formData.append("senderId", senderId);
 
     const res = await apiClient.post(`/messages/send-file`, formData, {
@@ -53,9 +63,11 @@ export const sendFile = async (conversationId, file, senderId, token) => {
       },
     });
 
+    console.log('Kết quả gửi file: ', res.data);
     return res.data;
   } catch (err) {
     console.error("❌ Lỗi gửi file:", err);
+    return { error: "Đã xảy ra lỗi khi gửi tệp. Vui lòng thử lại!" };
   }
 };
 

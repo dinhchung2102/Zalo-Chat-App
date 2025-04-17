@@ -14,9 +14,14 @@ import { BASE_UNIT } from "../../constants/screen";
 import { Colors } from "../../styles/Colors";
 import { textLargeSize, textMediumSize } from "../../constants/fontSize";
 import { useNavigation } from "@react-navigation/native";
+import { useRecoilValue } from "recoil";
+import { findUserState } from "../../state/FriendState";
+import { getShortNameRegister } from "../../utils/getShortName";
 
 export default function SearchUser() {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const searchUser = useRecoilValue(findUserState);
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity>
@@ -28,7 +33,11 @@ export default function SearchUser() {
           resizeMode="cover"
         >
           <View style={styles.header}>
-            <TouchableOpacity onPress={()=>{navigation.goBack()}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
               <Ionicons name="arrow-back" size={ICON_MEDIUM} color={"white"} />
             </TouchableOpacity>
 
@@ -77,7 +86,7 @@ export default function SearchUser() {
             }}
           >
             <Text style={{ fontSize: textLargeSize * 0.6, color: "white" }}>
-              UN
+              {getShortNameRegister(searchUser.fullName)}
             </Text>
           </TouchableOpacity>
         </View>
@@ -90,7 +99,7 @@ export default function SearchUser() {
           fontWeight: "500",
         }}
       >
-        User Name
+        {searchUser.fullName}
       </Text>
 
       <View
@@ -98,11 +107,11 @@ export default function SearchUser() {
           flexDirection: "row",
           width: BASE_UNIT * 0.2,
           // backgroundColor: "red",
-          marginTop: BASE_UNIT*0.03,
+          marginTop: BASE_UNIT * 0.03,
           width: BASE_UNIT,
-          alignItems:"center",
+          alignItems: "center",
           //backgroundColor:"red",
-          justifyContent: "space-evenly"
+          justifyContent: "space-evenly",
         }}
       >
         <TouchableOpacity
@@ -120,7 +129,7 @@ export default function SearchUser() {
         <TouchableOpacity
           style={{
             width: BASE_UNIT * 0.2,
-            backgroundColor: 'grey',
+            backgroundColor: "grey",
             height: BASE_UNIT * 0.08,
             alignItems: "center",
             justifyContent: "center",
