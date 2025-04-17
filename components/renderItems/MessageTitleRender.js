@@ -1,30 +1,45 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { BASE_UNIT } from "../../constants/screen";
-import { textMediumSize } from "../../constants/fontSize";
+import {
+  textLargeSize,
+  textMediumPlus,
+  textMediumSize,
+} from "../../constants/fontSize";
 import { Colors } from "../../styles/Colors";
 import { getLoginResult } from "../../utils/asyncStorage";
 import { getListConversation } from "../../api/chat/conversation";
 import { getTimeAlong } from "../../utils/getTimeAlong";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
+import { getShortNameRegister } from "../../utils/getShortName";
+import { useNavigation } from "@react-navigation/native";
+import { useRecoilState } from "recoil";
+import { conversationState, messagesByConversationState } from "../../state/ChatState";
+import { getMessages } from "../../api/chat/messages";
+import { loginResultState } from "../../state/PrimaryState";
 
 export default function MessageTitleRender() {
-  const [dataConversations, setDataConversations] = useState([]);
+  const [dataConversations, setDataConversations] = useRecoilState(conversationState);
+  const [messageDetail, setMessageDetail] = useRecoilState(messagesByConversationState)
   const locale = useTextLanguage({ vietnamese: "vi", english: "en" });
+  const navigation = useNavigation();
+  const [loginResult, setLoginResult] = useRecoilState(loginResultState);
 
   useEffect(() => {
     const fetchLoginResult = async () => {
       const result = await getLoginResult();
-
+  
       if (result && result.token) {
+        setLoginResult(result); // <<< THÊM DÒNG NÀY
         const conversations = await getListConversation(result.token);
         setDataConversations(conversations.data);
         console.log(conversations.data);
       }
     };
-
+  
     fetchLoginResult();
-  }, []); // Chạy chỉ một lần khi component mount
+  }, []);
+  
   //Sample data test render item:
   return (
     <View style={styles.container}>
@@ -36,6 +51,12 @@ export default function MessageTitleRender() {
               paddingBottom: BASE_UNIT * 0.05,
               flexDirection: "row",
               alignItems: "center",
+            }}
+            onPress={async () => {
+              //console.log(`item sẽ truyền:`,item._id);
+              //console.log(loginResult.token);
+              const messages = await getMessages(loginResult.token, item._id)
+              navigation.navigate("PersonChat", {userInfo: item, messagesData: messages});
             }}
           >
             <View
@@ -73,12 +94,14 @@ export default function MessageTitleRender() {
                     width: BASE_UNIT * 0.15,
                     height: BASE_UNIT * 0.15,
                     borderRadius: BASE_UNIT * 0.15,
-                    backgroundColor: "red",
+                    backgroundColor: Colors.primary,
                     justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
-                  {/* Nếu muốn hiển thị chữ viết tắt hoặc icon nhóm thì thêm ở đây */}
+                  <Text style={{ fontSize: textMediumPlus, color: "white" }}>
+                    {getShortNameRegister(item.recipient.fullName)}
+                  </Text>
                 </View>
               )}
             </View>
@@ -113,7 +136,7 @@ export default function MessageTitleRender() {
               <Text
                 style={{ fontSize: textMediumSize * 0.9, color: Colors.grey }}
               >
-                {item.lastMessage || ""}
+                {item.lastMessage ? item.lastMessage.content : "Nhắn tin"}
               </Text>
             </View>
           </TouchableOpacity>

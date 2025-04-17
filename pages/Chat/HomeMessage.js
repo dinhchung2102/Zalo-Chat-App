@@ -10,19 +10,11 @@ import { getLoginResult } from "../../utils/asyncStorage";
 import second from '../../hooks/useSocketEvents'
 import useSocketEvents from "../../hooks/useSocketEvents";
 import socket from "../../services/socketService";
+import { useRecoilValue } from "recoil";
+import { loginResultState } from "../../state/PrimaryState";
 
 export default function HomeMessage() {
-  const [loginResult, setLoginResult] = useState(null);
-
-  useEffect(() => {
-    const fetchLoginResult = async () => {
-      const result = await getLoginResult();
-      setLoginResult(result);
-      console.log("📦 Login info:", result);
-    };
-
-    fetchLoginResult();
-  }, []);
+  const loginResult = useRecoilValue(loginResultState)
 
   // ✅ Gọi hook ở ngoài điều kiện (tránh vi phạm quy tắc hook)
   useSocketEvents(loginResult?.user?._id);
@@ -38,8 +30,6 @@ export default function HomeMessage() {
       socket.off("connect");
     };
   }, []);
-  
-  
 
   return (
     <SafeAreaView style={styles.container}>

@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
-import { ipServerAddress } from "../ipConfig";
+import { baseURL, socketURL } from "../ipConfig";
 
-const socket = io(`http://${ipServerAddress}:5001`, {
+const socket = io(socketURL, {
   transports: ["websocket","polling"],
   autoConnect: false,
   query: {

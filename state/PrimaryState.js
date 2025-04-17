@@ -24,3 +24,9 @@ export const navigationState = atom({
   key: "navigationState",
   default: "message"
 })
+
+
+export const loginResultState = atom({
+  key:'loginResultState',
+  default: ""
+})

@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { ipServerAddress } from '../ipConfig';
+import { baseURL } from '../ipConfig';
 
 const apiClient = axios.create({
-    baseURL: `http://${ipServerAddress}:5001/api`, 
+    baseURL: baseURL, 
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',

@@ -17,6 +17,8 @@ import Contact from "./pages/Contact";
 import Explore from "./pages/Explore";
 import Diary from "./pages/Diary";
 import RequestFriend from "./pages/ContactTab/RequestFriend";
+import PersonChat from "./pages/Chat/PersonChat";
+import SearchUser from "./pages/Public/SearchUser";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -55,6 +57,8 @@ export default function App() {
           <Stack.Screen name="Explore" component={Explore}/>
           <Stack.Screen name="Diary" component={Diary}/>
           <Stack.Screen name="RequestFriend" component={RequestFriend}/>
+          <Stack.Screen name="PersonChat" component={PersonChat}/>
+          <Stack.Screen name="SearchUser" component={SearchUser}/>
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

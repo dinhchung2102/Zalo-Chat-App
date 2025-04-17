@@ -3,7 +3,7 @@ import socket from "../services/socketService";
 import { useRecoilState } from "recoil";
 import { requestState } from "../state/FriendState";
 
-export default function useSocketEvents(userId) {
+export default function useSocketEvents(userId, onNewMessage) {
   const [requests, setRequests] = useRecoilState(requestState);
   useEffect(() => {
     if (!userId) {
@@ -48,6 +48,16 @@ export default function useSocketEvents(userId) {
     socket.on("friendRequestAccepted", (data) => {
       console.log("✅ Lời mời đã được chấp nhận:", data);
     });
+
+
+    socket.on("newMessage", (data) => {
+      console.log("💬 Tin nhắn đến:", data);
+      // TODO: cập nhật messageState hoặc truyền callback tùy nơi xử lý
+      if (onNewMessage) {
+        onNewMessage(data);
+      }
+    });
+    
 
     return () => {
       socket.off("connect");

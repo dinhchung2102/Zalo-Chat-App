@@ -10,7 +10,7 @@ export const login = async (phone, password) => {
       deviceType: "app",
     });
 
-    console.log("Đăng nhập thành công:", response.data);
+    //console.log("Đăng nhập thành công:", response.data);
     saveLoginResult(response.data); 
     return response;
   } catch (error) {

@@ -42,7 +42,7 @@ export default function Received() {
           {item.actionUser.profilePic ? (
             <Image
               source={{
-                uri: item.actionUser.profilePic,
+                uri: item.actionUser.profilePic || "",
               }}
               style={{
                 height: 50,
