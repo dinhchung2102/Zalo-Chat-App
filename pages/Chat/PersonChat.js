@@ -27,6 +27,7 @@ import {
   takePhotoWithCamera,
 } from "../../utils/imageHandle";
 import ImagePickerModal from "../../components/modals/ImagePickerModal";
+import { conversationState } from "../../state/ChatState";
 
 export default function PersonChat() {
   const route = useRoute();
@@ -39,28 +40,39 @@ export default function PersonChat() {
 
   const [messages, setMessages] = useState("");
   const [messageList, setMessageList] = useState(messagesData.data);
+  const conversation = useRecoilValue(conversationState);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const handleSendFile = async () => {
-    const conversationId = messagesData.data[0].conversationId;
+  const conversationId =
+    messagesData.data.length > 0
+      ? messagesData.data[0].conversationId
+      : conversation[0]._id;
+
+  const handleSendFile = async (selectedFile) => {
     const senderId = loginResult.user._id;
     const token = loginResult.token;
-    const file = selectedFile;
-    //console.log(`[DEBUG]: {conversationId: ${conversationId}, senderId: ${senderId}, token: ${token}, file: ${file}}`);
-    const response = await sendFile(conversationId, file, senderId, token);
-    //console.log("[DEBUG]: Kết quả gửi file:", response);
-  };
+    console.log(
+      `[DEBUG]: {conversationId: ${conversationId}, senderId: ${senderId}, token: ${token}, file: ${selectedFile}}`
+    );
+    const response = await sendFile(conversationId, selectedFile, senderId, token);
+    setMessageList((prev) => {
+      const exists = prev.some((msg) => msg._id === response._id);
+      if (!exists) {
+        return [...prev, response];
+      }
+      return prev;
+    });
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+    console.log("[DEBUG]: Kết quả gửi file:", response);
+  };
 
   const handleImageSelected = async (image) => {
     console.log("Ảnh đã chọn:", image.uri);
-    await setSelectedFile(image); // Update the selected file state
-    handleSendFile();
+    handleSendFile(image);
   };
 
   useSocketEvents(loginResult.user._id, (newMessage) => {
-    if (newMessage.conversationId === messagesData.data[0].conversationId) {
+    if (newMessage.conversationId === conversationId) {
       setMessageList((prev) => {
         const exists = prev.some((msg) => msg._id === newMessage._id);
         if (!exists) {
@@ -78,12 +90,13 @@ export default function PersonChat() {
 
   // console.log("[DEBUG]: loginResult:",loginResult);
   // const conversation = useRecoilValue(conversationState)
-  // console.log("<<ConversationState: Lấy hết ko đúng>>", conversation);
+  // console.log("<<ConversationState: >>", conversation);
+  //console.log(messages);
 
   const handleSendMessage = async () => {
     try {
       const response = await sendMessage(
-        messagesData.data[0].conversationId,
+        conversationId,
         messages,
         loginResult.token
       );

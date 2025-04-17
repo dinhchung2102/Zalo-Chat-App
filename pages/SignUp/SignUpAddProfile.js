@@ -18,6 +18,7 @@ import { signup } from "../../api/auth/register";
 import { getTempToken, saveLoginResult } from "../../utils/asyncStorage";
 import { login } from "../../api/auth/login";
 import BorderInput from "../../components/textInputs/BorderInput";
+import { loginResultState } from "../../state/PrimaryState";
 
 export default function SignUpAddProfile() {
   const navigation = useNavigation();
@@ -30,6 +31,7 @@ export default function SignUpAddProfile() {
   const [selectedGender, setSelectedGender] = useState("nothing");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const formatDate = selectedDate.toLocaleDateString("en-CA");
+  const [, setLoginResult] = useRecoilState(loginResultState)
   
 
   const [modalGenderVisible, setModalGenderVisible] = useState(false);
@@ -70,6 +72,7 @@ export default function SignUpAddProfile() {
 
       try {
         const loginResult = await login(phone, password);
+        setLoginResult(loginResult.data)
         saveLoginResult(loginResult.data);
       } catch (error) {
         console.error("Lỗi khi đăng nhập:", error);
