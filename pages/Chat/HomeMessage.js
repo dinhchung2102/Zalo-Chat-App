@@ -1,13 +1,11 @@
-import { StatusBar, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StatusBar, StyleSheet, View } from "react-native";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchHeader from "../../components/headers/SearchHeader";
 import MessageTitleRender from "../../components/renderItems/MessageTitleRender";
 import { BASE_UNIT } from "../../constants/screen";
 import NavigationBar from "../../components/navigation/NavigationBar";
 import { Colors } from "../../styles/Colors";
-import { getLoginResult } from "../../utils/asyncStorage";
-import second from '../../hooks/useSocketEvents'
 import useSocketEvents from "../../hooks/useSocketEvents";
 import socket from "../../services/socketService";
 import { useRecoilValue } from "recoil";
@@ -16,10 +14,8 @@ import { loginResultState } from "../../state/PrimaryState";
 export default function HomeMessage() {
   const loginResult = useRecoilValue(loginResultState)
 
-  // ✅ Gọi hook ở ngoài điều kiện (tránh vi phạm quy tắc hook)
   useSocketEvents(loginResult?.user?._id);
 
-  // ✅ socket.on phải đặt trong useEffect nếu không sẽ bị lặp
   useEffect(() => {
     socket.on("connect", () => {
       console.log("✅ Socket connected:", socket.id);
