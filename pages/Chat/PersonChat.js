@@ -17,7 +17,7 @@ import { BASE_UNIT } from "../../constants/screen";
 import { ICON_MEDIUM_PLUS } from "../../constants/iconSize";
 import { Colors } from "../../styles/Colors";
 import { textMediumSize } from "../../constants/fontSize";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { loginResultState } from "../../state/PrimaryState";
 import { sendFile, sendMessage } from "../../api/chat/messages";
 import useSocketEvents from "../../hooks/useSocketEvents";
@@ -27,26 +27,44 @@ import {
   takePhotoWithCamera,
 } from "../../utils/imageHandle";
 import ImagePickerModal from "../../components/modals/ImagePickerModal";
-import { conversationState } from "../../state/ChatState";
+import {
+  conversationState,
+  messagesByConversationState,
+} from "../../state/ChatState";
+import { getListConversation } from "../../api/chat/conversation";
 
 export default function PersonChat() {
   const route = useRoute();
-  const { userInfo, messagesData } = route.params;
+  const { userInfo } = route.params;
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
+  const [messagesData, setMessagesData] = useRecoilState(
+    messagesByConversationState
+  );
 
   // console.log(`<<<userInfo>>>: `,userInfo);
-  //console.log(`<<<messagesData>>>`, messagesData);
+  console.log(`<<DEBUG>>: messagesData`, messagesData);
 
   const [messages, setMessages] = useState("");
   const [messageList, setMessageList] = useState(messagesData.data);
-  const conversation = useRecoilValue(conversationState);
+  const [conversation, setConversation] = useRecoilState(conversationState);
   const [modalVisible, setModalVisible] = useState(false);
+
+  console.log("[DEBUG]: conversation:", conversation);
 
   const conversationId =
     messagesData.data.length > 0
       ? messagesData.data[0].conversationId
       : conversation[0]._id;
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      const conversations = await getListConversation(loginResult.token);
+      setConversation(conversations.data);
+      //console.log("<<<[DEBUG]: Conversations.data:", conversations.data);
+    };
+    fetchConversations();
+  }, [loginResult, messages]);
 
   const handleSendFile = async (selectedFile) => {
     const senderId = loginResult.user._id;

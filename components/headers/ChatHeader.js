@@ -73,7 +73,7 @@ export default function ChatHeader({
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={async ()=>{
-          const channelName = uuidv4();
+          const channelName = 'demo';
           //Thiếu gửi thông báo đến nhóm
           navigation.navigate('VideoCall', {channelName})}} style={{ marginRight: BASE_UNIT * 0.08 }}>
           <Ionicons

@@ -9,7 +9,10 @@ import { useTextLanguage } from "../../hooks/useTextLanguage";
 import { getShortNameRegister } from "../../utils/getShortName";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { conversationState } from "../../state/ChatState";
+import {
+  conversationState,
+  messagesByConversationState,
+} from "../../state/ChatState";
 import { getMessages } from "../../api/chat/messages";
 import { loginResultState } from "../../state/PrimaryState";
 
@@ -18,20 +21,21 @@ export default function MessageTitleRender() {
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
 
-  const [dataConversations, setDataConversations] = useRecoilState(conversationState);
+  const [dataConversations, setDataConversations] =
+    useRecoilState(conversationState);
+  const [messages, setMessages] = useRecoilState(messagesByConversationState);
+  console.log("<<<[DEBUG]: dataConversations: ", dataConversations);
+  //console.log('[DEBUG]: messages: ', messages);
 
   //Cần nghiên cứu lại
   useEffect(() => {
     const fetchConversations = async () => {
-      if (loginResult && loginResult.token) {
-        //console.log("<<<Login result token>>>", loginResult.token);
-        const conversations = await getListConversation(loginResult.token);
-        setDataConversations(conversations.data);
-        //console.log("<<<Conversations.data>>>", conversations.data);
-      }
+      const conversations = await getListConversation(loginResult.token);
+      setDataConversations(conversations.data);
+      //console.log("<<<[DEBUG]: Conversations.data:", conversations.data);
     };
     fetchConversations();
-  }, [loginResult]);
+  }, [loginResult, messages]);
 
   return (
     <View style={styles.container}>
@@ -49,9 +53,9 @@ export default function MessageTitleRender() {
                 //console.log(`item sẽ truyền:`,item._id);
                 //console.log(loginResult.token);
                 const messages = await getMessages(loginResult.token, item._id);
+                await setMessages(messages);
                 navigation.navigate("PersonChat", {
                   userInfo: item,
-                  messagesData: messages,
                 });
               }}
             >
@@ -96,7 +100,9 @@ export default function MessageTitleRender() {
                     }}
                   >
                     <Text style={{ fontSize: textMediumPlus, color: "white" }}>
-                      {getShortNameRegister(item?.recipient?.fullName || item?.groupName || "Nhóm")}
+                      {getShortNameRegister(
+                        item?.recipient?.fullName || item?.groupName || "Nhóm"
+                      )}
                     </Text>
                   </View>
                 )}
@@ -132,7 +138,11 @@ export default function MessageTitleRender() {
                 <Text
                   style={{ fontSize: textMediumSize * 0.9, color: Colors.grey }}
                 >
-                  {item.lastMessage ? item.lastMessage.content : "Nhắn tin"}
+                  {item.lastMessage
+                    ? item.lastMessage.sender._id === loginResult.user._id
+                      ? "Bạn: " + item.lastMessage.content
+                      : item.isGroup === false ?  item.lastMessage.content : item.lastMessage.sender.fullName + ": " + item.lastMessage.content
+                    : "Nhắn tin"}
                 </Text>
               </View>
             </TouchableOpacity>

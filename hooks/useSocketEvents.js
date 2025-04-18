@@ -65,6 +65,7 @@ export default function useSocketEvents(userId, onNewMessage) {
       if (onNewMessage) {
         onNewMessage(data);
       }
+      
     });
     
 

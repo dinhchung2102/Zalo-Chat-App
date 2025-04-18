@@ -19,10 +19,8 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [securePassword, setSecurePassword] = useState(true)
-  const [loginResult, setLoginResult] = useRecoilState(loginResultState)
-
+  const [, setLoginResult] = useRecoilState(loginResultState)
   const [error, setError] = useState(null);
-
   const usernameInputRef = useRef(null);
 
   const handleCheckNull = () => {
@@ -39,7 +37,7 @@ export default function Login() {
     if (handleCheckNull()) {
       try {
         const response = await login(username, password);
-        console.log('<<<Lưu thông tin sau khi login vào recoil: >>>', response.data);
+        console.log('[DEBUG]: Lưu thông tin đăng nhập vào Recoil: ', response.data);
         setLoginResult(response.data)
         if(response.status == 200){
           navigation.navigate("HomeMessage");
