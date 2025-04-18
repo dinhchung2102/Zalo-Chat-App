@@ -9,17 +9,12 @@ export const login = async (phone, password) => {
       password: password,
       deviceType: "app",
     });
-
     //console.log("Đăng nhập thành công:", response.data);
     saveLoginResult(response.data); 
     return response;
   } catch (error) {
     if (error.response) {
-      // console.error(
-      //   "Lỗi khi đăng nhập:",
-      //   error.response.data?.message || error.message
-      // );
-      console.log("error response:", error.response.data?.message);
+      console.log("[ERROR]: Lỗi khi call API login: ", error.response.data?.message);
       return error.response.data?.message;  
     }
     console.error("Lỗi khi kết nối tới server:", error.message);

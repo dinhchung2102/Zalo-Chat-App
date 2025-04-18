@@ -12,10 +12,9 @@ import { useRecoilValue } from "recoil";
 import { loginResultState } from "../../state/PrimaryState";
 
 export default function HomeMessage() {
-  const loginResult = useRecoilValue(loginResultState)
-
+  const loginResult = useRecoilValue(loginResultState);
+  
   useSocketEvents(loginResult?.user?._id);
-
   useEffect(() => {
     socket.on("connect", () => {
       console.log("✅ Socket connected:", socket.id);

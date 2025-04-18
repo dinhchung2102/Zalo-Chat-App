@@ -32,7 +32,7 @@ export const removeTempToken = async () => {
 export const saveLoginResult = async (loginResult) => {
   try {
     await AsyncStorage.setItem("loginResult", JSON.stringify(loginResult)); 
-    console.log("Lưu thông tin đăng nhập:", loginResult);
+    console.log("[DEBUG]: Lưu thông tin đăng nhập vào AsyncStorage", loginResult);
   } catch (error) {
     console.error("Lỗi khi lưu thông tin đăng nhập:", error);
   }
