@@ -1,111 +1,148 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { BASE_UNIT } from "../../constants/screen";
-import { textMediumSize } from "../../constants/fontSize";
+import { textMediumPlus, textMediumSize } from "../../constants/fontSize";
 import { Colors } from "../../styles/Colors";
+import { getListConversation } from "../../api/chat/conversation";
+import { getTimeAlong } from "../../utils/getTimeAlong";
+import { useTextLanguage } from "../../hooks/useTextLanguage";
+import { getShortNameRegister } from "../../utils/getShortName";
+import { useNavigation } from "@react-navigation/native";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { conversationState } from "../../state/ChatState";
+import { getMessages } from "../../api/chat/messages";
+import { loginResultState } from "../../state/PrimaryState";
 
 export default function MessageTitleRender() {
-  //Sample data test render item:
-  const testData = [
-    {
-      _id: 1,
-      name: "Cloud của tôi",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 2,
-      name: "Nguyễn Văn A",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 3,
-      name: "Nguyễn Văn B",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 4,
-      name: "Lê Văn C",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 5,
-      name: "Đặng Văn D",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-    {
-      _id: 6,
-      name: "Lê Khánh F",
-      avt: "https://i.imgur.com/1L0lWDZ.png",
-      text: "Bạn: helloworld",
-    },
-  ];
+  const locale = useTextLanguage({ vietnamese: "vi", english: "en" });
+  const navigation = useNavigation();
+  const loginResult = useRecoilValue(loginResultState);
+
+  const [dataConversations, setDataConversations] = useRecoilState(conversationState);
+
+  //Cần nghiên cứu lại
+  useEffect(() => {
+    const fetchConversations = async () => {
+      if (loginResult && loginResult.token) {
+        //console.log("<<<Login result token>>>", loginResult.token);
+        const conversations = await getListConversation(loginResult.token);
+        setDataConversations(conversations.data);
+        //console.log("<<<Conversations.data>>>", conversations.data);
+      }
+    };
+    fetchConversations();
+  }, [loginResult]);
+
   return (
     <View style={styles.container}>
-      {testData.map((item) => {
-        return (
-          <TouchableOpacity
-            key={item._id}
-            style={{
-              paddingBottom: BASE_UNIT * 0.05,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <View
+      {dataConversations ? (
+        dataConversations.map((item) => {
+          return (
+            <TouchableOpacity
+              key={item._id}
               style={{
-                backgroundColor: "blue",
-                height: BASE_UNIT * 0.15,
-                width: BASE_UNIT * 0.15,
+                paddingBottom: BASE_UNIT * 0.05,
+                flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "center",
-                borderRadius: BASE_UNIT * 0.15,
               }}
-            >
-              <Image
-                source={{ uri: item.avt }}
-                style={{ width: BASE_UNIT * 0.1, height: BASE_UNIT * 0.1 }}
-              />
-            </View>
-            <View
-              style={{
-                flex: 1,
-                height: "100%",
-                paddingLeft: BASE_UNIT * 0.03,
-                paddingVertical: BASE_UNIT * 0.01,
+              onPress={async () => {
+                //console.log(`item sẽ truyền:`,item._id);
+                //console.log(loginResult.token);
+                const messages = await getMessages(loginResult.token, item._id);
+                navigation.navigate("PersonChat", {
+                  userInfo: item,
+                  messagesData: messages,
+                });
               }}
             >
               <View
                 style={{
-                  flexDirection: "row",
+                  backgroundColor: Colors.primary,
+                  height: BASE_UNIT * 0.15,
+                  width: BASE_UNIT * 0.15,
                   alignItems: "center",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
+                  borderRadius: BASE_UNIT * 0.15,
                 }}
               >
-                <Text
+                {item.avatar ? (
+                  <Image
+                    source={{ uri: item.avatar }}
+                    style={{
+                      width: BASE_UNIT * 0.15,
+                      height: BASE_UNIT * 0.15,
+                      borderRadius: BASE_UNIT * 0.15,
+                    }}
+                  />
+                ) : item.participants.length === 1 ? (
+                  <Image
+                    source={{
+                      uri: "https://imgur.com/1L0lWDZ.png",
+                    }}
+                    style={{
+                      width: BASE_UNIT * 0.12,
+                      height: BASE_UNIT * 0.12,
+                    }}
+                  />
+                ) : (
+                  <View
+                    style={{
+                      width: BASE_UNIT * 0.15,
+                      height: BASE_UNIT * 0.15,
+                      borderRadius: BASE_UNIT * 0.15,
+                      backgroundColor: Colors.primary,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ fontSize: textMediumPlus, color: "white" }}>
+                      {getShortNameRegister(item?.recipient?.fullName || item?.groupName || "Nhóm")}
+                    </Text>
+                  </View>
+                )}
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  height: "100%",
+                  paddingLeft: BASE_UNIT * 0.03,
+                  paddingVertical: BASE_UNIT * 0.01,
+                }}
+              >
+                <View
                   style={{
-                    fontSize: textMediumSize * 1.1,
-                    marginBottom: BASE_UNIT * 0.01,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
                   }}
                 >
-                  {item.name}
-                </Text>
-                <Text style={{ color: Colors.grey }}>1 giờ</Text>
-              </View>
+                  <Text
+                    style={{
+                      fontSize: textMediumSize * 1.1,
+                      marginBottom: BASE_UNIT * 0.01,
+                    }}
+                  >
+                    {item.groupName || item.name}
+                  </Text>
+                  <Text style={{ color: Colors.grey }}>
+                    {getTimeAlong(item.updatedAt, locale)}
+                  </Text>
+                </View>
 
-              <Text
-                style={{ fontSize: textMediumSize * 0.9, color: Colors.grey }}
-              >
-                {item.text}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        );
-      })}
+                <Text
+                  style={{ fontSize: textMediumSize * 0.9, color: Colors.grey }}
+                >
+                  {item.lastMessage ? item.lastMessage.content : "Nhắn tin"}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        })
+      ) : (
+        <View>
+          <Text>Không thể tải dữ liệu...</Text>
+        </View>
+      )}
     </View>
   );
 }

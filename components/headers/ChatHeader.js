@@ -5,56 +5,26 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { ICON_LARGE, ICON_MEDIUM } from "../../constants/iconSize";
+import { ICON_LARGE } from "../../constants/iconSize";
 import { LinearGradient } from "expo-linear-gradient";
 import { BASE_UNIT } from "../../constants/screen";
 import { Colors } from "../../styles/Colors";
 import { textMediumSize } from "../../constants/fontSize";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
-import { findUser } from "../../api/friend/findUser";
 import { useNavigation } from "@react-navigation/native";
-import { useRecoilState } from "recoil";
-import { findUserState } from "../../state/FriendState";
+import { v4 as uuidv4 } from "uuid";
 
-export default function SearchHeader({
+export default function ChatHeader({
   textColor = "white",
   onPress,
   linearPrimary,
-  iconColor,
-  backgroundColor,
-  iconName,
-  iconNameSize,
-  iconName2,
-  iconName2Size,
+  iconColor = "white",
+  backgroundColor = Colors.primary,
+  userInfo,
 }) {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [, setUserData] = useRecoilState(findUserState);
-  const [errorMessage, setErrorMessage] = useState("");
   const navigation = useNavigation();
-
-  const handleSearch = async () => {
-    if (!phoneNumber) {
-      setErrorMessage("Vui lòng nhập số điện thoại.");
-      return;
-    }
-    try {
-      const result = await findUser(phoneNumber);
-      console.log("Kết quả từ findUser:", result);
-      navigation.navigate("SearchUser");
-      if (result) {
-        setUserData(result);
-        setErrorMessage("");
-      } else {
-        setErrorMessage("Không tìm thấy người dùng.");
-      }
-    } catch (error) {
-      setErrorMessage(error.message || "Có lỗi xảy ra!");
-      console.log("Lỗi khi tìm kiếm:", error);
-    }
-  };
-
   if (linearPrimary) {
     return (
       <LinearGradient
@@ -65,39 +35,58 @@ export default function SearchHeader({
       >
         <TouchableOpacity onPress={onPress}>
           <Ionicons
-            name="search-outline"
+            name="arrow-back-outline"
+            size={ICON_LARGE * 0.65}
+            color={iconColor}
+          />
+        </TouchableOpacity>
+        <View
+          style={{
+            fontSize: textMediumSize,
+            paddingLeft: BASE_UNIT * 0.05,
+            height: "100%",
+            flex: 1,
+            color: textColor,
+            //backgroundColor: "blue",
+            justifyContent: "center",
+          }}
+        >
+          <Text
+             numberOfLines={1}
+             ellipsizeMode="tail"
+             style={{
+               color: textColor,
+               fontWeight: "bold",
+               fontSize: textMediumSize,
+               maxWidth: "80%", // hoặc một giá trị phù hợp
+             }}
+          >
+            {userInfo?.name || userInfo?.groupName || "Tên người dùng test"}
+          </Text>
+        </View>
+
+        <TouchableOpacity style={{ marginRight: BASE_UNIT * 0.06 }}>
+          <Ionicons
+            name="call-outline"
+            size={ICON_LARGE * 0.7}
+            color={iconColor}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={async ()=>{
+          const channelName = uuidv4();
+          //Thiếu gửi thông báo đến nhóm
+          navigation.navigate('VideoCall', {channelName})}} style={{ marginRight: BASE_UNIT * 0.08 }}>
+          <Ionicons
+            name="videocam-outline"
             size={ICON_LARGE * 0.8}
             color={iconColor}
           />
         </TouchableOpacity>
 
-        <TextInput
-          style={{
-            fontSize: textMediumSize,
-            paddingLeft: BASE_UNIT * 0.05,
-            height: BASE_UNIT,
-            flex: 1,
-            color: textColor,
-          }}
-          placeholderTextColor={Colors.grey}
-          placeholder={useTextLanguage({
-            vietnamese: "Tìm kiếm",
-            english: "Search here",
-          })}
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          onSubmitEditing={handleSearch}
-          returnKeyType="search"
-        />
-
-        <TouchableOpacity style={{ marginRight: BASE_UNIT * 0.05 }}>
-          <Ionicons name={iconName} size={ICON_LARGE * 0.7} color={iconColor} />
-        </TouchableOpacity>
-
         <TouchableOpacity>
           <Ionicons
-            name={iconName2}
-            size={iconName2Size || ICON_LARGE * 0.95}
+            name="list-outline"
+            size={ICON_LARGE * 0.8}
             color={iconColor}
           />
         </TouchableOpacity>
@@ -136,10 +125,6 @@ export default function SearchHeader({
             vietnamese: "Tìm kiếm",
             english: "Search here",
           })}
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          onSubmitEditing={handleSearch}
-          returnKeyType="search"
         />
 
         <TouchableOpacity style={{ marginRight: BASE_UNIT * 0.05 }}>
@@ -161,6 +146,7 @@ export default function SearchHeader({
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     width: "100%",

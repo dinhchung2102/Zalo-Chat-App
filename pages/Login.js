@@ -10,6 +10,8 @@ import CircleButton from "../components/buttons/CircleButton";
 import { Colors } from "../styles/Colors";
 import { useTextLanguage } from "../hooks/useTextLanguage";
 import { login } from "../api/auth/login";
+import { useRecoilState } from "recoil";
+import { loginResultState } from "../state/PrimaryState";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -17,6 +19,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [securePassword, setSecurePassword] = useState(true)
+  const [loginResult, setLoginResult] = useRecoilState(loginResultState)
 
   const [error, setError] = useState(null);
 
@@ -36,6 +39,8 @@ export default function Login() {
     if (handleCheckNull()) {
       try {
         const response = await login(username, password);
+        console.log('<<<Lưu thông tin sau khi login vào recoil: >>>', response.data);
+        setLoginResult(response.data)
         if(response.status == 200){
           navigation.navigate("HomeMessage");
         }
