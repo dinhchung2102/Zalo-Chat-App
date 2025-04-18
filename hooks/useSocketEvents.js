@@ -34,14 +34,23 @@ export default function useSocketEvents(userId, onNewMessage) {
 
     socket.on("friendRequest", (data) => {
       console.log("📨 Nhận yêu cầu kết bạn:", data);
-      setRequests((prev) => ({
-        ...prev,
-        data: {
-          ...prev.data,
-          totalRequests: (prev.data?.totalRequests || 0) + 1,
-          requests: [...(prev.data?.requests || []), data],
-        },
-      }));
+      setRequests((prev) => {
+        // Kiểm tra xem _id của yêu cầu có trùng trong danh sách requests không
+        const isRequestExist = prev.data?.requests.some(request => request._id === data._id);
+    
+        // Nếu không trùng, tiến hành cập nhật
+        if (!isRequestExist) {
+          return {
+            ...prev,
+            data: {
+              ...prev.data,
+              totalRequests: (prev.data?.totalRequests || 0) + 1,
+              requests: [...(prev.data?.requests || []), data],
+            },
+          };
+        }
+        return prev; // Không thay đổi state
+      });
     });
 
     

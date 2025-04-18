@@ -17,11 +17,23 @@ import { useNavigation } from "@react-navigation/native";
 import { useRecoilValue } from "recoil";
 import { findUserState } from "../../state/FriendState";
 import { getShortNameRegister } from "../../utils/getShortName";
+import { loginResultState } from "../../state/PrimaryState";
+import { sendRequest } from "../../api/friend/sendRequest";
 
 export default function SearchUser() {
   const navigation = useNavigation();
   const searchUser = useRecoilValue(findUserState);
+  const loginResult = useRecoilValue(loginResultState)
 
+  const handleSendRequest = async () => {
+    try {
+      const res = await sendRequest(searchUser.phoneNumber, loginResult.token); 
+      console.log("✅ Gửi lời mời thành công:", res);
+    } catch (err) {
+      console.log("❌ Không thể gửi lời mời:", err.message);
+    }
+  };
+  
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity>
@@ -123,6 +135,7 @@ export default function SearchUser() {
             justifyContent: "center",
             borderRadius: BASE_UNIT * 0.05,
           }}
+          onPress={handleSendRequest}
         >
           <Text style={{ color: "white" }}>Kết bạn</Text>
         </TouchableOpacity>
