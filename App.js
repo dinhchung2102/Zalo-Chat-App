@@ -19,6 +19,7 @@ import Diary from "./pages/Diary";
 import RequestFriend from "./pages/ContactTab/RequestFriend";
 import PersonChat from "./pages/Chat/PersonChat";
 import SearchUser from "./pages/Public/SearchUser";
+import VideoCall from "./pages/VideoCall";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -59,6 +60,8 @@ export default function App() {
           <Stack.Screen name="RequestFriend" component={RequestFriend}/>
           <Stack.Screen name="PersonChat" component={PersonChat}/>
           <Stack.Screen name="SearchUser" component={SearchUser}/>
+          <Stack.Screen name="VideoCall" component={VideoCall} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

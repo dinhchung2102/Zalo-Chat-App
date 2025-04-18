@@ -13,6 +13,8 @@ import { BASE_UNIT } from "../../constants/screen";
 import { Colors } from "../../styles/Colors";
 import { textMediumSize } from "../../constants/fontSize";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
+import { useNavigation } from "@react-navigation/native";
+import { v4 as uuidv4 } from "uuid";
 
 export default function ChatHeader({
   textColor = "white",
@@ -22,6 +24,7 @@ export default function ChatHeader({
   backgroundColor = Colors.primary,
   userInfo,
 }) {
+  const navigation = useNavigation();
   if (linearPrimary) {
     return (
       <LinearGradient
@@ -69,8 +72,10 @@ export default function ChatHeader({
             color={iconColor}
           />
         </TouchableOpacity>
-
-        <TouchableOpacity style={{ marginRight: BASE_UNIT * 0.08 }}>
+        <TouchableOpacity onPress={async ()=>{
+          const channelName = uuidv4();
+          //Thiếu gửi thông báo đến nhóm
+          navigation.navigate('VideoCall', {channelName})}} style={{ marginRight: BASE_UNIT * 0.08 }}>
           <Ionicons
             name="videocam-outline"
             size={ICON_LARGE * 0.8}
