@@ -54,7 +54,12 @@ export default function PersonChat() {
     console.log(
       `[DEBUG]: {conversationId: ${conversationId}, senderId: ${senderId}, token: ${token}, file: ${selectedFile}}`
     );
-    const response = await sendFile(conversationId, selectedFile, senderId, token);
+    const response = await sendFile(
+      conversationId,
+      selectedFile,
+      senderId,
+      token
+    );
     setMessageList((prev) => {
       const exists = prev.some((msg) => msg._id === response._id);
       if (!exists) {
@@ -218,17 +223,43 @@ export default function PersonChat() {
 
                 <View
                   style={{
-                    backgroundColor: "white",
-                    padding: BASE_UNIT * 0.02,
+                    backgroundColor: "red",
                     borderRadius: BASE_UNIT * 0.02,
                     maxWidth: BASE_UNIT * 0.7,
                     marginLeft: isFirstMessageFromSender ? 0 : BASE_UNIT * 0.12,
                     minHeight: BASE_UNIT * 0.1,
                   }}
                 >
-                  <Text style={{ fontSize: textMediumSize, flexShrink: 1 }}>
-                    {item.content}
-                  </Text>
+                  {item.messageType === "image" ? (
+                    <TouchableOpacity>
+                      <Image
+                        source={{ uri: item.fileInfo.fileUrl }}
+                        resizeMode="contain"
+                        style={{
+                          width: BASE_UNIT * 0.5,
+                          height: undefined,
+                          aspectRatio: 1,
+                          borderRadius: BASE_UNIT * 0.03,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <View
+                      style={{
+                        backgroundColor: "white",
+                        padding: BASE_UNIT * 0.02,
+                        borderRadius: BASE_UNIT * 0.02,
+                        maxWidth: BASE_UNIT * 0.7,
+                        minHeight: BASE_UNIT * 0.12,
+                        borderWidth: 1,
+                        borderColor: "#d2e7f2",
+                      }}
+                    >
+                      <Text style={{ fontSize: textMediumSize }}>
+                        {item.content}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               </View>
             );

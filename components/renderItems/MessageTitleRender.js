@@ -96,7 +96,7 @@ export default function MessageTitleRender() {
                     }}
                   >
                     <Text style={{ fontSize: textMediumPlus, color: "white" }}>
-                      {getShortNameRegister(item.recipient.fullName)}
+                      {getShortNameRegister(item?.recipient?.fullName || item?.groupName || "Nhóm")}
                     </Text>
                   </View>
                 )}
