@@ -39,7 +39,7 @@ export default function Received() {
             paddingHorizontal: BASE_UNIT * 0.02,
           }}
         >
-          {item.actionUser.profilePic ? (
+          {item.actionUser && item.actionUser.profilePic ? (
             <Image
               source={{
                 uri: item.actionUser.profilePic || "",
@@ -72,7 +72,7 @@ export default function Received() {
                   color: "white",
                 }}
               >
-                {getShortNameRegister(item.actionUser.fullName)}
+                {getShortNameRegister(item.actionUser?.fullName || "Unknown")}
               </Text>
             </View>
           )}

@@ -61,7 +61,7 @@ export default function ChatHeader({
                maxWidth: "80%", // hoặc một giá trị phù hợp
              }}
           >
-            {userInfo?.name || userInfo?.groupName || "Tên người dùng test"}
+            {userInfo?.name || userInfo?.fullName || userInfo?.groupName || "Tên người dùng test"}
           </Text>
         </View>
 

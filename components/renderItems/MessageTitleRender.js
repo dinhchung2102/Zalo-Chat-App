@@ -24,7 +24,8 @@ export default function MessageTitleRender() {
   const [dataConversations, setDataConversations] =
     useRecoilState(conversationState);
   const [messages, setMessages] = useRecoilState(messagesByConversationState);
-  console.log("<<<[DEBUG]: dataConversations: ", dataConversations);
+
+  //console.log("<<<[DEBUG]: dataConversations: ", dataConversations);
   //console.log('[DEBUG]: messages: ', messages);
 
   //Cần nghiên cứu lại
@@ -133,7 +134,7 @@ export default function MessageTitleRender() {
                     {item.groupName || item.name}
                   </Text>
                   <Text style={{ color: Colors.grey }}>
-                    {getTimeAlong(item.updatedAt, locale)}
+                    {getTimeAlong(item.latestActivityTime, locale)}
                   </Text>
                 </View>
 
@@ -141,7 +142,7 @@ export default function MessageTitleRender() {
                   style={{
                     fontWeight: item.unseenCount > 0 ? "bold" : "normal",
                     fontSize: textMediumSize * 0.9,
-                    color: item.unseenCount > 0 ? "black" : Colors.grey,
+                    color: item.unseenCount > 0 ? "black" : Colors.grey,       
                   }}
                 >
                   {item.lastMessage
@@ -152,7 +153,7 @@ export default function MessageTitleRender() {
                       : item.lastMessage.sender.fullName +
                         ": " +
                         item.lastMessage.content
-                    : "Nhắn tin"}
+                    : item.groupName ? "Chia sẻ tệp" : "Các bạn đã là bạn bè 😊"}
                 </Text>
                 <View
                   style={{

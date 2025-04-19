@@ -1,13 +1,18 @@
 import apiClient from "../apiClient";
 import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
 
-export const findUser = async (phoneNumber) => {
+export const findUser = async (phoneNumber, token) => {
   try {
     const formattedPhone = formatPhoneNumber(phoneNumber); // chuẩn hóa
     //console.log("📞 Tìm user theo số:", encodeURIComponent(formattedPhone));
 
     const response = await apiClient.get(
-      `/users/get-by-phone/${encodeURIComponent(formattedPhone)}`
+      `/users/get-by-phone/${encodeURIComponent(formattedPhone)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // 👈 Gửi token lên server
+        },
+      }
     );
     console.log("📲 Kết quả tìm người dùng:", response.data);
     if (response.data) {

@@ -23,17 +23,17 @@ import { sendRequest } from "../../api/friend/sendRequest";
 export default function SearchUser() {
   const navigation = useNavigation();
   const searchUser = useRecoilValue(findUserState);
-  const loginResult = useRecoilValue(loginResultState)
+  const loginResult = useRecoilValue(loginResultState);
 
   const handleSendRequest = async () => {
     try {
-      const res = await sendRequest(searchUser.phoneNumber, loginResult.token); 
+      const res = await sendRequest(searchUser.phoneNumber, loginResult.token);
       console.log("✅ Gửi lời mời thành công:", res);
     } catch (err) {
       console.log("❌ Không thể gửi lời mời:", err.message);
     }
   };
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity>
@@ -98,7 +98,7 @@ export default function SearchUser() {
             }}
           >
             <Text style={{ fontSize: textLargeSize * 0.6, color: "white" }}>
-              {getShortNameRegister(searchUser.fullName)}
+              {getShortNameRegister(searchUser.user.fullName)}
             </Text>
           </TouchableOpacity>
         </View>
@@ -111,47 +111,66 @@ export default function SearchUser() {
           fontWeight: "500",
         }}
       >
-        {searchUser.fullName}
+        {searchUser.user.fullName}
       </Text>
 
-      <View
-        style={{
-          flexDirection: "row",
-          width: BASE_UNIT * 0.2,
-          // backgroundColor: "red",
-          marginTop: BASE_UNIT * 0.03,
-          width: BASE_UNIT,
-          alignItems: "center",
-          //backgroundColor:"red",
-          justifyContent: "space-evenly",
-        }}
-      >
-        <TouchableOpacity
+      {searchUser.isFriend === false ? (
+        <View
           style={{
+            flexDirection: "row",
             width: BASE_UNIT * 0.2,
-            backgroundColor: Colors.primary,
-            height: BASE_UNIT * 0.08,
+            // backgroundColor: "red",
+            marginTop: BASE_UNIT * 0.03,
+            width: BASE_UNIT,
             alignItems: "center",
-            justifyContent: "center",
-            borderRadius: BASE_UNIT * 0.05,
-          }}
-          onPress={handleSendRequest}
-        >
-          <Text style={{ color: "white" }}>Kết bạn</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            width: BASE_UNIT * 0.2,
-            backgroundColor: "grey",
-            height: BASE_UNIT * 0.08,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: BASE_UNIT * 0.05,
+            //backgroundColor:"red",
+            justifyContent: "space-evenly",
           }}
         >
-          <Text style={{ color: "white" }}>Nhắn tin</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={{
+              width: BASE_UNIT * 0.2,
+              backgroundColor: Colors.primary,
+              height: BASE_UNIT * 0.08,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: BASE_UNIT * 0.05,
+            }}
+            onPress={handleSendRequest}
+          >
+            <Text style={{ color: "white" }}>Kết bạn</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: BASE_UNIT * 0.2,
+              backgroundColor: "grey",
+              height: BASE_UNIT * 0.08,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: BASE_UNIT * 0.05,
+            }}
+          >
+            <Text style={{ color: "white" }}>Nhắn tin</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View>
+          <TouchableOpacity
+            style={{
+              width: BASE_UNIT * 0.25,
+              height: BASE_UNIT * 0.07,
+              borderRadius: BASE_UNIT*0.05,
+              backgroundColor: Colors.primary,
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: BASE_UNIT*0.03,
+            }}
+            onPress={()=>{navigation.navigate('PersonChat', {userInfo: searchUser.user})}}
+          >
+            <Text style={{color:"white"}}>Nhắn tin</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
