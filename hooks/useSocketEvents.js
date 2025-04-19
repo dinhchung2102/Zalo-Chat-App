@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import socket from "../services/socketService";
 import { useRecoilState } from "recoil";
 import { requestState } from "../state/FriendState";
+import { messagesByConversationState } from "../state/ChatState";
 
 export default function useSocketEvents(userId, onNewMessage) {
   const [requests, setRequests] = useRecoilState(requestState);
+  const [messages, setMessages] = useRecoilState(messagesByConversationState)
   useEffect(() => {
     if (!userId) {
       console.log("⚠️ Không có userId, không thể kết nối socket.");
@@ -65,6 +67,17 @@ export default function useSocketEvents(userId, onNewMessage) {
       if (onNewMessage) {
         onNewMessage(data);
       }
+      setMessages((prev)=>{
+        const conversationId = data.conversationId;
+        const newMessage = data.message;
+        const existingMessages = prev[conversationId]|| [];
+        const updatedMessages = [...existingMessages, newMessage];
+
+        return{
+          ...prev,
+          [conversationId]: updatedMessages
+        }
+      })
       
     });
     

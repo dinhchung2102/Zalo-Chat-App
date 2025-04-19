@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { BASE_UNIT } from "../../constants/screen";
 import { textMediumPlus, textMediumSize } from "../../constants/fontSize";
 import { Colors } from "../../styles/Colors";
-import { getListConversation } from "../../api/chat/conversation";
+import { getListConversation, unseenMessages } from "../../api/chat/conversation";
 import { getTimeAlong } from "../../utils/getTimeAlong";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 import { getShortNameRegister } from "../../utils/getShortName";
@@ -53,7 +53,8 @@ export default function MessageTitleRender() {
                 //console.log(`item sẽ truyền:`,item._id);
                 //console.log(loginResult.token);
                 const messages = await getMessages(loginResult.token, item._id);
-                await setMessages(messages);
+                await unseenMessages(loginResult.token, item._id, loginResult.user._id);
+                setMessages(messages);
                 navigation.navigate("PersonChat", {
                   userInfo: item,
                 });
@@ -126,6 +127,7 @@ export default function MessageTitleRender() {
                     style={{
                       fontSize: textMediumSize * 1.1,
                       marginBottom: BASE_UNIT * 0.01,
+                      fontWeight: item.unseenCount > 0 ? "bold" : "normal",
                     }}
                   >
                     {item.groupName || item.name}
@@ -136,14 +138,37 @@ export default function MessageTitleRender() {
                 </View>
 
                 <Text
-                  style={{ fontSize: textMediumSize * 0.9, color: Colors.grey }}
+                  style={{
+                    fontWeight: item.unseenCount > 0 ? "bold" : "normal",
+                    fontSize: textMediumSize * 0.9,
+                    color: item.unseenCount > 0 ? "black" : Colors.grey,
+                  }}
                 >
                   {item.lastMessage
                     ? item.lastMessage.sender._id === loginResult.user._id
                       ? "Bạn: " + item.lastMessage.content
-                      : item.isGroup === false ?  item.lastMessage.content : item.lastMessage.sender.fullName + ": " + item.lastMessage.content
+                      : item.isGroup === false
+                      ? item.lastMessage.content
+                      : item.lastMessage.sender.fullName +
+                        ": " +
+                        item.lastMessage.content
                     : "Nhắn tin"}
                 </Text>
+                <View
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    bottom: BASE_UNIT*0.03,
+                    height: BASE_UNIT * 0.05,
+                    width: BASE_UNIT * 0.05,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: BASE_UNIT*0.05,
+                    backgroundColor: item.unseenCount > 0 ? "red" :"transparent",
+                  }}
+                >
+                  <Text style={{color:"white"}}>{item.unseenCount > 0 ? item.unseenCount : ""}</Text>
+                </View>
               </View>
             </TouchableOpacity>
           );
