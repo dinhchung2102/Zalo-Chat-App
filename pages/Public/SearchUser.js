@@ -6,7 +6,7 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
@@ -19,20 +19,12 @@ import { findUserState } from "../../state/FriendState";
 import { getShortNameRegister } from "../../utils/getShortName";
 import { loginResultState } from "../../state/PrimaryState";
 import { sendRequest } from "../../api/friend/sendRequest";
+import AddFriendButton from "../../components/buttons/AddFriendButton";
+import SendMessageButton from "../../components/buttons/SendMessageButton";
 
 export default function SearchUser() {
   const navigation = useNavigation();
   const searchUser = useRecoilValue(findUserState);
-  const loginResult = useRecoilValue(loginResultState);
-
-  const handleSendRequest = async () => {
-    try {
-      const res = await sendRequest(searchUser.phoneNumber, loginResult.token);
-      console.log("✅ Gửi lời mời thành công:", res);
-    } catch (err) {
-      console.log("❌ Không thể gửi lời mời:", err.message);
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -114,63 +106,60 @@ export default function SearchUser() {
         {searchUser.user.fullName}
       </Text>
 
-      {searchUser.isFriend === false ? (
+      {searchUser.status === null ? (
         <View
           style={{
             flexDirection: "row",
-            width: BASE_UNIT * 0.2,
-            // backgroundColor: "red",
-            marginTop: BASE_UNIT * 0.03,
-            width: BASE_UNIT,
             alignItems: "center",
-            //backgroundColor:"red",
+            //backgroundColor: "red",
+            width: BASE_UNIT,
             justifyContent: "space-evenly",
+            marginTop: BASE_UNIT * 0.03,
           }}
         >
-          <TouchableOpacity
-            style={{
-              width: BASE_UNIT * 0.2,
-              backgroundColor: Colors.primary,
-              height: BASE_UNIT * 0.08,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: BASE_UNIT * 0.05,
-            }}
-            onPress={handleSendRequest}
-          >
-            <Text style={{ color: "white" }}>Kết bạn</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: BASE_UNIT * 0.2,
-              backgroundColor: "grey",
-              height: BASE_UNIT * 0.08,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: BASE_UNIT * 0.05,
-            }}
-          >
-            <Text style={{ color: "white" }}>Nhắn tin</Text>
-          </TouchableOpacity>
+          <AddFriendButton targetUser={searchUser} />
+          <SendMessageButton disabled={true} />
         </View>
-      ) : (
+      ) : searchUser.status === "pending" ? (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            //backgroundColor: "red",
+            width: BASE_UNIT,
+            justifyContent: "space-evenly",
+            marginTop: BASE_UNIT * 0.03,
+          }}
+        >
+          <AddFriendButton targetUser={searchUser} />
+          <SendMessageButton disabled={true} />
+        </View>
+      ) : searchUser.status === "accepted" ? (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            //backgroundColor: "red",
+            width: BASE_UNIT,
+            justifyContent: "space-evenly",
+            marginTop: BASE_UNIT * 0.03,
+          }}
+        >
+          <AddFriendButton targetUser={searchUser} />
+          {/* <SendMessageButton
+            disabled={false}
+            onPress={() => {
+              navigation.navigate("PersonChat", { userInfo: searchUser.user });
+            }}
+          /> */}
+        </View>
+      ) : searchUser.status === "blocked" ? (
         <View>
-          <TouchableOpacity
-            style={{
-              width: BASE_UNIT * 0.25,
-              height: BASE_UNIT * 0.07,
-              borderRadius: BASE_UNIT*0.05,
-              backgroundColor: Colors.primary,
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: BASE_UNIT*0.03,
-            }}
-            onPress={()=>{navigation.navigate('PersonChat', {userInfo: searchUser.user})}}
-          >
-            <Text style={{color:"white"}}>Nhắn tin</Text>
-          </TouchableOpacity>
+          <Text style={{ marginTop: BASE_UNIT * 0.03, textAlign: "center" }}>
+            Bạn đã bị chặn, không thể nhắn tin.
+          </Text>
         </View>
-      )}
+      ) : null}
     </SafeAreaView>
   );
 }

@@ -42,7 +42,7 @@ export default function PersonChat() {
     messagesByConversationState
   );
 
-  // console.log(`<<<userInfo>>>: `,userInfo);
+  console.log(`<<<userInfo>>>: `,userInfo);
   console.log(`<<DEBUG>>: messagesData`, messagesData);
 
   const [messages, setMessages] = useState("");
