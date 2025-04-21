@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchHeader from "../../components/headers/SearchHeader";
@@ -10,21 +10,15 @@ import useSocketEvents from "../../hooks/useSocketEvents";
 import socket from "../../services/socketService";
 import { useRecoilValue } from "recoil";
 import { loginResultState } from "../../state/PrimaryState";
+import * as Notifications from "expo-notifications";
+import { useNavigation } from "@react-navigation/native";
 
 export default function HomeMessage() {
   const loginResult = useRecoilValue(loginResultState);
+  const navigation = useNavigation();
   
   useSocketEvents(loginResult?.user?._id);
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("✅ Socket connected:", socket.id);
-      console.log("Query params:", socket.handshake.query);
-    });
 
-    return () => {
-      socket.off("connect");
-    };
-  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,7 +29,9 @@ export default function HomeMessage() {
         textColor="white"
         iconName={"qr-code-outline"}
         iconName2={"add"}
+        iconOnpress2={()=>{navigation.navigate("CreateGroup")}}
       />
+     
       <View
         style={{
           paddingHorizontal: BASE_UNIT * 0.05,

@@ -21,7 +21,6 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "android.permission.RECORD_AUDIO",
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.anonymous.ZaloChatApp"
@@ -38,7 +37,10 @@
       ]
     ],
     "extra": {
-      "PORT": "192.168.1.73:5001"
+      "PORT": "192.168.1.73:5001",
+      "eas": {
+        "projectId": "2d35f0ca-ca78-4d44-8045-f92b0ec90454"
+      }
     }
   }
 }

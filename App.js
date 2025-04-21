@@ -20,9 +20,49 @@ import RequestFriend from "./pages/ContactTab/RequestFriend";
 import PersonChat from "./pages/Chat/PersonChat";
 import SearchUser from "./pages/Public/SearchUser";
 import VideoCall from "./pages/VideoCall";
+import * as Notifications from "expo-notifications";
+import { registerForPushNotificationsAsync } from "./services/notificationService";
+import { useEffect, useRef, useState } from "react";
+import CreateGroup from "./pages/Group/CreateGroup";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 export default function App() {
   const Stack = createStackNavigator();
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    // Gọi hàm tách riêng của bạn
+    registerForPushNotificationsAsync().then((token) => {
+      if (token) setExpoPushToken(token);
+    });
+
+    // Lắng nghe thông báo đến
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        console.log("Thông báo đến:", notification);
+      });
+
+    // Lắng nghe khi người dùng tương tác với thông báo
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log("Người dùng đã nhấn vào thông báo:", response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
   return (
     <RecoilRoot>
       <NavigationContainer>
@@ -37,10 +77,10 @@ export default function App() {
           <Stack.Screen name="FAQ" component={FAQ} />
           <Stack.Screen name="SignUpZaloName" component={SignUpZaloName} />
           <Stack.Screen name="SignUpAddProfile" component={SignUpAddProfile} />
-          <Stack.Screen name="UpdateAvatar" component={UpdateAvatar}/>
+          <Stack.Screen name="UpdateAvatar" component={UpdateAvatar} />
           <Stack.Screen
             options={{
-              animation: 'none',
+              animation: "none",
             }}
             name="HomeMessage"
             component={HomeMessage}
@@ -52,16 +92,16 @@ export default function App() {
             name="Profile"
             component={Profile}
           />
-          <Stack.Screen name="ProfileUser" component={ProfileUser}/>
-          <Stack.Screen name="ProfileSetting" component={ProfileSetting}/>
-          <Stack.Screen name="Contact" component={Contact}/>
-          <Stack.Screen name="Explore" component={Explore}/>
-          <Stack.Screen name="Diary" component={Diary}/>
-          <Stack.Screen name="RequestFriend" component={RequestFriend}/>
-          <Stack.Screen name="PersonChat" component={PersonChat}/>
-          <Stack.Screen name="SearchUser" component={SearchUser}/>
+          <Stack.Screen name="ProfileUser" component={ProfileUser} />
+          <Stack.Screen name="ProfileSetting" component={ProfileSetting} />
+          <Stack.Screen name="Contact" component={Contact} />
+          <Stack.Screen name="Explore" component={Explore} />
+          <Stack.Screen name="Diary" component={Diary} />
+          <Stack.Screen name="RequestFriend" component={RequestFriend} />
+          <Stack.Screen name="PersonChat" component={PersonChat} />
+          <Stack.Screen name="SearchUser" component={SearchUser} />
           <Stack.Screen name="VideoCall" component={VideoCall} />
-
+          <Stack.Screen name="CreateGroup" component={CreateGroup} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

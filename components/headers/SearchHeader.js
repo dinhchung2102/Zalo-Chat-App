@@ -15,8 +15,9 @@ import { textMediumSize } from "../../constants/fontSize";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 import { findUser } from "../../api/friend/findUser";
 import { useNavigation } from "@react-navigation/native";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { findUserState } from "../../state/FriendState";
+import { loginResultState } from "../../state/PrimaryState";
 
 export default function SearchHeader({
   textColor = "white",
@@ -28,9 +29,11 @@ export default function SearchHeader({
   iconNameSize,
   iconName2,
   iconName2Size,
+  iconOnpress2
 }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [, setUserData] = useRecoilState(findUserState);
+  const loginResult = useRecoilValue(loginResultState);
   const [errorMessage, setErrorMessage] = useState("");
   const navigation = useNavigation();
 
@@ -40,7 +43,7 @@ export default function SearchHeader({
       return;
     }
     try {
-      const result = await findUser(phoneNumber);
+      const result = await findUser(phoneNumber, loginResult.token);
       console.log("Kết quả từ findUser:", result);
       navigation.navigate("SearchUser");
       if (result) {
@@ -94,7 +97,7 @@ export default function SearchHeader({
           <Ionicons name={iconName} size={ICON_LARGE * 0.7} color={iconColor} />
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={iconOnpress2}>
           <Ionicons
             name={iconName2}
             size={iconName2Size || ICON_LARGE * 0.95}
