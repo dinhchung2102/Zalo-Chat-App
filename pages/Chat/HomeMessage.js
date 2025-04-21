@@ -11,9 +11,11 @@ import socket from "../../services/socketService";
 import { useRecoilValue } from "recoil";
 import { loginResultState } from "../../state/PrimaryState";
 import * as Notifications from "expo-notifications";
+import { useNavigation } from "@react-navigation/native";
 
 export default function HomeMessage() {
   const loginResult = useRecoilValue(loginResultState);
+  const navigation = useNavigation();
   
   useSocketEvents(loginResult?.user?._id);
 
@@ -27,6 +29,7 @@ export default function HomeMessage() {
         textColor="white"
         iconName={"qr-code-outline"}
         iconName2={"add"}
+        iconOnpress2={()=>{navigation.navigate("CreateGroup")}}
       />
      
       <View

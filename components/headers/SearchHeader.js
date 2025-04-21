@@ -29,6 +29,7 @@ export default function SearchHeader({
   iconNameSize,
   iconName2,
   iconName2Size,
+  iconOnpress2
 }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [, setUserData] = useRecoilState(findUserState);
@@ -96,7 +97,7 @@ export default function SearchHeader({
           <Ionicons name={iconName} size={ICON_LARGE * 0.7} color={iconColor} />
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={iconOnpress2}>
           <Ionicons
             name={iconName2}
             size={iconName2Size || ICON_LARGE * 0.95}
