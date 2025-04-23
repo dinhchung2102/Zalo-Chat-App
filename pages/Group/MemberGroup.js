@@ -15,7 +15,9 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { useRecoilValue } from "recoil";
 import { loginResultState } from "../../state/PrimaryState";
 import { selectedConversationState } from "../../state/ChatState";
-import { getShortNameRegister } from "../../utils/getShortName"
+import { getShortNameRegister } from "../../utils/getShortName";
+import { deleteGroup } from "../../api/chat/conversation";
+import { Alert } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
 const { width } = Dimensions.get("window");
@@ -41,7 +43,12 @@ const MemberGroup = ({ navigation, route }) => {
       </TouchableOpacity>
       <Text style={styles.headerTitle}>Quản lý thành viên</Text>
       <View style={styles.headerRight}>
-        <TouchableOpacity style={styles.headerButton} onPress={()=>{navigation.navigate("AddMember")}}>
+        <TouchableOpacity
+          style={styles.headerButton}
+          onPress={() => {
+            navigation.navigate("AddMember");
+          }}
+        >
           <Icon name="person-add" size={24} color="#000" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.headerButton}>
@@ -87,7 +94,9 @@ const MemberGroup = ({ navigation, route }) => {
           <Image source={{ uri: item.profilePic }} style={styles.avatar} />
         ) : (
           <View style={styles.avatar}>
-            <Text style={{color: "white"}}>{getShortNameRegister(item.fullName)}</Text>
+            <Text style={{ color: "white" }}>
+              {getShortNameRegister(item.fullName)}
+            </Text>
           </View>
         )}
 
@@ -119,6 +128,28 @@ const MemberGroup = ({ navigation, route }) => {
         data={dummyData}
         renderItem={({ item }) => <MemberItem item={item} />}
         keyExtractor={(item) => item._id}
+        ListFooterComponent={
+          loginResult.user._id === selectedConversation.groupLeader && (
+            <View
+              style={{ marginTop: 20, width: "100%", alignItems: "center" }}
+            >
+              <TouchableOpacity onPress={async () => {
+                console.log(selectedConversation._id);
+                
+                const resultDelete = await deleteGroup(loginResult.token, selectedConversation._id);
+                if(resultDelete.status == 200){
+                  navigation.navigate("HomeMessage");
+                }
+                else{
+                  console.log("[DEBUG]: Lỗi khi giải tán nhóm",resultDelete);
+                  Alert.alert("Lỗi", resultDelete)
+                }
+              }}>
+                <Text style={{ color: "red", fontSize: 16 }}>Giải tán</Text>
+              </TouchableOpacity>
+            </View>
+          )
+        }
       />
     </View>
   );
@@ -183,17 +214,55 @@ const MemberGroup = ({ navigation, route }) => {
                 <TouchableOpacity style={styles.memberAction}>
                   <Text>Xem trang cá nhân</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.memberAction}>
-                  <Text>Xoá vai trò phó cộng đồng</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.memberAction}>
-                  <Text>Chặn thành viên</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.memberAction, styles.dangerAction]}
-                >
-                  <Text style={styles.dangerText}>Xoá khỏi cộng đồng</Text>
-                </TouchableOpacity>
+
+                {/**Đang đầu hàng kkk */}
+                {loginResult.user._id === selectedConversation.groupLeader ? (
+                  <View>
+                    {/* Nếu groupDeputy chưa được bổ nhiệm */}
+                    {selectedConversation.groupDeputy === null &&
+                    selectedMember._id !== loginResult.user._id ? (
+                      <TouchableOpacity
+                        style={[styles.memberAction, styles.primaryAction]}
+                      >
+                        <Text style={styles.primaryText}>
+                          Bổ nhiệm làm phó nhóm
+                        </Text>
+                      </TouchableOpacity>
+                    ) : selectedMember._id ===
+                      selectedConversation.groupDeputy ? (
+                      <TouchableOpacity
+                        style={[styles.memberAction, styles.warningAction]}
+                      >
+                        <Text style={styles.warningText}>
+                          Xoá quyền phó nhóm
+                        </Text>
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
+                ) : null}
+
+                {/**Không thể chặn chính mình */}
+                {loginResult.user._id !== selectedMember._id ? (
+                  <TouchableOpacity style={styles.memberAction}>
+                    <Text>Chặn thành viên</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={[styles.memberAction, styles.dangerAction]}
+                  >
+                    <Text style={styles.dangerText}>Rời nhóm</Text>
+                  </TouchableOpacity>
+                )}
+
+                {/**chỉ leader mới có thể xóa member khỏi cộng đồng*/}
+                {loginResult.user._id === selectedConversation.groupLeader &&
+                loginResult.user._id !== selectedMember._id ? (
+                  <TouchableOpacity
+                    style={[styles.memberAction, styles.dangerAction]}
+                  >
+                    <Text style={styles.dangerText}>Xoá khỏi cộng đồng</Text>
+                  </TouchableOpacity>
+                ) : null}
               </View>
             </>
           )}
@@ -325,7 +394,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "blue"
+    backgroundColor: "blue",
   },
   memberInfo: {
     marginLeft: 12,

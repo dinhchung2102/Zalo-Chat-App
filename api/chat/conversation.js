@@ -110,3 +110,22 @@ export const getConversationById  = async (token, conversationId) =>{
   }
 
 }
+
+export const deleteGroup = async (token, conversationId) => {
+  try {
+    const response = await apiClient.delete(`/conversations/delete-group/${conversationId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.log("[ERROR]: Lỗi khi  Giải tán nhóm", error.response.data?.message);
+      return error.response.data?.message;
+    }
+    console.error("Lỗi khi kết nối tới server:", error.message);
+    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+  }
+}
