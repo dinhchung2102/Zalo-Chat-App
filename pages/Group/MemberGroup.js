@@ -12,15 +12,27 @@ import {
 import React, { useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { useRecoilValue } from "recoil";
+import { loginResultState } from "../../state/PrimaryState";
+import { selectedConversationState } from "../../state/ChatState";
+import { getShortNameRegister } from "../../utils/getShortName"
 
 const Tab = createMaterialTopTabNavigator();
 const { width } = Dimensions.get("window");
 
-const MemberGroup = ({ navigation }) => {
+const MemberGroup = ({ navigation, route }) => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const loginResult = useRecoilValue(loginResultState);
+  const { userInfo } = route.params;
+  //console.log(userInfo);
+  const selectedConversation = useRecoilValue(selectedConversationState);
+  console.log(selectedConversation);
 
-  const dummyData = [
+  console.log(selectedConversation.groupLeader);
+
+  const dummyData = userInfo.participants;
+  const dummysData = [
     {
       _id: "6800e92dea67f133622dbf36",
       fullName: "Nguyen Van Nam",
@@ -127,7 +139,9 @@ const MemberGroup = ({ navigation }) => {
 
   const MemberListHeader = () => (
     <View style={styles.memberListHeader}>
-      <Text style={styles.memberCount}>Thành viên (86)</Text>
+      <Text style={styles.memberCount}>
+        Thành viên ({userInfo.participants.length})
+      </Text>
       <Text style={styles.memberListDescription}>
         Chỉ trưởng và phó cộng đồng xem được đầy đủ danh sách thành viên.
         <Text style={styles.linkText}>Thay đổi quyền xem</Text>
@@ -144,14 +158,27 @@ const MemberGroup = ({ navigation }) => {
       }}
     >
       <View style={styles.memberLeftContent}>
-        <Image source={{ uri: item.profilePic }} style={styles.avatar} />
+        {item.profilePic ? (
+          <Image source={{ uri: item.profilePic }} style={styles.avatar} />
+        ) : (
+          <View style={styles.avatar}>
+            <Text style={{color: "white"}}>{getShortNameRegister(item.fullName)}</Text>
+          </View>
+        )}
+
         <View style={styles.memberInfo}>
           <Text style={styles.memberName}>{item.fullName}</Text>
-          <Text style={styles.memberRole}>{item.role}</Text>
+          <Text style={styles.memberRole}>
+            {item._id === selectedConversation.groupLeader
+              ? "Nhóm trưởng"
+              : item._id === selectedConversation.groupDeputy
+              ? "Nhóm phó"
+              : "Thành viên"}
+          </Text>
         </View>
       </View>
 
-      {!item.isMe && (
+      {item._id != loginResult.user._id && (
         <TouchableOpacity style={styles.addFriendButton}>
           <Icon name="person-add-alt" size={20} color="#0068FF" />
         </TouchableOpacity>
@@ -173,7 +200,9 @@ const MemberGroup = ({ navigation }) => {
 
   const AdminScreen = () => (
     <FlatList
-      data={dummyData.filter((m) => m.role.includes("cộng đồng"))}
+      // data={dummyData.filter((m) => m.role.includes("cộng đồng"))}
+      // Chưa fix
+      data={dummyData}
       renderItem={({ item }) => <MemberItem item={item} />}
       keyExtractor={(item) => item._id}
     />
@@ -369,6 +398,9 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "blue"
   },
   memberInfo: {
     marginLeft: 12,

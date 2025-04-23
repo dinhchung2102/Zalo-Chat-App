@@ -15,6 +15,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   conversationState,
   messagesByConversationState,
+  selectedConversationState,
 } from "../../state/ChatState";
 import { getMessages } from "../../api/chat/messages";
 import { loginResultState } from "../../state/PrimaryState";
@@ -27,9 +28,10 @@ export default function MessageTitleRender() {
   const [dataConversations, setDataConversations] =
     useRecoilState(conversationState);
   const [messages, setMessages] = useRecoilState(messagesByConversationState);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState)
 
-  //console.log("<<<[DEBUG]: dataConversations: ", dataConversations);
-  //console.log('[DEBUG]: messages: ', messages);
+  console.log("<<<[DEBUG]: dataConversations: ", dataConversations);
+  console.log('[DEBUG]: messages: ', messages);
 
   //Cần nghiên cứu lại
   useEffect(() => {
@@ -63,6 +65,7 @@ export default function MessageTitleRender() {
                   loginResult.user._id
                 );
                 setMessages(messages);
+                setSelectedConversation(item)
                 navigation.navigate("PersonChat", {
                   userInfo: item,
                 });
