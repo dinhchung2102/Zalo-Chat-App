@@ -17,11 +17,37 @@ export const getListConversation = async (token) => {
     return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
   }
 };
+
+export const createNewGroup = async (token, groupName, participantIds) => {
+  try {
+    const response = await apiClient.post(
+      `/conversations/createGroup`,
+      {
+        groupName,
+        participantIds,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.log("[ERROR]: Khi Tạo nhóm", error.response.data?.message);
+      return error.response.data?.message;
+    }
+    console.error("Lỗi khi kết nối tới server:", error.message);
+    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+  }
+};
+
 export const unseenMessages = async (token, conversationId, userId) => {
   try {
     const response = await apiClient.post(
       `/conversations/${conversationId}/reset-unseen`,
-      { userId }, 
+      { userId },
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -8,84 +8,89 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { launchImageLibrary } from "react-native-image-picker";
+import { getListFriend } from "../../api/friend/getListFriend";
+import { useRecoilValue } from "recoil";
+import frr, { loginResultState } from "../../state/PrimaryState";
+import { createNewGroup } from "../../api/chat/conversation";
+import { useNavigation } from "@react-navigation/native";
 
-const users = [
-  {
-    _id: "6800e92dea67f133622dbf36",
-    email: "nam@gmail.com",
-    fullName: "Nguyen Van Nam",
-    profilePic: "https://i.pravatar.cc/150?img=1",
-    phoneNumber: "+84333222100",
-    gender: "Male",
-    backgroundImage: "",
-    isActive: true,
-    dateOfBirth: "2005-04-17T00:00:00.000Z",
-    lastSeen: null,
-  },
-  {
-    _id: "6800e92dea67f133622dbf37",
-    email: "thu@gmail.com",
-    fullName: "Nguyen Thu Ha",
-    profilePic: "https://i.pravatar.cc/150?img=2",
-    phoneNumber: "+84333222101",
-    gender: "Female",
-    backgroundImage: "",
-    isActive: true,
-    dateOfBirth: "2000-05-20T00:00:00.000Z",
-    lastSeen: null,
-  },
-  {
-    _id: "6800e92dea67f133622dbf38",
-    email: "minh@gmail.com",
-    fullName: "Tran Minh Duc",
-    profilePic: "https://i.pravatar.cc/150?img=3",
-    phoneNumber: "+84333222102",
-    gender: "Male",
-    backgroundImage: "",
-    isActive: false,
-    dateOfBirth: "1995-08-12T00:00:00.000Z",
-    lastSeen: null,
-  },
-  {
-    _id: "6800e92dea67f133622dbf66",
-    email: "minh@gmail.com",
-    fullName: "Tran Minh Da",
-    profilePic: "https://i.pravatar.cc/150?img=3",
-    phoneNumber: "+84333222102",
-    gender: "Male",
-    backgroundImage: "",
-    isActive: false,
-    dateOfBirth: "1995-08-12T00:00:00.000Z",
-    lastSeen: null,
-  },
-  {
-    _id: "6800e92dea67f133622dbf92",
-    email: "minh@gmail.com",
-    fullName: "da Minh Hao",
-    profilePic: "https://i.pravatar.cc/150?img=3",
-    phoneNumber: "+84333222102",
-    gender: "Male",
-    backgroundImage: "",
-    isActive: false,
-    dateOfBirth: "1995-08-12T00:00:00.000Z",
-    lastSeen: null,
-  },
-  {
-    _id: "6800e92dea62f133622dbf33",
-    email: "minh@gmail.com",
-    fullName: "Tran NGuyec",
-    profilePic: "https://i.pravatar.cc/150?img=3",
-    phoneNumber: "+84333222101",
-    gender: "Male",
-    backgroundImage: "",
-    isActive: false,
-    dateOfBirth: "1995-08-12T00:00:00.000Z",
-    lastSeen: null,
-  },
-];
+// const users = [
+//   {
+//     _id: "6800e92dea67f133622dbf36",
+//     email: "nam@gmail.com",
+//     fullName: "Nguyen Van Nam",
+//     profilePic: "https://i.pravatar.cc/150?img=1",
+//     phoneNumber: "+84333222100",
+//     gender: "Male",
+//     backgroundImage: "",
+//     isActive: true,
+//     dateOfBirth: "2005-04-17T00:00:00.000Z",
+//     lastSeen: null,
+//   },
+//   {
+//     _id: "6800e92dea67f133622dbf37",
+//     email: "thu@gmail.com",
+//     fullName: "Nguyen Thu Ha",
+//     profilePic: "https://i.pravatar.cc/150?img=2",
+//     phoneNumber: "+84333222101",
+//     gender: "Female",
+//     backgroundImage: "",
+//     isActive: true,
+//     dateOfBirth: "2000-05-20T00:00:00.000Z",
+//     lastSeen: null,
+//   },
+//   {
+//     _id: "6800e92dea67f133622dbf38",
+//     email: "minh@gmail.com",
+//     fullName: "Tran Minh Duc",
+//     profilePic: "https://i.pravatar.cc/150?img=3",
+//     phoneNumber: "+84333222102",
+//     gender: "Male",
+//     backgroundImage: "",
+//     isActive: false,
+//     dateOfBirth: "1995-08-12T00:00:00.000Z",
+//     lastSeen: null,
+//   },
+//   {
+//     _id: "6800e92dea67f133622dbf66",
+//     email: "minh@gmail.com",
+//     fullName: "Tran Minh Da",
+//     profilePic: "https://i.pravatar.cc/150?img=3",
+//     phoneNumber: "+84333222102",
+//     gender: "Male",
+//     backgroundImage: "",
+//     isActive: false,
+//     dateOfBirth: "1995-08-12T00:00:00.000Z",
+//     lastSeen: null,
+//   },
+//   {
+//     _id: "6800e92dea67f133622dbf92",
+//     email: "minh@gmail.com",
+//     fullName: "da Minh Hao",
+//     profilePic: "https://i.pravatar.cc/150?img=3",
+//     phoneNumber: "+84333222102",
+//     gender: "Male",
+//     backgroundImage: "",
+//     isActive: false,
+//     dateOfBirth: "1995-08-12T00:00:00.000Z",
+//     lastSeen: null,
+//   },
+//   {
+//     _id: "6800e92dea62f133622dbf33",
+//     email: "minh@gmail.com",
+//     fullName: "Tran NGuyec",
+//     profilePic: "https://i.pravatar.cc/150?img=3",
+//     phoneNumber: "+84333222101",
+//     gender: "Male",
+//     backgroundImage: "",
+//     isActive: false,
+//     dateOfBirth: "1995-08-12T00:00:00.000Z",
+//     lastSeen: null,
+//   },
+// ];
 
 // Header Component
 const GroupHeader = ({ selectedUsers, navigation }) => {
@@ -101,7 +106,7 @@ const GroupHeader = ({ selectedUsers, navigation }) => {
 };
 
 // Group Info Component
-const GroupInfo = ({ groupImage, setGroupImage }) => {
+const GroupInfo = ({ groupImage, setGroupImage, groupName, setGroupName }) => {
   const selectImage = async () => {
     try {
       const result = await launchImageLibrary({
@@ -138,6 +143,8 @@ const GroupInfo = ({ groupImage, setGroupImage }) => {
         style={styles.groupNameInput}
         placeholder="Đặt tên nhóm"
         placeholderTextColor="#666"
+        value={groupName}
+        onChangeText={setGroupName}
       />
     </View>
   );
@@ -163,24 +170,71 @@ const CreateGroup = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [groupImage, setGroupImage] = useState(null);
+  const [groupName, setGroupName] = useState("");
+  const [participantIds, setParticipantIds] = useState([]);
+
+  //================================================================
+  const [users, setUsers] = useState([]);
+  const loginResult = useRecoilValue(loginResultState);
+  useEffect(() => {
+    const fetchFriends = async () => {
+      const result = await getListFriend(loginResult.token);
+      if (Array.isArray(result.data)) {
+        setUsers(result.data);
+      } else {
+        setError(result);
+      }
+    };
+
+    fetchFriends();
+  }, []);
+
+  const handleCreateGroup = async () => {
+    if (!groupName.trim()) {
+      Alert.alert("Vui lòng nhập tên nhóm");
+      return;
+    }
+
+    const result = await createNewGroup(
+      loginResult.token,
+      groupName,
+      participantIds
+    );
+
+    if (typeof result === "string") {
+      Alert.alert("Lỗi", result.message);
+    } else {
+      console.log("Thông tin nhóm mới:", result.data);
+      navigation.navigate("HomeMessage")
+    }
+  };
+  //=============================================================
 
   const toggleUserSelection = (user) => {
     if (selectedUsers.find((u) => u._id === user._id)) {
       setSelectedUsers(selectedUsers.filter((u) => u._id !== user._id));
+      setParticipantIds(participantIds.filter((id) => id !== user._id));
     } else {
       setSelectedUsers([...selectedUsers, user]);
+      setParticipantIds([...participantIds, user._id]);
     }
   };
 
   const removeSelectedUser = (userId) => {
     setSelectedUsers(selectedUsers.filter((user) => user._id !== userId));
+    setParticipantIds(participantIds.filter((id) => id !== userId));
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
         <GroupHeader selectedUsers={selectedUsers} navigation={navigation} />
-        <GroupInfo groupImage={groupImage} setGroupImage={setGroupImage} />
+        <GroupInfo
+          groupImage={groupImage}
+          setGroupImage={setGroupImage}
+          groupName={groupName}
+          setGroupName={setGroupName}
+        />
         <SearchBar searchText={searchText} setSearchText={setSearchText} />
 
         <View style={styles.tabContainer}>
@@ -242,7 +296,7 @@ const CreateGroup = ({ navigation }) => {
           {selectedUsers.length > 0 && (
             <TouchableOpacity
               style={styles.nextButton}
-              onPress={() => console.log("Next pressed")}
+              onPress={handleCreateGroup}
             >
               <Icon name="arrow-forward" size={24} color="#fff" />
             </TouchableOpacity>
