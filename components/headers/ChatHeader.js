@@ -83,7 +83,7 @@ export default function ChatHeader({
           />
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{navigation.navigate("MemberGroup", {userInfo})}}>
           <Ionicons
             name="list-outline"
             size={ICON_LARGE * 0.8}

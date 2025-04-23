@@ -30,6 +30,7 @@ import ImagePickerModal from "../../components/modals/ImagePickerModal";
 import {
   conversationState,
   messagesByConversationState,
+  selectedConversationState,
 } from "../../state/ChatState";
 import { getListConversation } from "../../api/chat/conversation";
 
@@ -42,20 +43,18 @@ export default function PersonChat() {
     messagesByConversationState
   );
 
-  console.log(`<<<userInfo>>>: `,userInfo);
-  console.log(`<<DEBUG>>: messagesData`, messagesData);
+ // console.log(`<<<userInfo>>>: `,userInfo);
+ console.log(`<<DEBUG>>: messagesData`, messagesData);
 
   const [messages, setMessages] = useState("");
   const [messageList, setMessageList] = useState(messagesData.data);
   const [conversation, setConversation] = useRecoilState(conversationState);
   const [modalVisible, setModalVisible] = useState(false);
+  const selectedConversation = useRecoilValue(selectedConversationState);
 
-  console.log("[DEBUG]: conversation:", conversation);
 
-  const conversationId =
-    messagesData.data.length > 0
-      ? messagesData.data[0].conversationId
-      : conversation[0]._id;
+  //console.log(selectedConversation);
+  const conversationId = selectedConversation._id
 
   useEffect(() => {
     const fetchConversations = async () => {

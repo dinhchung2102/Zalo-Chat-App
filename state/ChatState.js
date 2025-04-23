@@ -9,3 +9,8 @@ export const messagesByConversationState = atom({
     key:'messagesByConversationState',
     default:[]
 })
+
+export const selectedConversationState = atom({
+    key:"selectedConversationState",
+    default: null
+})

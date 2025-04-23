@@ -24,6 +24,7 @@ import * as Notifications from "expo-notifications";
 import { registerForPushNotificationsAsync } from "./services/notificationService";
 import { useEffect, useRef, useState } from "react";
 import CreateGroup from "./pages/Group/CreateGroup";
+import MemberGroup from "./pages/Group/MemberGroup";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -102,6 +103,7 @@ export default function App() {
           <Stack.Screen name="SearchUser" component={SearchUser} />
           <Stack.Screen name="VideoCall" component={VideoCall} />
           <Stack.Screen name="CreateGroup" component={CreateGroup} />
+          <Stack.Screen name="MemberGroup" component={MemberGroup} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
