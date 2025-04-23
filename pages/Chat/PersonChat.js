@@ -22,10 +22,6 @@ import { loginResultState } from "../../state/PrimaryState";
 import { sendFile, sendMessage } from "../../api/chat/messages";
 import useSocketEvents from "../../hooks/useSocketEvents";
 import { getShortNameRegister } from "../../utils/getShortName";
-import {
-  pickImageFromLibrary,
-  takePhotoWithCamera,
-} from "../../utils/imageHandle";
 import ImagePickerModal from "../../components/modals/ImagePickerModal";
 import {
   conversationState,
@@ -33,28 +29,29 @@ import {
   selectedConversationState,
 } from "../../state/ChatState";
 import { getListConversation } from "../../api/chat/conversation";
+import FileViewer from "react-native-file-viewer";
+import { downloadFile } from "../../utils/downloadFile";
+import FileIcon from "../../components/FileIcon";
 
 export default function PersonChat() {
-  const route = useRoute();
-  const { userInfo } = route.params;
+  // const route = useRoute();
+  // const { userInfo } = route.params;
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
   const [messagesData, setMessagesData] = useRecoilState(
     messagesByConversationState
   );
 
- // console.log(`<<<userInfo>>>: `,userInfo);
- console.log(`<<DEBUG>>: messagesData`, messagesData);
+  // console.log(`<<<userInfo>>>: `,userInfo);
+  console.log(`<<DEBUG>>: messagesData`, messagesData);
 
   const [messages, setMessages] = useState("");
   const [messageList, setMessageList] = useState(messagesData.data);
   const [conversation, setConversation] = useRecoilState(conversationState);
   const [modalVisible, setModalVisible] = useState(false);
   const selectedConversation = useRecoilValue(selectedConversationState);
-
-
   //console.log(selectedConversation);
-  const conversationId = selectedConversation._id
+  const conversationId = selectedConversation._id;
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -140,12 +137,20 @@ export default function PersonChat() {
     }
   };
 
+  const openFile = async (filePath) => {
+    try {
+      await FileViewer.open(filePath);
+    } catch (error) {
+      console.log("Lỗi mở file:", error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ChatHeader
         linearPrimary={true}
         iconColor={"white"}
-        userInfo={userInfo}
+        userInfo={selectedConversation}
         onPress={() => {
           navigation.goBack();
         }}
@@ -181,6 +186,25 @@ export default function PersonChat() {
                       }}
                     />
                   </TouchableOpacity>
+                ) : item.messageType === "file" ? (
+                  <View
+                    style={{
+                      backgroundColor: "#d4f1ff",
+                      padding: BASE_UNIT * 0.02,
+                      borderRadius: BASE_UNIT * 0.02,
+                      maxWidth: BASE_UNIT * 0.7,
+                      marginLeft: isFirstMessageFromSender
+                        ? BASE_UNIT * 0.12
+                        : 0,
+                      minHeight: BASE_UNIT * 0.12,
+                      borderWidth: 1,
+                      borderColor: "#d2e7f2",
+                    }}
+                  >
+                    <Text style={{ fontSize: textMediumSize }}>
+                      {"file nè"}
+                    </Text>
+                  </View>
                 ) : (
                   <View
                     style={{
@@ -259,6 +283,60 @@ export default function PersonChat() {
                           borderRadius: BASE_UNIT * 0.03,
                         }}
                       />
+                    </TouchableOpacity>
+                  ) : item.messageType === "file" ? (
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "white",
+                        padding: BASE_UNIT * 0.02,
+                        borderRadius: BASE_UNIT * 0.02,
+                        maxWidth: BASE_UNIT * 0.7,
+                        minHeight: BASE_UNIT * 0.12,
+                        borderWidth: 1,
+                        borderColor: "#d2e7f2",
+                        flexDirection: "row",
+                      }}
+                      onPress={async () => {
+                        const localFilePath = await downloadFile(item.fileInfo);
+                        if (localFilePath) {
+                          openFile(localFilePath);
+                        }
+                      }}
+                    >
+                      <FileIcon fileType={item.fileInfo.fileType} />
+                      <Text
+                        style={{ fontSize: textMediumSize, maxWidth: "80%" }}
+                        numberOfLines={1}
+                      >
+                        {item.fileInfo.fileName}
+                      </Text>
+                      <Text
+                        style={{
+                          position: "absolute",
+                          right: 10,
+                          bottom: 0,
+                          color: "grey",
+                        }}
+                      >
+                        {item.fileInfo.fileSize}KB
+                      </Text>
+                    </TouchableOpacity>
+                  ) : item.messageType === "folder" ? (
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "rgba(255, 240, 26, 0.7)",
+                        padding: BASE_UNIT * 0.02,
+                        borderRadius: BASE_UNIT * 0.02,
+                        maxWidth: BASE_UNIT * 0.7,
+                        minHeight: BASE_UNIT * 0.12,
+                        borderWidth: 1,
+                        borderColor: "#d2e7f2",
+                      }}
+                    >
+                      <Text style={{ fontSize: textMediumSize }}>
+                        {item.folderInfo.folderName}
+                      </Text>
+                      <Text style={{ fontStyle: "italic" }}>Thư mục</Text>
                     </TouchableOpacity>
                   ) : (
                     <View

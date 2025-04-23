@@ -7,150 +7,33 @@ import {
   Image,
   ScrollView,
   Dimensions,
-  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { launchImageLibrary } from "react-native-image-picker";
 import { getListFriend } from "../../api/friend/getListFriend";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import frr, { loginResultState } from "../../state/PrimaryState";
-import { createNewGroup, outGroup } from "../../api/chat/conversation";
+import {
+  addNewMembers,
+  createNewGroup,
+  getConversationById,
+} from "../../api/chat/conversation";
 import { useNavigation } from "@react-navigation/native";
-
-// const users = [
-//   {
-//     _id: "6800e92dea67f133622dbf36",
-//     email: "nam@gmail.com",
-//     fullName: "Nguyen Van Nam",
-//     profilePic: "https://i.pravatar.cc/150?img=1",
-//     phoneNumber: "+84333222100",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: true,
-//     dateOfBirth: "2005-04-17T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea67f133622dbf37",
-//     email: "thu@gmail.com",
-//     fullName: "Nguyen Thu Ha",
-//     profilePic: "https://i.pravatar.cc/150?img=2",
-//     phoneNumber: "+84333222101",
-//     gender: "Female",
-//     backgroundImage: "",
-//     isActive: true,
-//     dateOfBirth: "2000-05-20T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea67f133622dbf38",
-//     email: "minh@gmail.com",
-//     fullName: "Tran Minh Duc",
-//     profilePic: "https://i.pravatar.cc/150?img=3",
-//     phoneNumber: "+84333222102",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: false,
-//     dateOfBirth: "1995-08-12T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea67f133622dbf66",
-//     email: "minh@gmail.com",
-//     fullName: "Tran Minh Da",
-//     profilePic: "https://i.pravatar.cc/150?img=3",
-//     phoneNumber: "+84333222102",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: false,
-//     dateOfBirth: "1995-08-12T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea67f133622dbf92",
-//     email: "minh@gmail.com",
-//     fullName: "da Minh Hao",
-//     profilePic: "https://i.pravatar.cc/150?img=3",
-//     phoneNumber: "+84333222102",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: false,
-//     dateOfBirth: "1995-08-12T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea62f133622dbf33",
-//     email: "minh@gmail.com",
-//     fullName: "Tran NGuyec",
-//     profilePic: "https://i.pravatar.cc/150?img=3",
-//     phoneNumber: "+84333222101",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: false,
-//     dateOfBirth: "1995-08-12T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-// ];
+import { selectedConversationState } from "../../state/ChatState";
 
 // Header Component
-const GroupHeader = ({ selectedUsers, navigation }) => {
+const AddToGroupHeader = ({ selectedUsers, navigation }) => {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Icon name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
-      <Text style={styles.headerTitle}>Nhóm mới</Text>
+      <Text style={styles.headerTitle}>Thêm mới</Text>
       <Text style={styles.selectedCount}>Đã chọn: {selectedUsers.length}</Text>
     </View>
   );
 };
-
-// Group Info Component
-const GroupInfo = ({ groupImage, setGroupImage, groupName, setGroupName }) => {
-  const selectImage = async () => {
-    try {
-      const result = await launchImageLibrary({
-        mediaType: "photo",
-        quality: 0.5,
-        includeBase64: false,
-      });
-
-      console.log("Image picker response:", result);
-
-      if (result.didCancel) {
-        console.log("User cancelled image picker");
-      } else if (result.error) {
-        console.log("ImagePicker Error:", result.error);
-      } else if (result.assets && result.assets.length > 0) {
-        console.log("Selected image:", result.assets[0].uri);
-        setGroupImage(result.assets[0].uri);
-      }
-    } catch (error) {
-      console.log("Error selecting image:", error);
-    }
-  };
-
-  return (
-    <View style={styles.groupNameContainer}>
-      <TouchableOpacity style={styles.avatarPlaceholder} onPress={selectImage}>
-        {groupImage ? (
-          <Image source={{ uri: groupImage }} style={styles.groupImage} />
-        ) : (
-          <Icon name="camera-alt" size={24} color="#666" />
-        )}
-      </TouchableOpacity>
-      <TextInput
-        style={styles.groupNameInput}
-        placeholder="Đặt tên nhóm"
-        placeholderTextColor="#666"
-        value={groupName}
-        onChangeText={setGroupName}
-      />
-    </View>
-  );
-};
-
 // Search Component
 const SearchBar = ({ searchText, setSearchText }) => {
   return (
@@ -167,21 +50,22 @@ const SearchBar = ({ searchText, setSearchText }) => {
   );
 };
 
-const CreateGroup = ({ navigation }) => {
+const AddMember = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [groupImage, setGroupImage] = useState(null);
-  const [groupName, setGroupName] = useState("");
   const [participantIds, setParticipantIds] = useState([]);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
 
   //================================================================
   const [users, setUsers] = useState([]);
   const loginResult = useRecoilValue(loginResultState);
+
   useEffect(() => {
     const fetchFriends = async () => {
       const result = await getListFriend(loginResult.token);
       if (Array.isArray(result.data)) {
         setUsers(result.data);
+        console.log("my friends:", result.data);
       } else {
         setError(result);
       }
@@ -190,26 +74,14 @@ const CreateGroup = ({ navigation }) => {
     fetchFriends();
   }, []);
 
-  const handleCreateGroup = async () => {
-    
-    if (!groupName.trim()) {
-      Alert.alert("Lỗi","Vui lòng nhập tên nhóm");
-      return;
-    }
+  const groupMemberIds = selectedConversation.participants.map(
+    (member) => member._id
+  );
+  // Lọc danh sách bạn bè chưa có trong nhóm
+  const friendsNotInGroup = users.filter(
+    (friend) => !groupMemberIds.includes(friend._id)
+  );
 
-    const result = await createNewGroup(
-      loginResult.token,
-      groupName,
-      participantIds
-    );
-
-    if (typeof result === "string") {
-      Alert.alert("Lỗi", result.message);
-    } else {
-      console.log("Thông tin nhóm mới:", result.data);
-      navigation.navigate("HomeMessage")
-    }
-  };
   //=============================================================
 
   const toggleUserSelection = (user) => {
@@ -227,15 +99,33 @@ const CreateGroup = ({ navigation }) => {
     setParticipantIds(participantIds.filter((id) => id !== userId));
   };
 
+  const handleAddNewMembers = async () => {
+    try {
+      const result = await addNewMembers(
+        loginResult.token,
+        selectedConversation._id,
+        participantIds
+      );
+      const resultGetNewConversation = await getConversationById(
+        loginResult.token,
+        selectedConversation._id
+      );
+      console.log("DEBUG: resultgetnewconversation",resultGetNewConversation);
+      
+      setSelectedConversation(resultGetNewConversation);
+
+      navigation.goBack();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
-        <GroupHeader selectedUsers={selectedUsers} navigation={navigation} />
-        <GroupInfo
-          groupImage={groupImage}
-          setGroupImage={setGroupImage}
-          groupName={groupName}
-          setGroupName={setGroupName}
+        <AddToGroupHeader
+          selectedUsers={selectedUsers}
+          navigation={navigation}
         />
         <SearchBar searchText={searchText} setSearchText={setSearchText} />
 
@@ -245,7 +135,7 @@ const CreateGroup = ({ navigation }) => {
         </View>
 
         <ScrollView style={styles.userList}>
-          {users.map((user) => (
+          {friendsNotInGroup.map((user) => (
             <TouchableOpacity
               key={user._id}
               style={styles.userItem}
@@ -298,7 +188,7 @@ const CreateGroup = ({ navigation }) => {
           {selectedUsers.length > 0 && (
             <TouchableOpacity
               style={styles.nextButton}
-              onPress={handleCreateGroup}
+              onPress={handleAddNewMembers}
             >
               <Icon name="arrow-forward" size={24} color="#fff" />
             </TouchableOpacity>
@@ -473,4 +363,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateGroup;
+export default AddMember;

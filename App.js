@@ -25,6 +25,7 @@ import { registerForPushNotificationsAsync } from "./services/notificationServic
 import { useEffect, useRef, useState } from "react";
 import CreateGroup from "./pages/Group/CreateGroup";
 import MemberGroup from "./pages/Group/MemberGroup";
+import AddMember from "./pages/Group/AddMember";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -104,6 +105,7 @@ export default function App() {
           <Stack.Screen name="VideoCall" component={VideoCall} />
           <Stack.Screen name="CreateGroup" component={CreateGroup} />
           <Stack.Screen name="MemberGroup" component={MemberGroup} />
+          <Stack.Screen name="AddMember" component={AddMember} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

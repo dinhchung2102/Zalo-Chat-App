@@ -15,6 +15,8 @@ import { textMediumSize } from "../../constants/fontSize";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 import { useNavigation } from "@react-navigation/native";
 import { v4 as uuidv4 } from "uuid";
+import { useRecoilValue } from "recoil";
+import { selectedConversationState } from "../../state/ChatState";
 
 export default function ChatHeader({
   textColor = "white",
@@ -22,9 +24,9 @@ export default function ChatHeader({
   linearPrimary,
   iconColor = "white",
   backgroundColor = Colors.primary,
-  userInfo,
 }) {
   const navigation = useNavigation();
+  const selectedConversation = useRecoilValue(selectedConversationState);
   if (linearPrimary) {
     return (
       <LinearGradient
@@ -61,7 +63,7 @@ export default function ChatHeader({
                maxWidth: "80%", // hoặc một giá trị phù hợp
              }}
           >
-            {userInfo?.name || userInfo?.fullName || userInfo?.groupName || "Tên người dùng test"}
+            {selectedConversation?.name || selectedConversation?.fullName || selectedConversation?.groupName || "Tên người dùng test"}
           </Text>
         </View>
 
@@ -83,7 +85,7 @@ export default function ChatHeader({
           />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=>{navigation.navigate("MemberGroup", {userInfo})}}>
+        <TouchableOpacity onPress={()=>{navigation.navigate("MemberGroup")}}>
           <Ionicons
             name="list-outline"
             size={ICON_LARGE * 0.8}
