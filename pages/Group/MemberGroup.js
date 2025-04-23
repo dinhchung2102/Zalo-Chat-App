@@ -12,11 +12,11 @@ import {
 import React, { useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { loginResultState } from "../../state/PrimaryState";
 import { selectedConversationState } from "../../state/ChatState";
 import { getShortNameRegister } from "../../utils/getShortName";
-import { deleteGroup, outGroup } from "../../api/chat/conversation";
+import { deleteGroup, getConversationById, getListConversation, outGroup, removeMember } from "../../api/chat/conversation";
 import { Alert } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
@@ -27,7 +27,7 @@ const MemberGroup = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const loginResult = useRecoilValue(loginResultState);
 
-  const selectedConversation = useRecoilValue(selectedConversationState);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
   // console.log(selectedConversation);
   // console.log(selectedConversation.groupLeader);
 
@@ -272,7 +272,21 @@ const MemberGroup = ({ navigation, route }) => {
                 loginResult.user._id !== selectedMember._id ? (
                   <TouchableOpacity
                     style={[styles.memberAction, styles.dangerAction]}
+                    onPress={async () => {
+                      const result = await removeMember(
+                        loginResult.token,
+                        selectedConversation._id,
+                        selectedMember._id
+                      )
+                      console.log(result);
+                      const refreshConver = await getConversationById(loginResult.token ,selectedConversation._id);
+                      console.log(refreshConver);
+                      setSelectedConversation(refreshConver)
+                      setModalVisible(false)
+                    }}
                   >
+                    
+                    
                     <Text style={styles.dangerText}>Xoá khỏi cộng đồng</Text>
                   </TouchableOpacity>
                 ) : null}
