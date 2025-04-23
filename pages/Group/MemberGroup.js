@@ -24,87 +24,12 @@ const MemberGroup = ({ navigation, route }) => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const loginResult = useRecoilValue(loginResultState);
-  const { userInfo } = route.params;
-  //console.log(userInfo);
+
   const selectedConversation = useRecoilValue(selectedConversationState);
-  console.log(selectedConversation);
+  // console.log(selectedConversation);
+  // console.log(selectedConversation.groupLeader);
 
-  console.log(selectedConversation.groupLeader);
-
-  const dummyData = userInfo.participants;
-  const dummysData = [
-    {
-      _id: "6800e92dea67f133622dbf36",
-      fullName: "Nguyen Van Nam",
-      profilePic: "https://i.pravatar.cc/150?img=1",
-      role: "Trưởng cộng đồng",
-      status: "active",
-      isMe: true,
-    },
-    {
-      _id: "6800e92dea67f133622dbf37",
-      fullName: "Nguyen Thu Ha",
-      profilePic: "https://i.pravatar.cc/150?img=2",
-      role: "Phó cộng đồng",
-      status: "active",
-    },
-    {
-      _id: "6800e92dea67f133622dbf38",
-      fullName: "Tran Minh Duc",
-      profilePic: "https://i.pravatar.cc/150?img=3",
-      role: "Thành viên",
-      status: "active",
-    },
-    {
-      _id: "6800e92dea67f133622dbf39",
-      fullName: "Le Thi Hong",
-      profilePic: "https://i.pravatar.cc/150?img=4",
-      role: "Thành viên",
-      status: "pending",
-    },
-    {
-      _id: "6800e92dea67f133622dbf40",
-      fullName: "Pham Van Tuan",
-      profilePic: "https://i.pravatar.cc/150?img=5",
-      role: "Thành viên",
-      status: "active",
-    },
-    {
-      _id: "6800e92dea67f133622dbf41",
-      fullName: "Hoang Thi Lan",
-      profilePic: "https://i.pravatar.cc/150?img=6",
-      role: "Thành viên",
-      status: "pending",
-    },
-    {
-      _id: "6800e92dea67f133622dbf42",
-      fullName: "Do Van Hung",
-      profilePic: "https://i.pravatar.cc/150?img=7",
-      role: "Thành viên",
-      status: "active",
-    },
-    {
-      _id: "6800e92dea67f133622dbf43",
-      fullName: "Vu Thi Mai",
-      profilePic: "https://i.pravatar.cc/150?img=8",
-      role: "Thành viên",
-      status: "active",
-    },
-    {
-      _id: "6800e92dea67f133622dbf44",
-      fullName: "Bui Van Kien",
-      profilePic: "https://i.pravatar.cc/150?img=9",
-      role: "Thành viên",
-      status: "pending",
-    },
-    {
-      _id: "6800e92dea67f133622dbf45",
-      fullName: "Nguyen Thi Thuy",
-      profilePic: "https://i.pravatar.cc/150?img=10",
-      role: "Thành viên",
-      status: "active",
-    },
-  ];
+  const dummyData = selectedConversation.participants;
 
   const Header = () => (
     <View style={styles.header}>
@@ -116,7 +41,7 @@ const MemberGroup = ({ navigation, route }) => {
       </TouchableOpacity>
       <Text style={styles.headerTitle}>Quản lý thành viên</Text>
       <View style={styles.headerRight}>
-        <TouchableOpacity style={styles.headerButton}>
+        <TouchableOpacity style={styles.headerButton} onPress={()=>{navigation.navigate("AddMember")}}>
           <Icon name="person-add" size={24} color="#000" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.headerButton}>
@@ -140,7 +65,7 @@ const MemberGroup = ({ navigation, route }) => {
   const MemberListHeader = () => (
     <View style={styles.memberListHeader}>
       <Text style={styles.memberCount}>
-        Thành viên ({userInfo.participants.length})
+        Thành viên ({selectedConversation.participants.length})
       </Text>
       <Text style={styles.memberListDescription}>
         Chỉ trưởng và phó cộng đồng xem được đầy đủ danh sách thành viên.

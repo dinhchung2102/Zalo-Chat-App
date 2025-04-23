@@ -35,8 +35,8 @@ import {
 import { getListConversation } from "../../api/chat/conversation";
 
 export default function PersonChat() {
-  const route = useRoute();
-  const { userInfo } = route.params;
+  // const route = useRoute();
+  // const { userInfo } = route.params;
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
   const [messagesData, setMessagesData] = useRecoilState(
@@ -145,7 +145,7 @@ export default function PersonChat() {
       <ChatHeader
         linearPrimary={true}
         iconColor={"white"}
-        userInfo={userInfo}
+        userInfo={selectedConversation}
         onPress={() => {
           navigation.goBack();
         }}
