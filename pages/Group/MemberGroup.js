@@ -16,7 +16,7 @@ import { useRecoilValue } from "recoil";
 import { loginResultState } from "../../state/PrimaryState";
 import { selectedConversationState } from "../../state/ChatState";
 import { getShortNameRegister } from "../../utils/getShortName";
-import { deleteGroup } from "../../api/chat/conversation";
+import { deleteGroup, outGroup } from "../../api/chat/conversation";
 import { Alert } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
@@ -133,18 +133,22 @@ const MemberGroup = ({ navigation, route }) => {
             <View
               style={{ marginTop: 20, width: "100%", alignItems: "center" }}
             >
-              <TouchableOpacity onPress={async () => {
-                console.log(selectedConversation._id);
-                
-                const resultDelete = await deleteGroup(loginResult.token, selectedConversation._id);
-                if(resultDelete.status == 200){
-                  navigation.navigate("HomeMessage");
-                }
-                else{
-                  console.log("[DEBUG]: Lỗi khi giải tán nhóm",resultDelete);
-                  Alert.alert("Lỗi", resultDelete)
-                }
-              }}>
+              <TouchableOpacity
+                onPress={async () => {
+                  console.log(selectedConversation._id);
+
+                  const resultDelete = await deleteGroup(
+                    loginResult.token,
+                    selectedConversation._id
+                  );
+                  if (resultDelete.status == 200) {
+                    navigation.navigate("HomeMessage");
+                  } else {
+                    console.log("[DEBUG]: Lỗi khi giải tán nhóm", resultDelete);
+                    Alert.alert("Lỗi", resultDelete);
+                  }
+                }}
+              >
                 <Text style={{ color: "red", fontSize: 16 }}>Giải tán</Text>
               </TouchableOpacity>
             </View>
@@ -249,6 +253,15 @@ const MemberGroup = ({ navigation, route }) => {
                 ) : (
                   <TouchableOpacity
                     style={[styles.memberAction, styles.dangerAction]}
+                    onPress={async () => {
+                      const result = await outGroup(
+                        loginResult.token,
+                        selectedConversation._id,
+                      );
+                      console.log(result);
+                      
+                      navigation.navigate("HomeMessage");
+                    }}
                   >
                     <Text style={styles.dangerText}>Rời nhóm</Text>
                   </TouchableOpacity>

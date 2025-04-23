@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -14,7 +15,7 @@ import { launchImageLibrary } from "react-native-image-picker";
 import { getListFriend } from "../../api/friend/getListFriend";
 import { useRecoilValue } from "recoil";
 import frr, { loginResultState } from "../../state/PrimaryState";
-import { createNewGroup } from "../../api/chat/conversation";
+import { createNewGroup, outGroup } from "../../api/chat/conversation";
 import { useNavigation } from "@react-navigation/native";
 
 // const users = [
@@ -190,8 +191,9 @@ const CreateGroup = ({ navigation }) => {
   }, []);
 
   const handleCreateGroup = async () => {
+    
     if (!groupName.trim()) {
-      Alert.alert("Vui lòng nhập tên nhóm");
+      Alert.alert("Lỗi","Vui lòng nhập tên nhóm");
       return;
     }
 
