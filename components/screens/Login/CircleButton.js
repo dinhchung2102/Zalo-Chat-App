@@ -4,7 +4,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../../constants/iconSize";
 import { BASE_UNIT } from "../../../constants/screen";
 
-export default function CircleButton({onPress, disabled, color}) {
+export default function CircleButton({ onPress, disabled, color }) {
   return (
     <View
       style={{

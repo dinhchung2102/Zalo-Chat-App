@@ -1,13 +1,7 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import React, { useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { ICON_LARGE, ICON_MEDIUM } from "../../constants/iconSize";
+import { ICON_LARGE } from "../../constants/iconSize";
 import { LinearGradient } from "expo-linear-gradient";
 import { BASE_UNIT } from "../../constants/screen";
 import { Colors } from "../../styles/Colors";
@@ -29,7 +23,7 @@ export default function SearchHeader({
   iconNameSize,
   iconName2,
   iconName2Size,
-  iconOnpress2
+  iconOnpress2,
 }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [, setUserData] = useRecoilState(findUserState);

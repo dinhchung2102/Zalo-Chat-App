@@ -41,7 +41,10 @@ export default function SelectLanguageModal() {
                 marginBottom: BASE_UNIT * 0.04,
               }}
             >
-              {useTextLanguage({vietnamese:"Chọn ngôn ngữ" , english: "Select Language"})}
+              {useTextLanguage({
+                vietnamese: "Chọn ngôn ngữ",
+                english: "Select Language",
+              })}
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -60,7 +63,11 @@ export default function SelectLanguageModal() {
             >
               <Text style={{ fontSize: textMediumSize }}>Tiếng Việt</Text>
               {selectedLanguage === "vie" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
+                <MaterialIcons
+                  name="check"
+                  size={ICON_MEDIUM}
+                  color={"#006DFE"}
+                />
               )}
             </TouchableOpacity>
             <TouchableOpacity
@@ -80,7 +87,11 @@ export default function SelectLanguageModal() {
             >
               <Text style={{ fontSize: textMediumSize }}>English</Text>
               {selectedLanguage === "eng" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
+                <MaterialIcons
+                  name="check"
+                  size={ICON_MEDIUM}
+                  color={"#006DFE"}
+                />
               )}
             </TouchableOpacity>
           </View>

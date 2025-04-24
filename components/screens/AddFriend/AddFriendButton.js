@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { sendRequest } from "../../../api/friend/sendRequest";
 import { useRecoilValue } from "recoil";
@@ -8,7 +8,7 @@ import { Colors } from "../../../styles/Colors";
 
 export default function AddFriendButton({ targetUser, onPress }) {
   const loginResult = useRecoilValue(loginResultState);
-  const [sendRequestStatus, setSendRequestStatus] = useState(false);
+  const [, setSendRequestStatus] = useState(false);
 
   const isPending = targetUser.status === "pending";
   const isFriend = targetUser.isFriend === true;
@@ -45,9 +45,7 @@ export default function AddFriendButton({ targetUser, onPress }) {
       }}
       onPress={handleSendRequest ?? onPress}
     >
-      <Text style={{ color: "white" }}>
-        {relationshipLabel}
-      </Text>
+      <Text style={{ color: "white" }}>{relationshipLabel}</Text>
     </TouchableOpacity>
   );
 }

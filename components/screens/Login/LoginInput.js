@@ -53,7 +53,7 @@ const LoginInput = forwardRef(
             flex: 1,
             borderBottomColor: focus ? Colors.primary : "#f0f0f0",
             marginTop: BASE_UNIT * 0.03,
-            paddingBottom: BASE_UNIT*0.01
+            paddingBottom: BASE_UNIT * 0.01,
           }}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}

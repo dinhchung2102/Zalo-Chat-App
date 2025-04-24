@@ -2,8 +2,6 @@ import RNFS from 'react-native-fs';
 
 export const downloadFile = async (fileInfo) => {
   const { fileName, fileUrl } = fileInfo;
-
-  // Chọn nơi lưu trữ
   const localPath = `${RNFS.DocumentDirectoryPath}/${fileName}`;
 
   const options = {
@@ -16,7 +14,7 @@ export const downloadFile = async (fileInfo) => {
 
     if (result.statusCode === 200) {
       console.log('Tải file thành công:', localPath);
-      return localPath; // trả lại đường dẫn file đã lưu
+      return localPath; 
     } else {
       console.warn('Tải file thất bại với mã:', result.statusCode);
     }

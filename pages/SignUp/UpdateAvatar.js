@@ -1,12 +1,5 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, Text, View, Image } from "react-native";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HeaderText from "../../components/texts/HeaderText";
 import { BASE_UNIT } from "../../constants/screen";
@@ -22,11 +15,11 @@ import SelectPhotoModal from "../../components/shared/SelectPhotoModal";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import { updateAvatar } from "../../api/auth/update.avt";
-import { getLoginResult, getUserId } from "../../services/storageService";
+import { getUserId } from "../../services/storageService";
 
 export default function UpdateAvatar() {
   const nameRegisterState = useRecoilValue(nameRegister);
-  const [,setProfilePicRegister] = useRecoilState(profilePicRegister);
+  const [, setProfilePicRegister] = useRecoilState(profilePicRegister);
   const navigation = useNavigation();
 
   const [modalSkipVisible, setModalSkipVisible] = useState(false);
@@ -46,7 +39,10 @@ export default function UpdateAvatar() {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      const resultUpdate = await updateAvatar(getUserId(), result.assets[0].uri);
+      const resultUpdate = await updateAvatar(
+        getUserId(),
+        result.assets[0].uri
+      );
       setProfilePicRegister(resultUpdate.profilePic);
       //console.log(resultUpdate.profilePic);
       navigation.navigate("HomeMessage");
@@ -68,8 +64,11 @@ export default function UpdateAvatar() {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      const resultUpdate = await updateAvatar(getUserId(), result.assets[0].uri);
-      setProfilePicRegister(resultUpdate.profilePic)
+      const resultUpdate = await updateAvatar(
+        getUserId(),
+        result.assets[0].uri
+      );
+      setProfilePicRegister(resultUpdate.profilePic);
       navigation.navigate("HomeMessage");
     }
   };
@@ -119,9 +118,9 @@ export default function UpdateAvatar() {
         visible={modalSkipVisible}
         title="Bạn chưa có ảnh đại diện"
         text="Trải nghiệm một vài tính năng có thể sẽ bị ảnh hưởng. Vẫn bỏ qua bước này?"
-        onSkip={async() => {
-          await setModalSkipVisible(false)
-          navigation.navigate("HomeMessage")
+        onSkip={async () => {
+          await setModalSkipVisible(false);
+          navigation.navigate("HomeMessage");
         }}
         onAddPhoto={() => {
           console.log("Thêm ảnh");

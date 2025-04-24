@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SimpleHeader from "../../components/shared/SimpleHeader";
 import ChooseButton from "../../components/others/ChooseButton";

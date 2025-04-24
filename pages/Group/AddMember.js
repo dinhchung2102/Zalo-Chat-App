@@ -6,20 +6,16 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { launchImageLibrary } from "react-native-image-picker";
 import { getListFriend } from "../../api/friend/getListFriend";
 import { useRecoilState, useRecoilValue } from "recoil";
 import frr, { loginResultState } from "../../state/PrimaryState";
 import {
   addNewMembers,
-  createNewGroup,
   getConversationById,
 } from "../../api/chat/conversation";
-import { useNavigation } from "@react-navigation/native";
 import { selectedConversationState } from "../../state/ChatState";
 
 // Header Component
@@ -54,7 +50,9 @@ const AddMember = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [participantIds, setParticipantIds] = useState([]);
-  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(
+    selectedConversationState
+  );
 
   //================================================================
   const [users, setUsers] = useState([]);
@@ -110,8 +108,8 @@ const AddMember = ({ navigation }) => {
         loginResult.token,
         selectedConversation._id
       );
-      console.log("DEBUG: resultgetnewconversation",resultGetNewConversation);
-      
+      console.log("DEBUG: resultgetnewconversation", resultGetNewConversation);
+
       setSelectedConversation(resultGetNewConversation);
 
       navigation.goBack();

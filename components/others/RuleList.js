@@ -6,7 +6,7 @@ import { Colors } from "../../styles/Colors";
 import { BASE_UNIT } from "../../constants/screen";
 import LinkButton from "../shared/LinkButton";
 
-export default function RuleList({ rule, url, term, color, valid }) {
+export default function RuleList({ rule, term, color, valid }) {
   return (
     <View
       style={{
@@ -21,8 +21,20 @@ export default function RuleList({ rule, url, term, color, valid }) {
         size={ICON_MEDIUM}
         color={valid ? Colors.primary : color}
       />
-      <Text style={{ color: valid? Colors.primary : color, marginLeft: BASE_UNIT * 0.025, fontSize: BASE_UNIT*0.033 }}>{rule}</Text>
-      <LinkButton text={term} textColor={Colors.primary} textSize={BASE_UNIT*0.033}/>
+      <Text
+        style={{
+          color: valid ? Colors.primary : color,
+          marginLeft: BASE_UNIT * 0.025,
+          fontSize: BASE_UNIT * 0.033,
+        }}
+      >
+        {rule}
+      </Text>
+      <LinkButton
+        text={term}
+        textColor={Colors.primary}
+        textSize={BASE_UNIT * 0.033}
+      />
     </View>
   );
 }

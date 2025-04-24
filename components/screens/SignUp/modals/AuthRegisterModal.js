@@ -9,7 +9,7 @@ import {
 import React from "react";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { languageState, modalAuthRegister } from "../../../../state/PrimaryState";
+import { modalAuthRegister } from "../../../../state/PrimaryState";
 import { BASE_UNIT } from "../../../../constants/screen";
 import { textMediumPlus, textMediumSize } from "../../../../constants/fontSize";
 import { phoneNumberRegister } from "../../../../state/RegisterState";
@@ -49,9 +49,10 @@ export default function AuthRegisterModal() {
               paddingTop: BASE_UNIT * 0.05,
             }}
           >
-            {
-              useTextLanguage({vietnamese: "Nhận mã xác thực qua số",english:"Receive verification code via"})
-          }
+            {useTextLanguage({
+              vietnamese: "Nhận mã xác thực qua số",
+              english: "Receive verification code via",
+            })}
           </Text>
           <Text
             style={{
@@ -69,9 +70,12 @@ export default function AuthRegisterModal() {
               paddingHorizontal: BASE_UNIT * 0.05,
             }}
           >
-            {
-              useTextLanguage({vietnamese:"Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này" , english:"We will send you verification code via this phone number" })
-            }
+            {useTextLanguage({
+              vietnamese:
+                "Zalo sẽ gửi mã xác thực cho bạn qua số điện thoại này",
+              english:
+                "We will send you verification code via this phone number",
+            })}
           </Text>
 
           <View
@@ -84,8 +88,8 @@ export default function AuthRegisterModal() {
               style={styles.button}
               onPress={() => {
                 sendOTP(formatPhoneNumber(phoneNumber));
-                setModalVisible(false)
-                navigation.navigate("SignUpOTP")
+                setModalVisible(false);
+                navigation.navigate("SignUpOTP");
               }}
             >
               <Text
@@ -95,14 +99,14 @@ export default function AuthRegisterModal() {
                   color: Colors.primary,
                 }}
               >
-                {useTextLanguage({vietnamese: "Tiếp tục", english:"Next"})
-               }
+                {useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                setModalVisible(false)}}
+                setModalVisible(false);
+              }}
             >
               <Text style={{ fontSize: textMediumSize, fontWeight: "400" }}>
                 {useTextLanguage({

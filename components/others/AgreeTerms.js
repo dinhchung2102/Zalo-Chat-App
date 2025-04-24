@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { textMediumSize } from "../../constants/fontSize";
 import LinkButton from "../shared/LinkButton";
 import { Colors } from "../../styles/Colors";

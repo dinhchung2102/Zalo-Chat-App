@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function Profile() {
   const navigation = useNavigation();
-  const [profilePic, setProfilePic] = useRecoilState(profilePicRegister); 
+  const [profilePic, setProfilePic] = useRecoilState(profilePicRegister);
   const name = useRecoilValue(nameRegister);
 
   const [loginResult, setLoginResult] = useState(null);
@@ -39,7 +39,7 @@ export default function Profile() {
       }
     }
   }, [loginResult, profilePic, setProfilePic]);
-  
+
   if (!loginResult) {
     return (
       <SafeAreaView style={styles.container}>
@@ -64,7 +64,9 @@ export default function Profile() {
           paddingVertical: BASE_UNIT * 0.03,
           paddingHorizontal: BASE_UNIT * 0.02,
         }}
-        onPress={()=>{navigation.navigate("ProfileUser")}}
+        onPress={() => {
+          navigation.navigate("ProfileUser");
+        }}
       >
         {profilePic === "" ? (
           <View
@@ -77,7 +79,10 @@ export default function Profile() {
               justifyContent: "center",
             }}
           >
-            <Text style={{ color: "white" }}>{getShortNameRegister(name) || getShortNameRegister(loginResult.user.fullName)}</Text>
+            <Text style={{ color: "white" }}>
+              {getShortNameRegister(name) ||
+                getShortNameRegister(loginResult.user.fullName)}
+            </Text>
           </View>
         ) : (
           <Image
@@ -92,7 +97,9 @@ export default function Profile() {
         )}
 
         <View style={{ paddingLeft: BASE_UNIT * 0.04, flex: 1 }}>
-          <Text style={{ fontSize: textMediumSize }}>{name || loginResult.user.fullName }</Text>
+          <Text style={{ fontSize: textMediumSize }}>
+            {name || loginResult.user.fullName}
+          </Text>
           <Text style={{ color: Colors.grey }}>Xem trang cá nhân</Text>
         </View>
         <TouchableOpacity>

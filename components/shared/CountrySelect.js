@@ -16,9 +16,8 @@ export default function CountrySelect({ onPress }) {
         alignItems: "center",
         justifyContent: "center",
         borderColor: Colors.grey,
-        backgroundColor:Colors.lightGrey,
-        height:'100%'
-
+        backgroundColor: Colors.lightGrey,
+        height: "100%",
       }}
     >
       <TouchableOpacity
@@ -29,11 +28,7 @@ export default function CountrySelect({ onPress }) {
         }}
         onPress={onPress}
       >
-        <Text
-          style={{ fontSize: textMediumSize}}
-        >
-          +84
-        </Text>
+        <Text style={{ fontSize: textMediumSize }}>+84</Text>
         <MaterialIcons
           name="keyboard-arrow-down"
           size={ICON_MEDIUM}

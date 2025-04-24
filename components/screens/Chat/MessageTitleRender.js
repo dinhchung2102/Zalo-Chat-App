@@ -28,10 +28,12 @@ export default function MessageTitleRender() {
   const [dataConversations, setDataConversations] =
     useRecoilState(conversationState);
   const [messages, setMessages] = useRecoilState(messagesByConversationState);
-  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState)
+  const [selectedConversation, setSelectedConversation] = useRecoilState(
+    selectedConversationState
+  );
 
   console.log("<<<[DEBUG]: dataConversations: ", dataConversations);
-  console.log('[DEBUG]: messages: ', messages);
+  console.log("[DEBUG]: messages: ", messages);
 
   //Cần nghiên cứu lại
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function MessageTitleRender() {
                   loginResult.user._id
                 );
                 setMessages(messages);
-                setSelectedConversation(item)
+                setSelectedConversation(item);
                 navigation.navigate("PersonChat", {
                   userInfo: item,
                 });
@@ -153,7 +155,7 @@ export default function MessageTitleRender() {
                     fontWeight: item.unseenCount > 0 ? "bold" : "normal",
                     fontSize: textMediumSize * 0.9,
                     color: item.unseenCount > 0 ? "black" : Colors.grey,
-                    width: "80%"
+                    width: "80%",
                   }}
                   numberOfLines={1}
                 >

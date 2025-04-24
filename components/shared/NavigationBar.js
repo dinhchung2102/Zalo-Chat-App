@@ -84,7 +84,7 @@ export default function NavigationBar() {
       <TouchableOpacity
         onPress={() => {
           handleNavigation("contact");
-          navigation.navigate('Contact');
+          navigation.navigate("Contact");
         }}
         style={{ alignItems: "center" }}
       >
@@ -106,7 +106,7 @@ export default function NavigationBar() {
       <TouchableOpacity
         onPress={() => {
           handleNavigation("explore");
-          navigation.navigate('Explore');
+          navigation.navigate("Explore");
         }}
         style={{ alignItems: "center" }}
       >
@@ -128,7 +128,7 @@ export default function NavigationBar() {
       <TouchableOpacity
         onPress={() => {
           handleNavigation("diary");
-          navigation.navigate('Diary')
+          navigation.navigate("Diary");
         }}
         style={{ alignItems: "center" }}
       >

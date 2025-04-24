@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM_PLUS } from "../../constants/iconSize";
 import { Colors } from "../../styles/Colors";

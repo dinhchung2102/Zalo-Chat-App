@@ -3,11 +3,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SimpleHeader from "../../components/shared/SimpleHeader";
 import { BASE_UNIT } from "../../constants/screen";
-import {
-  textHeaderSize,
-  textMediumPlus,
-  textMediumSize,
-} from "../../constants/fontSize";
+import { textMediumPlus, textMediumSize } from "../../constants/fontSize";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { languageState, modalAuthRegister } from "../../state/PrimaryState";
 import { Colors } from "../../styles/Colors";
@@ -22,7 +18,7 @@ import { useTextLanguage } from "../../hooks/useTextLanguage";
 import HeaderText from "../../components/texts/HeaderText";
 import HeaderDesText from "../../components/texts/HeaderDesText";
 import { verifyOTP } from "../../api/auth/register";
-import { getTempToken, saveTempToken } from "../../services/storageService";
+import { saveTempToken } from "../../services/storageService";
 import OtpErrorModal from "../../components/modals/OtpErrorModal";
 import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
 
@@ -40,7 +36,7 @@ export default function SignUpOTP() {
     try {
       const result = await verifyOTP(formatPhoneNumber(phoneNumber), otp);
       setPhoneNumber(formatPhoneNumber(phoneNumber));
-      
+
       if (result && result.tempToken) {
         await saveTempToken(result.tempToken);
         // console.log(await getTempToken());
@@ -102,7 +98,7 @@ export default function SignUpOTP() {
           paddingTop: BASE_UNIT * 0.05,
         }}
       >
-        <OTPInPut otp={otp} setOtp={setOtp}/>
+        <OTPInPut otp={otp} setOtp={setOtp} />
       </View>
 
       <View
@@ -120,8 +116,7 @@ export default function SignUpOTP() {
             const success = await handleVerifyOTP(phoneNumber, otp.join(""));
             if (success) {
               navigation.navigate("SignUpZaloName");
-            }
-            else {
+            } else {
               setSuccessModalVisible(true);
               console.log("OTP verification failed here.");
             }
@@ -219,10 +214,10 @@ export default function SignUpOTP() {
         />
       </View>
       <OtpErrorModal
-      visible={successModalVisible}
-      onClose={() => {setSuccessModalVisible(false)
-        
-      }}
+        visible={successModalVisible}
+        onClose={() => {
+          setSuccessModalVisible(false);
+        }}
       />
     </SafeAreaView>
   );

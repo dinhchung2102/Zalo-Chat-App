@@ -18,8 +18,8 @@ export default function Login() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [securePassword, setSecurePassword] = useState(true)
-  const [, setLoginResult] = useRecoilState(loginResultState)
+  const [securePassword, setSecurePassword] = useState(true);
+  const [, setLoginResult] = useRecoilState(loginResultState);
   const [error, setError] = useState(null);
   const usernameInputRef = useRef(null);
 
@@ -37,20 +37,21 @@ export default function Login() {
     if (handleCheckNull()) {
       try {
         const response = await login(username, password);
-        console.log('[DEBUG]: Lưu thông tin đăng nhập vào Recoil: ', response.data);
-        setLoginResult(response.data)
-        if(response.status == 200){
+        console.log(
+          "[DEBUG]: Lưu thông tin đăng nhập vào Recoil: ",
+          response.data
+        );
+        setLoginResult(response.data);
+        if (response.status == 200) {
           navigation.navigate("HomeMessage");
-        }
-        else {
+        } else {
           setError(response);
         }
-          
       } catch (err) {
         console.log(err);
       }
-  }};
-
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -96,9 +97,7 @@ export default function Login() {
             securePassword={securePassword}
           />
           {error && (
-            <Text style={{ color: 'red', fontStyle: 'itali' }}>
-              {error}
-            </Text>
+            <Text style={{ color: "red", fontStyle: "itali" }}>{error}</Text>
           )}
           <View style={{ marginTop: BASE_UNIT * 0.02 }}>
             <LinkButton
@@ -134,13 +133,12 @@ export default function Login() {
         <CircleButton
           disabled={!handleCheckNull()}
           color={handleCheckNull() ? Colors.primary : Colors.grey}
-          onPress={async()=>{
+          onPress={async () => {
             await handleLogin();
-            }}
+          }}
         />
       </View>
     </SafeAreaView>
-    
   );
 }
 const styles = StyleSheet.create({

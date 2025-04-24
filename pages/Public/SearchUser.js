@@ -4,7 +4,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
-  Image,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,8 +16,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useRecoilValue } from "recoil";
 import { findUserState } from "../../state/FriendState";
 import { getShortNameRegister } from "../../utils/getShortName";
-import { loginResultState } from "../../state/PrimaryState";
-import { sendRequest } from "../../api/friend/sendRequest";
 import AddFriendButton from "../../components/screens/AddFriend/AddFriendButton";
 import SendMessageButton from "../../components/screens/Chat/SendMessageButton";
 

@@ -3,9 +3,13 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SimpleHeader from "../../components/shared/SimpleHeader";
 import { BASE_UNIT } from "../../constants/screen";
-import { textHeaderSize, textMediumSize } from "../../constants/fontSize";
+import { textMediumSize } from "../../constants/fontSize";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { languageState, modalAuthRegister, modalValidatorPhoneNumber } from "../../state/PrimaryState";
+import {
+  languageState,
+  modalAuthRegister,
+  modalValidatorPhoneNumber,
+} from "../../state/PrimaryState";
 import PhoneNumberInput from "../../components/screens/SignUp/PhoneNumberInput";
 import AgreeTerms from "../../components/others/AgreeTerms";
 import { Colors } from "../../styles/Colors";
@@ -23,7 +27,7 @@ export default function SignUp() {
   const navigation = useNavigation();
   const selectedLanguage = useRecoilValue(languageState);
   const [, setModalState] = useRecoilState(modalAuthRegister);
-  const [, setModalValidator] = useRecoilState(modalValidatorPhoneNumber)
+  const [, setModalValidator] = useRecoilState(modalValidatorPhoneNumber);
   const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister);
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
@@ -92,10 +96,9 @@ export default function SignUp() {
           color={Colors.primary}
           textColor={"white"}
           onPress={() => {
-            if(validatePhoneNumber(phoneNumber))
-              setModalState(true)
-            else
-              setModalValidator(true) }}
+            if (validatePhoneNumber(phoneNumber)) setModalState(true);
+            else setModalValidator(true);
+          }}
           disabled={!handleCheck()}
         />
       </View>
@@ -126,7 +129,7 @@ export default function SignUp() {
         />
       </View>
       <AuthRegisterModal number={phoneNumber} />
-        <PhoneNumberValidatorModal/>
+      <PhoneNumberValidatorModal />
     </SafeAreaView>
   );
 }

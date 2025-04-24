@@ -1,5 +1,4 @@
 import { atom } from "recoil";
-import uuid from 'react-native-uuid'
 
 export const phoneNumberRegister = atom({
     key:"phoneNumberRegister",
@@ -18,6 +17,7 @@ export const emailRegister = atom({
 
 export const passwordRegister = atom({
     key:"passwordRegister",
+    //Password mặc định khi tạo mới tài khoản
     default: "Abc1234@"
 })
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BASE_UNIT } from "../../constants/screen";
@@ -9,7 +9,10 @@ import { Colors } from "../../styles/Colors";
 import BorderInput from "../../components/screens/SignUp/BorderInput";
 import LargeButton from "../../components/shared/LargeButton";
 import RuleList from "../../components/others/RuleList";
-import { validateUsernameLength, validateUsernameNotNumber } from "../../utils/nameValidator";
+import {
+  validateUsernameLength,
+  validateUsernameNotNumber,
+} from "../../utils/nameValidator";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilState } from "recoil";
 import { nameRegister } from "../../state/RegisterState";
@@ -17,7 +20,7 @@ import { nameRegister } from "../../state/RegisterState";
 export default function SignUpZaloName() {
   const navigation = useNavigation();
 
-  const [, setNameRegister] = useRecoilState(nameRegister)
+  const [, setNameRegister] = useRecoilState(nameRegister);
 
   const [nameLength, setNameLength] = useState(false);
   const [nameNotNumber, setNameNotNumber] = useState(false);
@@ -28,15 +31,13 @@ export default function SignUpZaloName() {
 
     setNameLength(isValidLength);
     setNameNotNumber(isValidNotNumber);
-    setNameRegister(name)
-
+    setNameRegister(name);
   };
 
-  const disableButton = () =>{
-    if(nameLength && nameNotNumber)
-      return false;
+  const disableButton = () => {
+    if (nameLength && nameNotNumber) return false;
     return true;
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -96,8 +97,8 @@ export default function SignUpZaloName() {
           text={useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
           disabled={disableButton()}
           color={Colors.primary}
-          textColor={'white'}
-          onPress={()=>navigation.navigate("SignUpAddProfile")}
+          textColor={"white"}
+          onPress={() => navigation.navigate("SignUpAddProfile")}
         />
       </View>
     </SafeAreaView>

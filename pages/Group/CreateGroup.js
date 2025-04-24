@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Dimensions,
   Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -15,83 +14,7 @@ import { launchImageLibrary } from "react-native-image-picker";
 import { getListFriend } from "../../api/friend/getListFriend";
 import { useRecoilValue } from "recoil";
 import frr, { loginResultState } from "../../state/PrimaryState";
-import { createNewGroup, outGroup } from "../../api/chat/conversation";
-import { useNavigation } from "@react-navigation/native";
-
-// const users = [
-//   {
-//     _id: "6800e92dea67f133622dbf36",
-//     email: "nam@gmail.com",
-//     fullName: "Nguyen Van Nam",
-//     profilePic: "https://i.pravatar.cc/150?img=1",
-//     phoneNumber: "+84333222100",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: true,
-//     dateOfBirth: "2005-04-17T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea67f133622dbf37",
-//     email: "thu@gmail.com",
-//     fullName: "Nguyen Thu Ha",
-//     profilePic: "https://i.pravatar.cc/150?img=2",
-//     phoneNumber: "+84333222101",
-//     gender: "Female",
-//     backgroundImage: "",
-//     isActive: true,
-//     dateOfBirth: "2000-05-20T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea67f133622dbf38",
-//     email: "minh@gmail.com",
-//     fullName: "Tran Minh Duc",
-//     profilePic: "https://i.pravatar.cc/150?img=3",
-//     phoneNumber: "+84333222102",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: false,
-//     dateOfBirth: "1995-08-12T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea67f133622dbf66",
-//     email: "minh@gmail.com",
-//     fullName: "Tran Minh Da",
-//     profilePic: "https://i.pravatar.cc/150?img=3",
-//     phoneNumber: "+84333222102",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: false,
-//     dateOfBirth: "1995-08-12T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea67f133622dbf92",
-//     email: "minh@gmail.com",
-//     fullName: "da Minh Hao",
-//     profilePic: "https://i.pravatar.cc/150?img=3",
-//     phoneNumber: "+84333222102",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: false,
-//     dateOfBirth: "1995-08-12T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-//   {
-//     _id: "6800e92dea62f133622dbf33",
-//     email: "minh@gmail.com",
-//     fullName: "Tran NGuyec",
-//     profilePic: "https://i.pravatar.cc/150?img=3",
-//     phoneNumber: "+84333222101",
-//     gender: "Male",
-//     backgroundImage: "",
-//     isActive: false,
-//     dateOfBirth: "1995-08-12T00:00:00.000Z",
-//     lastSeen: null,
-//   },
-// ];
+import { createNewGroup } from "../../api/chat/conversation";
 
 // Header Component
 const GroupHeader = ({ selectedUsers, navigation }) => {
@@ -191,9 +114,8 @@ const CreateGroup = ({ navigation }) => {
   }, []);
 
   const handleCreateGroup = async () => {
-    
     if (!groupName.trim()) {
-      Alert.alert("Lỗi","Vui lòng nhập tên nhóm");
+      Alert.alert("Lỗi", "Vui lòng nhập tên nhóm");
       return;
     }
 
@@ -207,7 +129,7 @@ const CreateGroup = ({ navigation }) => {
       Alert.alert("Lỗi", result.message);
     } else {
       console.log("Thông tin nhóm mới:", result.data);
-      navigation.navigate("HomeMessage")
+      navigation.navigate("HomeMessage");
     }
   };
   //=============================================================

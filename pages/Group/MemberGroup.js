@@ -6,7 +6,6 @@ import {
   Image,
   Modal,
   FlatList,
-  Dimensions,
   SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
@@ -16,18 +15,24 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { loginResultState } from "../../state/PrimaryState";
 import { selectedConversationState } from "../../state/ChatState";
 import { getShortNameRegister } from "../../utils/getShortName";
-import { deleteGroup, getConversationById, getListConversation, outGroup, removeMember } from "../../api/chat/conversation";
+import {
+  deleteGroup,
+  getConversationById,
+  outGroup,
+  removeMember,
+} from "../../api/chat/conversation";
 import { Alert } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
-const { width } = Dimensions.get("window");
 
 const MemberGroup = ({ navigation, route }) => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const loginResult = useRecoilValue(loginResultState);
 
-  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(
+    selectedConversationState
+  );
   // console.log(selectedConversation);
   // console.log(selectedConversation.groupLeader);
 
@@ -256,10 +261,10 @@ const MemberGroup = ({ navigation, route }) => {
                     onPress={async () => {
                       const result = await outGroup(
                         loginResult.token,
-                        selectedConversation._id,
+                        selectedConversation._id
                       );
                       console.log(result);
-                      
+
                       navigation.navigate("HomeMessage");
                     }}
                   >
@@ -277,16 +282,17 @@ const MemberGroup = ({ navigation, route }) => {
                         loginResult.token,
                         selectedConversation._id,
                         selectedMember._id
-                      )
+                      );
                       console.log(result);
-                      const refreshConver = await getConversationById(loginResult.token ,selectedConversation._id);
+                      const refreshConver = await getConversationById(
+                        loginResult.token,
+                        selectedConversation._id
+                      );
                       console.log(refreshConver);
-                      setSelectedConversation(refreshConver)
-                      setModalVisible(false)
+                      setSelectedConversation(refreshConver);
+                      setModalVisible(false);
                     }}
                   >
-                    
-                    
                     <Text style={styles.dangerText}>Xoá khỏi cộng đồng</Text>
                   </TouchableOpacity>
                 ) : null}

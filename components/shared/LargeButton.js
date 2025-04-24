@@ -3,13 +3,19 @@ import React from "react";
 import { BASE_UNIT } from "../../constants/screen";
 import { textLargeButton } from "../../constants/fontSize";
 
-export default function LargeButton({ text, color, textColor, onPress, disabled }) {
+export default function LargeButton({
+  text,
+  color,
+  textColor,
+  onPress,
+  disabled,
+}) {
   return (
     <TouchableOpacity
       style={{
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: disabled === false ? color : 'grey',
+        backgroundColor: disabled === false ? color : "grey",
         width: BASE_UNIT * 0.9,
         height: BASE_UNIT * 0.12,
         borderRadius: BASE_UNIT * 0.1,

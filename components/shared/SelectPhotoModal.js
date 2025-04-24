@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
-import { ICON_MEDIUM, ICON_MEDIUM_PLUS } from "../../constants/iconSize";
+import { ICON_MEDIUM_PLUS } from "../../constants/iconSize";
 import { Colors } from "../../styles/Colors";
 import { textMediumSize } from "../../constants/fontSize";
 import { BASE_UNIT } from "../../constants/screen";
@@ -20,10 +20,6 @@ const SelectPhotoModal = ({ visible, onClose, onTakePhoto, onPickPhoto }) => {
             <MaterialIcons
               name="add-a-photo"
               size={ICON_MEDIUM_PLUS}
-
-
-
-              
               color={Colors.grey}
             />
             <Text style={styles.optionText}>Chụp ảnh mới</Text>
@@ -51,7 +47,7 @@ const styles = StyleSheet.create({
   },
   viewModal: {
     backgroundColor: "#fff",
-    padding: BASE_UNIT*0.02,
+    padding: BASE_UNIT * 0.02,
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
     alignItems: "center",

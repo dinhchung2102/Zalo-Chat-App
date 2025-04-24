@@ -6,8 +6,13 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 
-export default function SelectGenderModal({onPress, selectedGender, setSelectedGender, modalVisible, setModalVisible}) {
-
+export default function SelectGenderModal({
+  onPress,
+  selectedGender,
+  setSelectedGender,
+  modalVisible,
+  setModalVisible,
+}) {
   return (
     <Modal
       animationType="slide"
@@ -15,10 +20,7 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
     >
-      <TouchableOpacity
-        style={styles.modalBackground}
-        onPress={onPress}
-      >
+      <TouchableOpacity style={styles.modalBackground} onPress={onPress}>
         <View style={styles.viewModal}>
           <View
             style={{
@@ -34,7 +36,10 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
                 marginBottom: BASE_UNIT * 0.04,
               }}
             >
-              {useTextLanguage({vietnamese:"Chọn giới tính" , english: "Select Gender"})}
+              {useTextLanguage({
+                vietnamese: "Chọn giới tính",
+                english: "Select Gender",
+              })}
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -53,7 +58,11 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
             >
               <Text style={{ fontSize: textMediumSize }}>Nam</Text>
               {selectedGender === "Male" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
+                <MaterialIcons
+                  name="check"
+                  size={ICON_MEDIUM}
+                  color={"#006DFE"}
+                />
               )}
             </TouchableOpacity>
             <TouchableOpacity
@@ -73,7 +82,11 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
             >
               <Text style={{ fontSize: textMediumSize }}>Nữ</Text>
               {selectedGender === "Female" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
+                <MaterialIcons
+                  name="check"
+                  size={ICON_MEDIUM}
+                  color={"#006DFE"}
+                />
               )}
             </TouchableOpacity>
             <TouchableOpacity
@@ -93,7 +106,11 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
             >
               <Text style={{ fontSize: textMediumSize }}>Không chia sẻ</Text>
               {selectedGender === "None" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
+                <MaterialIcons
+                  name="check"
+                  size={ICON_MEDIUM}
+                  color={"#006DFE"}
+                />
               )}
             </TouchableOpacity>
           </View>
@@ -112,7 +129,7 @@ const styles = StyleSheet.create({
   },
   viewModal: {
     width: BASE_UNIT,
-    height: BASE_UNIT * 0.600,
+    height: BASE_UNIT * 0.6,
     backgroundColor: "white",
     borderTopRightRadius: BASE_UNIT * 0.05,
     borderTopLeftRadius: BASE_UNIT * 0.05,

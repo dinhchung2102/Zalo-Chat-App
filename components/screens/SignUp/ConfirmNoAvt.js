@@ -34,22 +34,21 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.5)",
   },
   container: {
-    width: BASE_UNIT*0.7,
-    padding: BASE_UNIT*0.07,
+    width: BASE_UNIT * 0.7,
+    padding: BASE_UNIT * 0.07,
     backgroundColor: "#fff",
-    borderRadius: BASE_UNIT*0.03,
+    borderRadius: BASE_UNIT * 0.03,
     alignItems: "center",
   },
   title: {
     fontSize: textMediumSize,
     fontWeight: "bold",
-    marginBottom: BASE_UNIT*0.03,
+    marginBottom: BASE_UNIT * 0.03,
   },
   text: {
-    fontSize: textMediumSize*0.9,
+    fontSize: textMediumSize * 0.9,
     textAlign: "left",
-    marginBottom: BASE_UNIT*0.05,
-
+    marginBottom: BASE_UNIT * 0.05,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -58,17 +57,17 @@ const styles = StyleSheet.create({
   },
   skipButton: {
     flex: 1,
-    padding: BASE_UNIT*0.03,
+    padding: BASE_UNIT * 0.03,
     backgroundColor: "red",
     borderRadius: 8,
     alignItems: "center",
-    marginRight: BASE_UNIT*0.02
+    marginRight: BASE_UNIT * 0.02,
   },
   addButton: {
     flex: 1,
-    padding: BASE_UNIT*0.03,
+    padding: BASE_UNIT * 0.03,
     backgroundColor: Colors.primary,
-    marginLeft:BASE_UNIT*0.02,
+    marginLeft: BASE_UNIT * 0.02,
     borderRadius: 8,
     alignItems: "center",
   },

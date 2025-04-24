@@ -5,7 +5,11 @@ import { textMediumSize } from "../../../constants/fontSize";
 export default function HeaderDesText({ text, color }) {
   return (
     <View style={{ alignItems: "center" }}>
-      <Text style={{ textAlign: "center", color: color, fontSize: textMediumSize }}>{text}</Text>
+      <Text
+        style={{ textAlign: "center", color: color, fontSize: textMediumSize }}
+      >
+        {text}
+      </Text>
     </View>
   );
 }

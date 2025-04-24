@@ -5,7 +5,13 @@ import { BASE_UNIT } from "../../constants/screen";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ICON_MEDIUM } from "../../constants/iconSize";
 
-export default function LinkButton({ text, onPress, icon, textColor, textSize}) {
+export default function LinkButton({
+  text,
+  onPress,
+  icon,
+  textColor,
+  textSize,
+}) {
   return (
     <View style={{ paddingLeft: BASE_UNIT * 0.01 }}>
       <TouchableOpacity

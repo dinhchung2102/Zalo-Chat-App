@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   TextInput,
@@ -29,7 +28,7 @@ export default function SearchHeader({
   iconNameSize,
   iconName2,
   iconName2Size,
-  iconOnpress2
+  iconOnpress2,
 }) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [, setUserData] = useRecoilState(findUserState);

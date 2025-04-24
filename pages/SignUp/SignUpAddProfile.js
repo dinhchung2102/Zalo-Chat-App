@@ -13,7 +13,11 @@ import SelectGenderModal from "../../components/shared/SelectGenderModal";
 import { Colors } from "../../styles/Colors";
 import CreateAccountCompleted from "../../components/modals/CreateAccountCompleted";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { nameRegister, passwordRegister, phoneNumberRegister } from "../../state/RegisterState";
+import {
+  nameRegister,
+  passwordRegister,
+  phoneNumberRegister,
+} from "../../state/RegisterState";
 import { signup } from "../../api/auth/register";
 import { getTempToken, saveLoginResult } from "../../services/storageService";
 import { login } from "../../api/auth/login";
@@ -22,7 +26,7 @@ import { loginResultState } from "../../state/PrimaryState";
 export default function SignUpAddProfile() {
   const navigation = useNavigation();
   const currentDate = new Date();
-  
+
   const name = useRecoilValue(nameRegister);
   const phone = useRecoilValue(phoneNumberRegister);
   const [password, setPassword] = useRecoilState(passwordRegister);
@@ -30,8 +34,7 @@ export default function SignUpAddProfile() {
   const [selectedGender, setSelectedGender] = useState("nothing");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const formatDate = selectedDate.toLocaleDateString("en-CA");
-  const [, setLoginResult] = useRecoilState(loginResultState)
-  
+  const [, setLoginResult] = useRecoilState(loginResultState);
 
   const [modalGenderVisible, setModalGenderVisible] = useState(false);
   const [buttonDisable, setButtonDisable] = useState(true);
@@ -65,24 +68,28 @@ export default function SignUpAddProfile() {
       //   selectedGender
       //   }
       // );
-      const result = await signup(name, phone, formatDate, password, tempToken, selectedGender);
+      const result = await signup(
+        name,
+        phone,
+        formatDate,
+        password,
+        tempToken,
+        selectedGender
+      );
       // console.log("Đăng ký thành công:", result);
-
 
       try {
         const loginResult = await login(phone, password);
-        setLoginResult(loginResult.data)
+        setLoginResult(loginResult.data);
         saveLoginResult(loginResult.data);
       } catch (error) {
         console.error("Lỗi khi đăng nhập:", error);
       }
-
     } catch (error) {
       Alert.alert("Lỗi", error);
       console.error("Lỗi khi đăng ký:", error);
     }
   };
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -116,7 +123,7 @@ export default function SignUpAddProfile() {
           color={Colors.primary}
           text={useTextLanguage({ vietnamese: "Tiếp tục", english: "Next" })}
           onPress={() => {
-            setSuccessModalVisible(true)
+            setSuccessModalVisible(true);
             handleSignup();
           }}
         />
@@ -134,8 +141,9 @@ export default function SignUpAddProfile() {
 
       <CreateAccountCompleted
         visible={successModalVisible}
-        onClose={() => {setSuccessModalVisible(false)
-          navigation.navigate('UpdateAvatar')
+        onClose={() => {
+          setSuccessModalVisible(false);
+          navigation.navigate("UpdateAvatar");
         }}
       />
     </SafeAreaView>
