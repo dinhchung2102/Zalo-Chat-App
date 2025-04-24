@@ -9,7 +9,7 @@ import { getTimeAlong } from "../../utils/getTimeAlong";
 import { textMediumSize } from "../../constants/fontSize";
 import { Colors } from "../../styles/Colors";
 import { acceptFriend } from "../../api/friend/acceptFriend";
-import { getLoginResult } from "../../utils/asyncStorage";
+import { getLoginResult } from "../../services/storageService";
 
 export default function Received() {
   const [requests, setRequests] = useRecoilState(requestState);

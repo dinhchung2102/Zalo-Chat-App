@@ -16,7 +16,7 @@ import { textLargeSize, textMediumSize } from "../../constants/fontSize";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { updateAvatar } from "../../api/auth/update.avt";
-import { getLoginResult, getUserId } from "../../utils/asyncStorage";
+import { getLoginResult, getUserId } from "../../services/storageService";
 import { getShortNameRegister } from "../../utils/getShortName";
 export default function ProfileUser() {
   const navigation = useNavigation();

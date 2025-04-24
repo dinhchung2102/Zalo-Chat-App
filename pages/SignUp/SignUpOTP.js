@@ -22,7 +22,7 @@ import { useTextLanguage } from "../../hooks/useTextLanguage";
 import HeaderText from "../../components/texts/HeaderText";
 import HeaderDesText from "../../components/texts/HeaderDesText";
 import { verifyOTP } from "../../api/auth/register";
-import { getTempToken, saveTempToken } from "../../utils/asyncStorage";
+import { getTempToken, saveTempToken } from "../../services/storageService";
 import OtpErrorModal from "../../components/modals/OtpErrorModal";
 import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
 

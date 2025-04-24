@@ -6,11 +6,10 @@ import { ICON_MEDIUM } from "../../constants/iconSize";
 import { Colors } from "../../styles/Colors";
 import { BASE_UNIT } from "../../constants/screen";
 import { textMediumSize } from "../../constants/fontSize";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { getRequests } from "../../api/friend/getRequests";
-import { getLoginResult } from "../../utils/asyncStorage";
+import { getLoginResult } from "../../services/storageService";
 import { useRecoilState } from "recoil";
-import second, { requestState } from "../../state/FriendState";
+import { requestState } from "../../state/FriendState";
 import { useNavigation } from "@react-navigation/native";
 
 export default function FriendTab() {

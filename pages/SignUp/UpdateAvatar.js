@@ -22,7 +22,7 @@ import SelectPhotoModal from "../../components/shared/SelectPhotoModal";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import { updateAvatar } from "../../api/auth/update.avt";
-import { getLoginResult, getUserId } from "../../utils/asyncStorage";
+import { getLoginResult, getUserId } from "../../services/storageService";
 
 export default function UpdateAvatar() {
   const nameRegisterState = useRecoilValue(nameRegister);

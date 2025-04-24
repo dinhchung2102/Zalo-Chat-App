@@ -9,7 +9,7 @@ import { Colors } from "../../styles/Colors";
 import { BASE_UNIT } from "../../constants/screen";
 import { textMediumSize } from "../../constants/fontSize";
 import FeatureButton from "../../components/others/FeatureButton";
-import { getLoginResult } from "../../utils/asyncStorage";
+import { getLoginResult } from "../../services/storageService";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { nameRegister, profilePicRegister } from "../../state/RegisterState";
 import { getShortNameRegister } from "../../utils/getShortName";

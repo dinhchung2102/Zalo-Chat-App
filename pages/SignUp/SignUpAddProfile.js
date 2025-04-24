@@ -15,9 +15,8 @@ import CreateAccountCompleted from "../../components/modals/CreateAccountComplet
 import { useRecoilState, useRecoilValue } from "recoil";
 import { nameRegister, passwordRegister, phoneNumberRegister } from "../../state/RegisterState";
 import { signup } from "../../api/auth/register";
-import { getTempToken, saveLoginResult } from "../../utils/asyncStorage";
+import { getTempToken, saveLoginResult } from "../../services/storageService";
 import { login } from "../../api/auth/login";
-import BorderInput from "../../components/screens/SignUp/BorderInput";
 import { loginResultState } from "../../state/PrimaryState";
 
 export default function SignUpAddProfile() {
