@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ChatHeader from "../../components/headers/ChatHeader";
+import ChatHeader from "../../components/screens/Chat/ChatHeader";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { BASE_UNIT } from "../../constants/screen";
@@ -22,7 +22,7 @@ import { loginResultState } from "../../state/PrimaryState";
 import { sendFile, sendMessage } from "../../api/chat/messages";
 import useSocketEvents from "../../hooks/useSocketEvents";
 import { getShortNameRegister } from "../../utils/getShortName";
-import ImagePickerModal from "../../components/modals/ImagePickerModal";
+import ImagePickerModal from "../../components/shared/ImagePickerModal";
 import {
   conversationState,
   messagesByConversationState,
@@ -31,7 +31,7 @@ import {
 import { getListConversation } from "../../api/chat/conversation";
 import FileViewer from "react-native-file-viewer";
 import { downloadFile } from "../../utils/downloadFile";
-import FileIcon from "../../components/FileIcon";
+import FileIcon from "../../components/screens/Chat/FileIcon";
 
 export default function PersonChat() {
   // const route = useRoute();

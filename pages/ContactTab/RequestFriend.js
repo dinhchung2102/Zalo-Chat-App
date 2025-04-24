@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../../components/headers/SimpleHeader";
+import SimpleHeader from "../../components/shared/SimpleHeader";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Sent from "./Sent";
 import Received from "./Received";

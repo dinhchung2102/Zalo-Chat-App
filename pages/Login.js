@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../components/headers/SimpleHeader";
-import LoginInput from "../components/textInputs/LoginInput";
+import SimpleHeader from "../components/shared/SimpleHeader";
+import LoginInput from "../components/screens/Login/LoginInput";
 import { BASE_UNIT } from "../constants/screen";
 import { useNavigation } from "@react-navigation/native";
-import LinkButton from "../components/buttons/LinkButton";
-import CircleButton from "../components/buttons/CircleButton";
+import LinkButton from "../components/shared/LinkButton";
+import CircleButton from "../components/screens/Login/CircleButton";
 import { Colors } from "../styles/Colors";
 import { useTextLanguage } from "../hooks/useTextLanguage";
 import { login } from "../api/auth/login";

@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { BASE_UNIT, textMediumSize } from "../constants/screen";
 import { Colors } from "../styles/Colors";
-import NavigationBar from "../components/navigation/NavigationBar";
+import NavigationBar from "../components/shared/NavigationBar";
 import { useNavigation } from "@react-navigation/native";
 const exploreItems = [
   {

@@ -1,15 +1,15 @@
 import { Alert, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../../components/headers/SimpleHeader";
+import SimpleHeader from "../../components/shared/SimpleHeader";
 import HeaderText from "../../components/texts/HeaderText";
-import BirthdaySelect from "../../components/selects/BirthdaySelect";
+import BirthdaySelect from "../../components/shared/BirthdaySelect";
 import { BASE_UNIT } from "../../constants/screen";
-import GenderSelect from "../../components/selects/GenderSelect";
-import LargeButton from "../../components/buttons/LargeButton";
+import GenderSelect from "../../components/screens/SignUp/GenderSelect";
+import LargeButton from "../../components/shared/LargeButton";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 import { useNavigation } from "@react-navigation/native";
-import SelectGenderModal from "../../components/modals/SelectGenderModal";
+import SelectGenderModal from "../../components/shared/SelectGenderModal";
 import { Colors } from "../../styles/Colors";
 import CreateAccountCompleted from "../../components/modals/CreateAccountCompleted";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -17,7 +17,7 @@ import { nameRegister, passwordRegister, phoneNumberRegister } from "../../state
 import { signup } from "../../api/auth/register";
 import { getTempToken, saveLoginResult } from "../../utils/asyncStorage";
 import { login } from "../../api/auth/login";
-import BorderInput from "../../components/textInputs/BorderInput";
+import BorderInput from "../../components/screens/SignUp/BorderInput";
 import { loginResultState } from "../../state/PrimaryState";
 
 export default function SignUpAddProfile() {

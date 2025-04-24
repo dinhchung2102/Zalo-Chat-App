@@ -1,10 +1,10 @@
 import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SearchHeader from "../../components/headers/SearchHeader";
-import MessageTitleRender from "../../components/renderItems/MessageTitleRender";
+import SearchHeader from "../../components/shared/SearchHeader";
+import MessageTitleRender from "../../components/screens/Chat/MessageTitleRender";
 import { BASE_UNIT } from "../../constants/screen";
-import NavigationBar from "../../components/navigation/NavigationBar";
+import NavigationBar from "../../components/shared/NavigationBar";
 import { Colors } from "../../styles/Colors";
 import useSocketEvents from "../../hooks/useSocketEvents";
 import socket from "../../services/socketService";
