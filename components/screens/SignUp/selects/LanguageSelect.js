@@ -1,10 +1,10 @@
 import React from "react";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
+import { BASE_UNIT } from "@styles/constants/screen";
 import { Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { fontMediumSize } from "../../../../styles/constants/fontSize";
-import { ICON_MEDIUM } from "../../../../styles/constants/iconSize";
-import { useTextLanguage } from "../../../../hooks/useTextLanguage";
+import { fontMediumSize } from "@styles/constants/fontSize";
+import { ICON_MEDIUM } from "@styles/constants/iconSize";
+import { useTextLanguage } from "@hooks/useTextLanguage";
 
 export default function LanguageSelect({ onPress }) {
   return (

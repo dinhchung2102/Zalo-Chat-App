@@ -8,11 +8,11 @@ import {
   Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM_PLUS } from "../../styles/constants/iconSize";
-import { Colors } from "../../styles/Colors";
-import { textMediumSize } from "../../styles/constants/fontSize";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import useImagePicker from "../../hooks/useImagePicker"; // Import custom hook
+import { ICON_MEDIUM_PLUS } from "@styles/constants/iconSize";
+import { Colors } from "@styles/Colors";
+import { textMediumSize } from "@styles/constants/fontSize";
+import { BASE_UNIT } from "@styles/constants/screen";
+import useImagePicker from "@hooks/useImagePicker"; // Import custom hook
 
 const ImagePickerModal = ({ visible, onClose, onImageSelected }) => {
   const { pickImage, takePhoto } = useImagePicker(); // Dùng hook cho các hành động chọn ảnh và chụp ảnh

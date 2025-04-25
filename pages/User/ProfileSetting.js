@@ -1,17 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../../components/shared/SimpleHeader";
-import ChooseButton from "../../components/screens/SignUp/buttons/ChooseButton";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { textMediumSize } from "../../styles/constants/fontSize";
-import { Colors } from "../../styles/Colors";
+import SimpleHeader from "@components/shared/SimpleHeader";
+import ChooseButton from "@components/screens/SignUp/buttons/ChooseButton";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textMediumSize } from "@styles/constants/fontSize";
+import { Colors } from "@styles/Colors";
 import { useNavigation } from "@react-navigation/native";
-import { logout } from "../../api/auth/logout";
-import useResetAllAtoms from "../../hooks/useResetAllAtoms";
+import { logout } from "@api/auth/logout";
+import useResetAllAtoms from "@hooks/useResetAllAtoms";
 import { useRecoilValue } from "recoil";
-import { loginResultState } from "../../state/PrimaryState";
-import socket from "../../services/socketService";
+import { loginResultState } from "@state/PrimaryState";
+import socket from "@services/socketService";
 
 export default function ProfileSetting() {
   const navigation = useNavigation();

@@ -13,10 +13,10 @@ import React, { useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { loginResultState } from "../../state/PrimaryState";
-import { selectedConversationState } from "../../state/ChatState";
-import { getShortNameRegister } from "../../utils/getShortName";
-import { deleteGroup, getConversationById, getListConversation, outGroup, removeMember } from "../../api/chat/conversation";
+import { loginResultState } from "@state/PrimaryState";
+import { selectedConversationState } from "@state/ChatState";
+import { getShortNameRegister } from "@utils/getShortName";
+import { deleteGroup, getConversationById, getListConversation, outGroup, removeMember } from "@api/chat/conversation";
 import { Alert } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();

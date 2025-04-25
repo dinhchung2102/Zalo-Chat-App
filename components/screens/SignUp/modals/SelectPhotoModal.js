@@ -1,10 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
-import { ICON_MEDIUM, ICON_MEDIUM_PLUS } from "../../../../styles/constants/iconSize";
-import { Colors } from "../../../../styles/Colors";
-import { textMediumSize } from "../../../../styles/constants/fontSize";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
+import { ICON_MEDIUM, ICON_MEDIUM_PLUS } from "@styles/constants/iconSize";
+import { Colors } from "@styles/Colors";
+import { textMediumSize } from "@styles/constants/fontSize";
+import { BASE_UNIT } from "@styles/constants/screen";
 
 const SelectPhotoModal = ({ visible, onClose, onTakePhoto, onPickPhoto }) => {
   return (

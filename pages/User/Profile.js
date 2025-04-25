@@ -1,18 +1,18 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import NavigationBar from "../../components/shared/NavigationBar";
-import SearchHeader from "../../components/shared/SearchHeader";
+import NavigationBar from "@components/shared/NavigationBar";
+import SearchHeader from "@components/shared/SearchHeader";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_LARGE, ICON_MEDIUM } from "../../styles/constants/iconSize";
-import { Colors } from "../../styles/Colors";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { textMediumSize } from "../../styles/constants/fontSize";
-import FeatureButton from "../../components/screens/Personal/FeatureButton";
-import { getLoginResult } from "../../services/storageService";
+import { ICON_LARGE, ICON_MEDIUM } from "@styles/constants/iconSize";
+import { Colors } from "@styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textMediumSize } from "@styles/constants/fontSize";
+import FeatureButton from "@components/screens/Personal/FeatureButton";
+import { getLoginResult } from "@services/storageService";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { nameRegister, profilePicRegister } from "../../state/RegisterState";
-import { getShortNameRegister } from "../../utils/getShortName";
+import { nameRegister, profilePicRegister } from "@state/RegisterState";
+import { getShortNameRegister } from "@utils/getShortName";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Profile() {

@@ -1,18 +1,18 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import HeaderText from "../../components/others/texts//HeaderText";
-import { useTextLanguage } from "../../hooks/useTextLanguage";
-import HeaderDesText from "../../components/others/texts//HeaderDesText";
-import { Colors } from "../../styles/Colors";
-import BorderInput from "../../components/screens/SignUp/textInputs/BorderInput";
-import LargeButton from "../../components/shared/LargeButton";
-import RuleList from "../../components/others/RuleList";
-import { validateUsernameLength, validateUsernameNotNumber } from "../../utils/nameValidator";
+import { BASE_UNIT } from "@styles/constants/screen";
+import HeaderText from "@components/others/texts//HeaderText";
+import { useTextLanguage } from "@hooks/useTextLanguage";
+import HeaderDesText from "@components/others/texts//HeaderDesText";
+import { Colors } from "@styles/Colors";
+import BorderInput from "@components/screens/SignUp/textInputs/BorderInput";
+import LargeButton from "@components/shared/LargeButton";
+import RuleList from "@components/others/RuleList";
+import { validateUsernameLength, validateUsernameNotNumber } from "@utils/nameValidator";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilState } from "recoil";
-import { nameRegister } from "../../state/RegisterState";
+import { nameRegister } from "@state/RegisterState";
 
 export default function SignUpZaloName() {
   const navigation = useNavigation();

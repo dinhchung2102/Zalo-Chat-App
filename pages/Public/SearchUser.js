@@ -9,18 +9,18 @@ import {
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../styles/constants/iconSize";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { Colors } from "../../styles/Colors";
-import { textLargeSize, textMediumSize } from "../../styles/constants/fontSize";
+import { ICON_MEDIUM } from "@styles/constants/iconSize";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { Colors } from "@styles/Colors";
+import { textLargeSize, textMediumSize } from "@styles/constants/fontSize";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilValue } from "recoil";
-import { findUserState } from "../../state/FriendState";
-import { getShortNameRegister } from "../../utils/getShortName";
-import { loginResultState } from "../../state/PrimaryState";
-import { sendRequest } from "../../api/friend/sendRequest";
-import AddFriendButton from "../../components/screens/Personal/AddFriendButton";
-import SendMessageButton from "../../components/screens/Chat/SendMessageButton";
+import { findUserState } from "@state/FriendState";
+import { getShortNameRegister } from "@utils/getShortName";
+import { loginResultState } from "@state/PrimaryState";
+import { sendRequest } from "@api/friend/sendRequest";
+import AddFriendButton from "@components/screens/Personal/AddFriendButton";
+import SendMessageButton from "@components/screens/Chat/SendMessageButton";
 
 export default function SearchUser() {
   const navigation = useNavigation();

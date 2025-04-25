@@ -1,6 +1,6 @@
-import { saveLoginResult } from "../../services/storageService";
+import { saveLoginResult } from "@services/storageService";
 import apiClient from "../apiClient";
-import {formatPhoneNumber} from "../../utils/formatPhoneNumber"
+import {formatPhoneNumber} from "@utils/formatPhoneNumber"
 
 export const login = async (phone, password) => {
   try {

@@ -1,14 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import { BASE_UNIT } from '../../../../styles/constants/screen'
-import { Colors } from '../../../../styles/Colors'
-import { textMediumSize } from '../../../../styles/constants/fontSize'
+import { BASE_UNIT } from '@styles/constants/screen'
+import { Colors } from '@styles/Colors'
+import { textMediumSize } from '@styles/constants/fontSize'
 import { MaterialIcons } from '@expo/vector-icons'
-import { ICON_MEDIUM_PLUS } from '../../../../styles/constants/iconSize'
+import { ICON_MEDIUM_PLUS } from '@styles/constants/iconSize'
 import {DateTimePickerAndroid} from '@react-native-community/datetimepicker'
-import { useTextLanguage } from '../../../../hooks/useTextLanguage'
+import { useTextLanguage } from '@hooks/useTextLanguage'
 import { useRecoilValue } from 'recoil'
-import { languageState } from '../../../../state/PrimaryState'
+import { languageState } from '@state/PrimaryState'
 
 export default function BirthdaySelect({minimumAge, dateValue, setDateValue}) {
   const [borderColor, setBorderColor] = useState(Colors.grey);

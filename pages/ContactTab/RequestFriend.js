@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../../components/shared/SimpleHeader";
+import SimpleHeader from "@components/shared/SimpleHeader";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Sent from "./Sent";
 import Received from "./Received";
 import { useRecoilValue } from "recoil";
-import { requestState } from "../../state/FriendState";
+import { requestState } from "@state/FriendState";
 import { useNavigation } from "@react-navigation/native";
 
 const Tab = createMaterialTopTabNavigator();

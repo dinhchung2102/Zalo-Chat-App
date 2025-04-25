@@ -1,15 +1,15 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React, { useEffect, useState } from "react";
-import { requestState } from "../../state/FriendState";
+import { requestState } from "@state/FriendState";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { getShortNameRegister } from "../../utils/getShortName";
-import { getTimeAlong } from "../../utils/getTimeAlong";
-import { textMediumSize } from "../../styles/constants/fontSize";
-import { Colors } from "../../styles/Colors";
-import { acceptFriend } from "../../api/friend/acceptFriend";
-import { getLoginResult } from "../../services/storageService";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { getShortNameRegister } from "@utils/getShortName";
+import { getTimeAlong } from "@utils/getTimeAlong";
+import { textMediumSize } from "@styles/constants/fontSize";
+import { Colors } from "@styles/Colors";
+import { acceptFriend } from "@api/friend/acceptFriend";
+import { getLoginResult } from "@services/storageService";
 
 export default function Received() {
   const [requests, setRequests] = useRecoilState(requestState);

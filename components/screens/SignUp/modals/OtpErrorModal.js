@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Modal, View, Text, StyleSheet } from "react-native";
-import { Colors } from "../../../../styles/Colors";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
+import { Colors } from "@styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../../../styles/constants/iconSize";
-import { textMediumSize } from "../../../../styles/constants/fontSize";
+import { ICON_MEDIUM } from "@styles/constants/iconSize";
+import { textMediumSize } from "@styles/constants/fontSize";
 
 const OtpErrorModal = ({ visible, onClose }) => {
   const [showModal, setShowModal] = useState(visible);

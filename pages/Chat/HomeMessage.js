@@ -1,15 +1,15 @@
 import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SearchHeader from "../../components/shared/SearchHeader";
-import MessageTitleRender from "../../components/screens/Chat/MessageTitleRender";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import NavigationBar from "../../components/shared/NavigationBar";
-import { Colors } from "../../styles/Colors";
-import useSocketEvents from "../../hooks/useSocketEvents";
-import socket from "../../services/socketService";
+import SearchHeader from "@components/shared/SearchHeader";
+import MessageTitleRender from "@components/screens/Chat/MessageTitleRender";
+import { BASE_UNIT } from "@styles/constants/screen";
+import NavigationBar from "@components/shared/NavigationBar";
+import { Colors } from "@styles/Colors";
+import useSocketEvents from "@hooks/useSocketEvents";
+import socket from "@services/socketService";
 import { useRecoilValue } from "recoil";
-import { loginResultState } from "../../state/PrimaryState";
+import { loginResultState } from "@state/PrimaryState";
 import * as Notifications from "expo-notifications";
 import { useNavigation } from "@react-navigation/native";
 

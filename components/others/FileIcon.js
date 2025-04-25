@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Colors } from '../../styles/Colors';
+import { Colors } from '@styles/Colors';
 
 const FileIcon = ({ fileType }) => {
   const fileIconMap = {

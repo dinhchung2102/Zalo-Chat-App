@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { textHeaderSize } from "../../../styles/constants/fontSize";
+import { textHeaderSize } from "@styles/constants/fontSize";
 
 export default function HeaderText({ text, color, style }) {
   return (

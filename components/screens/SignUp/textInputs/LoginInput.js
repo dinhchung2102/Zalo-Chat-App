@@ -6,11 +6,11 @@ import {
   StyleSheet,
 } from "react-native";
 import React, { useState, forwardRef } from "react";
-import { textMediumPlus, textMediumSize } from "../../../../styles/constants/fontSize";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
-import { Colors } from "../../../../styles/Colors";
+import { textMediumPlus, textMediumSize } from "@styles/constants/fontSize";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { Colors } from "@styles/Colors";
 import { useRecoilValue } from "recoil";
-import { languageState } from "../../../../state/PrimaryState";
+import { languageState } from "@state/PrimaryState";
 
 const LoginInput = forwardRef(
   (

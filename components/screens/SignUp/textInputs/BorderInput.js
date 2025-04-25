@@ -1,7 +1,7 @@
 import { View, TextInput } from "react-native";
 import React, { useState } from "react";
-import { textMediumSize } from "../../../../styles/constants/fontSize";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
+import { textMediumSize } from "@styles/constants/fontSize";
+import { BASE_UNIT } from "@styles/constants/screen";
 
 export default function BorderInput({ placeholder, borderColor, onChangeText }) {
   const [isFocused, setIsFocused] = useState(true)

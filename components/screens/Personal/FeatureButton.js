@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
-import { ICON_MEDIUM } from '../../../styles/constants/iconSize'
-import { Colors } from '../../../styles/Colors'
-import { BASE_UNIT } from '../../../styles/constants/screen'
-import { textMediumSize } from '../../../styles/constants/fontSize'
+import { ICON_MEDIUM } from '@styles/constants/iconSize'
+import { Colors } from '@styles/Colors'
+import { BASE_UNIT } from '@styles/constants/screen'
+import { textMediumSize } from '@styles/constants/fontSize'
 
 export default function FeatureButton({feature, description, icon}) {
   return (

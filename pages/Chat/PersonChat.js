@@ -10,28 +10,28 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ChatHeader from "../../components/screens/Chat/ChatHeader";
+import ChatHeader from "@components/screens/Chat/ChatHeader";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { ICON_MEDIUM_PLUS } from "../../styles/constants/iconSize";
-import { Colors } from "../../styles/Colors";
-import { textMediumSize } from "../../styles/constants/fontSize";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { ICON_MEDIUM_PLUS } from "@styles/constants/iconSize";
+import { Colors } from "@styles/Colors";
+import { textMediumSize } from "@styles/constants/fontSize";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { loginResultState } from "../../state/PrimaryState";
-import { sendFile, sendMessage } from "../../api/chat/messages";
-import useSocketEvents from "../../hooks/useSocketEvents";
-import { getShortNameRegister } from "../../utils/getShortName";
-import ImagePickerModal from "../../components/shared/ImagePickerModal";
+import { loginResultState } from "@state/PrimaryState";
+import { sendFile, sendMessage } from "@api/chat/messages";
+import useSocketEvents from "@hooks/useSocketEvents";
+import { getShortNameRegister } from "@utils/getShortName";
+import ImagePickerModal from "@components/shared/ImagePickerModal";
 import {
   conversationState,
   messagesByConversationState,
   selectedConversationState,
-} from "../../state/ChatState";
-import { getListConversation } from "../../api/chat/conversation";
+} from "@state/ChatState";
+import { getListConversation } from "@api/chat/conversation";
 import FileViewer from "react-native-file-viewer";
-import { downloadFile } from "../../utils/downloadFile";
-import FileIcon from "../../components/others/FileIcon";
+import { downloadFile } from "@utils/downloadFile";
+import FileIcon from "@components/others/FileIcon";
 
 export default function PersonChat() {
   // const route = useRoute();

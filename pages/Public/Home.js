@@ -1,15 +1,15 @@
 import { View, StyleSheet } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import LanguageSelect from "../../components/screens/SignUp/selects/LanguageSelect";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import LargeButton from "../../components/shared/LargeButton";
+import LanguageSelect from "@components/screens/SignUp/selects/LanguageSelect";
+import { BASE_UNIT } from "@styles/constants/screen";
+import LargeButton from "@components/shared/LargeButton";
 import { useRecoilState, useRecoilValue } from "recoil";
-import SelectLanguageModal from "../../components/screens/SignUp/modals/SelectLanguageModal";
-import { modalLanguageState } from "../../state/PrimaryState";
-import IntroSwiper from "../../components/screens/Home/IntroSwiper";
+import SelectLanguageModal from "@components/screens/SignUp/modals/SelectLanguageModal";
+import { modalLanguageState } from "@state/PrimaryState";
+import IntroSwiper from "@components/screens/Home/IntroSwiper";
 import { useNavigation } from "@react-navigation/native";
-import { useTextLanguage } from "../../hooks/useTextLanguage";
+import { useTextLanguage } from "@hooks/useTextLanguage";
 
 export default function Home() {
   const navigation = useNavigation();

@@ -7,17 +7,17 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { ICON_LARGE, ICON_MEDIUM } from "../../styles/constants/iconSize";
+import { ICON_LARGE, ICON_MEDIUM } from "@styles/constants/iconSize";
 import { LinearGradient } from "expo-linear-gradient";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { Colors } from "../../styles/Colors";
-import { textMediumSize } from "../../styles/constants/fontSize";
-import { useTextLanguage } from "../../hooks/useTextLanguage";
-import { findUser } from "../../api/friend/findUser";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { Colors } from "@styles/Colors";
+import { textMediumSize } from "@styles/constants/fontSize";
+import { useTextLanguage } from "@hooks/useTextLanguage";
+import { findUser } from "@api/friend/findUser";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { findUserState } from "../../state/FriendState";
-import { loginResultState } from "../../state/PrimaryState";
+import { findUserState } from "@state/FriendState";
+import { loginResultState } from "@state/PrimaryState";
 
 export default function SearchHeader({
   textColor = "white",

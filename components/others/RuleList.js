@@ -1,9 +1,9 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../styles/constants/iconSize";
-import { Colors } from "../../styles/Colors";
-import { BASE_UNIT } from "../../styles/constants/screen";
+import { ICON_MEDIUM } from "@styles/constants/iconSize";
+import { Colors } from "@styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
 import LinkButton from "../shared/LinkButton";
 
 export default function RuleList({ rule, url, term, color, valid }) {

@@ -1,10 +1,10 @@
 import React from "react";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
+import { BASE_UNIT } from "@styles/constants/screen";
 import { Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { textMediumSize } from "../../../../styles/constants/fontSize";
-import { ICON_MEDIUM } from "../../../../styles/constants/iconSize";
-import { Colors } from "../../../../styles/Colors";
+import { textMediumSize } from "@styles/constants/fontSize";
+import { ICON_MEDIUM } from "@styles/constants/iconSize";
+import { Colors } from "@styles/Colors";
 
 export default function CountrySelect({ onPress }) {
   return (

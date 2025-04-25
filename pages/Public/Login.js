@@ -1,17 +1,17 @@
 import { View, Text, StyleSheet } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../../components/shared/SimpleHeader";
-import LoginInput from "../../components/screens/SignUp/textInputs/LoginInput";
-import { BASE_UNIT } from "../../styles/constants/screen";
+import SimpleHeader from "@components/shared/SimpleHeader";
+import LoginInput from "@components/screens/SignUp/textInputs/LoginInput";
+import { BASE_UNIT } from "@styles/constants/screen";
 import { useNavigation } from "@react-navigation/native";
-import LinkButton from "../../components/shared/LinkButton";
-import CircleButton from "../../components/screens/SignUp/buttons/CircleButton";
-import { Colors } from "../../styles/Colors";
-import { useTextLanguage } from "../../hooks/useTextLanguage";
-import { login } from "../../api/auth/login";
+import LinkButton from "@components/shared/LinkButton";
+import CircleButton from "@components/screens/SignUp/buttons/CircleButton";
+import { Colors } from "@styles/Colors";
+import { useTextLanguage } from "@hooks/useTextLanguage";
+import { login } from "@api/auth/login";
 import { useRecoilState } from "recoil";
-import { loginResultState } from "../../state/PrimaryState";
+import { loginResultState } from "@state/PrimaryState";
 
 export default function Login() {
   const navigation = useNavigation();

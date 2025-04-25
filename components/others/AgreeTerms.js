@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import { textMediumSize } from "../../styles/constants/fontSize";
+import { textMediumSize } from "@styles/constants/fontSize";
 import LinkButton from "../shared/LinkButton";
-import { Colors } from "../../styles/Colors";
-import { BASE_UNIT } from "../../styles/constants/screen";
+import { Colors } from "@styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM_PLUS } from "../../styles/constants/iconSize";
-import { useTextLanguage } from "../../hooks/useTextLanguage";
+import { ICON_MEDIUM_PLUS } from "@styles/constants/iconSize";
+import { useTextLanguage } from "@hooks/useTextLanguage";
 
 export default function AgreeTerms({ term, textColor, checked, setChecked }) {
   return (

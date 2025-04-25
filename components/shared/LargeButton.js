@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { textLargeButton } from "../../styles/constants/fontSize";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textLargeButton } from "@styles/constants/fontSize";
 
 export default function LargeButton({ text, color, textColor, onPress, disabled }) {
   return (

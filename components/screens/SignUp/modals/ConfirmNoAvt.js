@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
-import { textMediumSize } from "../../../../styles/constants/fontSize";
-import { Colors } from "../../../../styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textMediumSize } from "@styles/constants/fontSize";
+import { Colors } from "@styles/Colors";
 
 const ConfirmNoAvt = ({ visible, title, text, onSkip, onAddPhoto }) => {
   return (

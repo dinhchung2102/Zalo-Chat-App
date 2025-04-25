@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { textMediumSize } from "../../../styles/constants/fontSize";
+import { textMediumSize } from "@styles/constants/fontSize";
 
 export default function HeaderDesText({ text, color }) {
   return (

@@ -1,12 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { Colors } from "../../styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { Colors } from "@styles/Colors";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../styles/constants/iconSize";
+import { ICON_MEDIUM } from "@styles/constants/iconSize";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilState } from "recoil";
-import { navigationState } from "../../state/PrimaryState";
+import { navigationState } from "@state/PrimaryState";
 
 export default function NavigationBar() {
   const navigation = useNavigation();

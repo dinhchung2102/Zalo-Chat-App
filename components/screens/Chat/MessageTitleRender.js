@@ -1,24 +1,24 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect } from "react";
-import { BASE_UNIT } from "../../../styles/constants/screen";
-import { textMediumPlus, textMediumSize } from "../../../styles/constants/fontSize";
-import { Colors } from "../../../styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textMediumPlus, textMediumSize } from "@styles/constants/fontSize";
+import { Colors } from "@styles/Colors";
 import {
   getListConversation,
   unseenMessages,
-} from "../../../api/chat/conversation";
-import { getTimeAlong } from "../../../utils/getTimeAlong";
-import { useTextLanguage } from "../../../hooks/useTextLanguage";
-import { getShortNameRegister } from "../../../utils/getShortName";
+} from "@api/chat/conversation";
+import { getTimeAlong } from "@utils/getTimeAlong";
+import { useTextLanguage } from "@hooks/useTextLanguage";
+import { getShortNameRegister } from "@utils/getShortName";
 import { useNavigation } from "@react-navigation/native";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   conversationState,
   messagesByConversationState,
   selectedConversationState,
-} from "../../../state/ChatState";
-import { getMessages } from "../../../api/chat/messages";
-import { loginResultState } from "../../../state/PrimaryState";
+} from "@state/ChatState";
+import { getMessages } from "@api/chat/messages";
+import { loginResultState } from "@state/PrimaryState";
 
 export default function MessageTitleRender() {
   const locale = useTextLanguage({ vietnamese: "vi", english: "en" });

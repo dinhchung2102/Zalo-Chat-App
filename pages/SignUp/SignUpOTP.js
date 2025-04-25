@@ -1,30 +1,30 @@
 import { View, StyleSheet, Text } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../../components/shared/SimpleHeader";
-import { BASE_UNIT } from "../../styles/constants/screen";
+import SimpleHeader from "@components/shared/SimpleHeader";
+import { BASE_UNIT } from "@styles/constants/screen";
 import {
   textHeaderSize,
   textMediumPlus,
   textMediumSize,
-} from "../../styles/constants/fontSize";
+} from "@styles/constants/fontSize";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { languageState, modalAuthRegister } from "../../state/PrimaryState";
-import { Colors } from "../../styles/Colors";
-import LargeButton from "../../components/shared/LargeButton";
-import LinkButton from "../../components/shared/LinkButton";
+import { languageState, modalAuthRegister } from "@state/PrimaryState";
+import { Colors } from "@styles/Colors";
+import LargeButton from "@components/shared/LargeButton";
+import LinkButton from "@components/shared/LinkButton";
 import { useNavigation } from "@react-navigation/native";
-import { phoneNumberRegister } from "../../state/RegisterState";
+import { phoneNumberRegister } from "@state/RegisterState";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../styles/constants/iconSize";
-import OTPInPut from "../../components/screens/SignUp/textInputs/OTPInPut";
-import { useTextLanguage } from "../../hooks/useTextLanguage";
-import HeaderText from "../../components/others/texts//HeaderText";
-import HeaderDesText from "../../components/others/texts//HeaderDesText";
-import { verifyOTP } from "../../api/auth/register";
-import { getTempToken, saveTempToken } from "../../services/storageService";
-import OtpErrorModal from "../../components/screens/SignUp/modals/OtpErrorModal";
-import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
+import { ICON_MEDIUM } from "@styles/constants/iconSize";
+import OTPInPut from "@components/screens/SignUp/textInputs/OTPInPut";
+import { useTextLanguage } from "@hooks/useTextLanguage";
+import HeaderText from "@components/others/texts//HeaderText";
+import HeaderDesText from "@components/others/texts//HeaderDesText";
+import { verifyOTP } from "@api/auth/register";
+import { getTempToken, saveTempToken } from "@services/storageService";
+import OtpErrorModal from "@components/screens/SignUp/modals/OtpErrorModal";
+import { formatPhoneNumber } from "@utils/formatPhoneNumber";
 
 export default function SignUpOTP() {
   const navigation = useNavigation();

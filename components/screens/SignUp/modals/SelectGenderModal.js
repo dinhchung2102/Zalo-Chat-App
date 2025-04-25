@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
 import React from "react";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
-import { textMediumSize } from "../../../../styles/constants/fontSize";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textMediumSize } from "@styles/constants/fontSize";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../../../styles/constants/iconSize";
-import { useTextLanguage } from "../../../../hooks/useTextLanguage";
+import { ICON_MEDIUM } from "@styles/constants/iconSize";
+import { useTextLanguage } from "@hooks/useTextLanguage";
 
 export default function SelectGenderModal({onPress, selectedGender, setSelectedGender, modalVisible, setModalVisible}) {
 

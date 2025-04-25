@@ -2,15 +2,15 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../styles/constants/iconSize";
-import { Colors } from "../../styles/Colors";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { textMediumSize } from "../../styles/constants/fontSize";
+import { ICON_MEDIUM } from "@styles/constants/iconSize";
+import { Colors } from "@styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textMediumSize } from "@styles/constants/fontSize";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { getRequests } from "../../api/friend/getRequests";
-import { getLoginResult } from "../../services/storageService";
+import { getRequests } from "@api/friend/getRequests";
+import { getLoginResult } from "@services/storageService";
 import { useRecoilState } from "recoil";
-import second, { requestState } from "../../state/FriendState";
+import second, { requestState } from "@state/FriendState";
 import { useNavigation } from "@react-navigation/native";
 
 export default function FriendTab() {

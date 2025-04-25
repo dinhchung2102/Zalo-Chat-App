@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
-import { textMediumPlus } from "../../../../styles/constants/fontSize";
-import { Colors } from "../../../../styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textMediumPlus } from "@styles/constants/fontSize";
+import { Colors } from "@styles/Colors";
 
 export default function OTPInPut({ otp, setOtp, onSubmit }) {
   const [focusedIndex, setFocusedIndex] = useState(null);

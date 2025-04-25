@@ -8,21 +8,21 @@ import {
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderText from "../../components/others/texts//HeaderText";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import NoteText from "../../components/others/texts//NoteText";
+import HeaderText from "@components/others/texts//HeaderText";
+import { BASE_UNIT } from "@styles/constants/screen";
+import NoteText from "@components/others/texts//NoteText";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { nameRegister, profilePicRegister } from "../../state/RegisterState";
-import { getShortNameRegister } from "../../utils/getShortName";
-import { Colors } from "../../styles/Colors";
-import { textMediumPlus } from "../../styles/constants/fontSize";
-import LargeButton from "../../components/shared/LargeButton";
-import ConfirmNoAvt from "../../components/screens/SignUp/modals/ConfirmNoAvt";
-import SelectPhotoModal from "../../components/screens/SignUp/modals/SelectPhotoModal";
+import { nameRegister, profilePicRegister } from "@state/RegisterState";
+import { getShortNameRegister } from "@utils/getShortName";
+import { Colors } from "@styles/Colors";
+import { textMediumPlus } from "@styles/constants/fontSize";
+import LargeButton from "@components/shared/LargeButton";
+import ConfirmNoAvt from "@components/screens/SignUp/modals/ConfirmNoAvt";
+import SelectPhotoModal from "@components/screens/SignUp/modals/SelectPhotoModal";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
-import { updateAvatar } from "../../api/auth/update.avt";
-import { getLoginResult, getUserId } from "../../services/storageService";
+import { updateAvatar } from "@api/auth/update.avt";
+import { getLoginResult, getUserId } from "@services/storageService";
 
 export default function UpdateAvatar() {
   const nameRegisterState = useRecoilValue(nameRegister);

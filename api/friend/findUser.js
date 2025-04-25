@@ -1,5 +1,5 @@
 import apiClient from "../apiClient";
-import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
+import { formatPhoneNumber } from "@utils/formatPhoneNumber";
 
 export const findUser = async (phoneNumber, token) => {
   try {

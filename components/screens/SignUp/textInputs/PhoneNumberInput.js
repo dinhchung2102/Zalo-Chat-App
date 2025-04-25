@@ -1,11 +1,11 @@
 import { View, TextInput } from "react-native";
 import React from "react";
-import CountrySelect from "../../../screens/SignUp/selects/CountrySelect";
-import { Colors } from "../../../../styles/Colors";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
-import { textMediumSize } from "../../../../styles/constants/fontSize";
+import CountrySelect from "@components/screens/SignUp/selects/CountrySelect";
+import { Colors } from "@styles/Colors";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textMediumSize } from "@styles/constants/fontSize";
 import { useRecoilState } from "recoil";
-import { phoneNumberRegister } from "../../../../state/RegisterState";
+import { phoneNumberRegister } from "@state/RegisterState";
 
 export default function PhoneNumberInput() {
   const [phoneNumber, setPhoneNumber] = useRecoilState(phoneNumberRegister);

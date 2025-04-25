@@ -9,15 +9,15 @@ import {
 import React from "react";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { languageState, modalAuthRegister } from "../../../../state/PrimaryState";
-import { BASE_UNIT } from "../../../../styles/constants/screen";
-import { textMediumPlus, textMediumSize } from "../../../../styles/constants/fontSize";
-import { phoneNumberRegister } from "../../../../state/RegisterState";
-import { Colors } from "../../../../styles/Colors";
+import { languageState, modalAuthRegister } from "@state/PrimaryState";
+import { BASE_UNIT } from "@styles/constants/screen";
+import { textMediumPlus, textMediumSize } from "@styles/constants/fontSize";
+import { phoneNumberRegister } from "@state/RegisterState";
+import { Colors } from "@styles/Colors";
 import { useNavigation } from "@react-navigation/native";
-import { useTextLanguage } from "../../../../hooks/useTextLanguage";
-import { formatPhoneNumber } from "../../../../utils/formatPhoneNumber";
-import { sendOTP } from "../../../../api/auth/register";
+import { useTextLanguage } from "@hooks/useTextLanguage";
+import { formatPhoneNumber } from "@utils/formatPhoneNumber";
+import { sendOTP } from "@apis/auth/register";
 
 export default function AuthRegisterModal() {
   const [modalvisible, setModalVisible] = useRecoilState(modalAuthRegister);

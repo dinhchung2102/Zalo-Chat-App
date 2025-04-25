@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { languageState } from "../../../state/PrimaryState";
-import { BASE_UNIT, introData } from "../../../styles/constants/screen";
-import { textMediumSize } from "../../../styles/constants/fontSize";
+import { languageState } from "@state/PrimaryState";
+import { BASE_UNIT, introData } from "@styles/constants/screen";
+import { textMediumSize } from "@styles/constants/fontSize";
 import Swiper from "react-native-swiper";
 
 export default function IntroSwiper() {

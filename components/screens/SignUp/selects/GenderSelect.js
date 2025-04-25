@@ -1,10 +1,10 @@
 import { Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { BASE_UNIT } from '../../../../styles/constants/screen'
-import { Colors } from '../../../../styles/Colors'
+import { BASE_UNIT } from '@styles/constants/screen'
+import { Colors } from '@styles/Colors'
 import { MaterialIcons } from '@expo/vector-icons'
-import { ICON_MEDIUM_PLUS } from '../../../../styles/constants/iconSize'
-import { textMediumSize } from '../../../../styles/constants/fontSize'
+import { ICON_MEDIUM_PLUS } from '@styles/constants/iconSize'
+import { textMediumSize } from '@styles/constants/fontSize'
 
 export default function GenderSelect({onPress, selectedGender}) {
   const handleSelectGender = (selectedGender)=>{

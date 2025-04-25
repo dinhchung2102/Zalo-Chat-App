@@ -11,16 +11,16 @@ import {
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { launchImageLibrary } from "react-native-image-picker";
-import { getListFriend } from "../../api/friend/getListFriend";
+import { getListFriend } from "@api/friend/getListFriend";
 import { useRecoilState, useRecoilValue } from "recoil";
-import frr, { loginResultState } from "../../state/PrimaryState";
+import frr, { loginResultState } from "@state/PrimaryState";
 import {
   addNewMembers,
   createNewGroup,
   getConversationById,
-} from "../../api/chat/conversation";
+} from "@api/chat/conversation";
 import { useNavigation } from "@react-navigation/native";
-import { selectedConversationState } from "../../state/ChatState";
+import { selectedConversationState } from "@state/ChatState";
 
 // Header Component
 const AddToGroupHeader = ({ selectedUsers, navigation }) => {

@@ -12,10 +12,10 @@ import {
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { launchImageLibrary } from "react-native-image-picker";
-import { getListFriend } from "../../api/friend/getListFriend";
+import { getListFriend } from "@api/friend/getListFriend";
 import { useRecoilValue } from "recoil";
-import frr, { loginResultState } from "../../state/PrimaryState";
-import { createNewGroup, outGroup } from "../../api/chat/conversation";
+import frr, { loginResultState } from "@state/PrimaryState";
+import { createNewGroup, outGroup } from "@api/chat/conversation";
 import { useNavigation } from "@react-navigation/native";
 
 // const users = [
