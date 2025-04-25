@@ -1,46 +1,39 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
-import { BASE_UNIT, textMediumSize } from "@styles/constants/screen";
-import { Colors } from "@styles/Colors";
-import NavigationBar from "@components/shared/NavigationBar";
-import { useNavigation } from "@react-navigation/native";
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import { BASE_UNIT, textMediumSize } from '@styles/constants/screen';
+import { Colors } from '@styles/Colors';
+import NavigationBar from '@components/shared/NavigationBar';
+import { useNavigation } from '@react-navigation/native';
 const exploreItems = [
   {
-    id: "1",
-    title: "Game",
-    description: "Chơi game trực tiếp trên Zalo",
-    icon: "game-controller-outline",
-    screen: "GameScreen",
+    id: '1',
+    title: 'Game',
+    description: 'Chơi game trực tiếp trên Zalo',
+    icon: 'game-controller-outline',
+    screen: 'GameScreen',
   },
   {
-    id: "2",
-    title: "Tiện ích",
-    description: "Khám phá các tiện ích hữu ích",
-    icon: "apps-outline",
-    screen: "UtilitiesScreen",
+    id: '2',
+    title: 'Tiện ích',
+    description: 'Khám phá các tiện ích hữu ích',
+    icon: 'apps-outline',
+    screen: 'UtilitiesScreen',
   },
   {
-    id: "3",
-    title: "Mini App",
-    description: "Trải nghiệm các ứng dụng nhỏ",
-    icon: "cube-outline",
-    screen: "MiniAppScreen",
+    id: '3',
+    title: 'Mini App',
+    description: 'Trải nghiệm các ứng dụng nhỏ',
+    icon: 'cube-outline',
+    screen: 'MiniAppScreen',
   },
   {
-    id: "4",
-    title: "Tìm quanh đây",
-    description: "Kết nối với bạn bè xung quanh",
-    icon: "location-outline",
-    screen: "FindNearbyScreen",
+    id: '4',
+    title: 'Tìm quanh đây',
+    description: 'Kết nối với bạn bè xung quanh',
+    icon: 'location-outline',
+    screen: 'FindNearbyScreen',
   },
 ];
 
@@ -65,11 +58,7 @@ export default function Explore() {
         <Text style={styles.itemTitle}>{item.title}</Text>
         <Text style={styles.itemDescription}>{item.description}</Text>
       </View>
-      <Ionicons
-        name="chevron-forward-outline"
-        size={BASE_UNIT * 0.06}
-        color={Colors.grey}
-      />
+      <Ionicons name="chevron-forward-outline" size={BASE_UNIT * 0.06} color={Colors.grey} />
     </TouchableOpacity>
   );
 
@@ -77,12 +66,8 @@ export default function Explore() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Khám phá</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("Search")}>
-          <Ionicons
-            name="search-outline"
-            size={BASE_UNIT * 0.07}
-            color="white"
-          />
+        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+          <Ionicons name="search-outline" size={BASE_UNIT * 0.07} color="white" />
         </TouchableOpacity>
       </View>
       <View style={styles.content}>
@@ -103,20 +88,20 @@ export default function Explore() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     backgroundColor: Colors.primary,
     paddingHorizontal: BASE_UNIT * 0.03,
     paddingVertical: BASE_UNIT * 0.02,
   },
   headerTitle: {
     fontSize: textMediumSize * 1.2,
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: 'bold',
+    color: 'white',
   },
   content: {
     flex: 1,
@@ -124,8 +109,8 @@ const styles = StyleSheet.create({
     paddingVertical: BASE_UNIT * 0.02,
   },
   itemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: BASE_UNIT * 0.02,
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightGrey,
@@ -138,7 +123,7 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: textMediumSize,
-    fontWeight: "500",
+    fontWeight: '500',
     color: Colors.black,
   },
   itemDescription: {
@@ -146,8 +131,8 @@ const styles = StyleSheet.create({
     color: Colors.grey,
   },
   navigationBar: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
-    width: "100%",
+    width: '100%',
   },
 });

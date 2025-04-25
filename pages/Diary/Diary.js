@@ -1,34 +1,27 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
-import SearchHeader from "@components/shared/SearchHeader";
-import NavigationBar from "@components/shared/NavigationBar";
-import { Colors } from "@styles/Colors";
-import { BASE_UNIT, textMediumSize } from "@styles/constants/screen";
-import { useNavigation } from "@react-navigation/native";
-import { useTextLanguage } from "@hooks/useTextLanguage";
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import SearchHeader from '@components/shared/SearchHeader';
+import NavigationBar from '@components/shared/NavigationBar';
+import { Colors } from '@styles/Colors';
+import { BASE_UNIT, textMediumSize } from '@styles/constants/screen';
+import { useNavigation } from '@react-navigation/native';
+import { useTextLanguage } from '@hooks/useTextLanguage';
 
 // Dữ liệu giả lập cho Nhật Ký
 const mockDiaryEntries = [
   {
-    id: "1",
-    content: "Hôm nay là một ngày đẹp trời!",
-    date: "08/04/2025 08:00",
+    id: '1',
+    content: 'Hôm nay là một ngày đẹp trời!',
+    date: '08/04/2025 08:00',
     likes: 5,
     comments: 2,
   },
   {
-    id: "2",
-    content: "Đi uống cà phê với bạn, vui quá!",
-    date: "07/04/2025 15:30",
+    id: '2',
+    content: 'Đi uống cà phê với bạn, vui quá!',
+    date: '07/04/2025 15:30',
     likes: 3,
     comments: 1,
   },
@@ -37,9 +30,9 @@ const mockDiaryEntries = [
 export default function Diary() {
   const navigation = useNavigation();
   const [diaryEntries, setDiaryEntries] = useState(mockDiaryEntries);
-  const [newEntry, setNewEntry] = useState("");
+  const [newEntry, setNewEntry] = useState('');
   const addEntry = () => {
-    if (newEntry.trim() === "") return;
+    if (newEntry.trim() === '') return;
     const newId = (diaryEntries.length + 1).toString();
     const currentDate = new Date().toLocaleString();
     setDiaryEntries([
@@ -52,12 +45,12 @@ export default function Diary() {
       },
       ...diaryEntries,
     ]);
-    setNewEntry("");
+    setNewEntry('');
   };
   const renderDiaryEntry = ({ item }) => (
     <TouchableOpacity
       style={styles.entryItem}
-      onPress={() => navigation.navigate("DiaryDetail", { entryId: item.id })}
+      onPress={() => navigation.navigate('DiaryDetail', { entryId: item.id })}
     >
       <Text style={styles.entryDate}>{item.date}</Text>
       <Text style={styles.entryContent}>{item.content}</Text>
@@ -78,12 +71,12 @@ export default function Diary() {
     <SafeAreaView style={styles.container}>
       <SearchHeader
         linearPrimary={true}
-        iconColor={"white"}
+        iconColor={'white'}
         textColor="white"
-        iconName2={"add"}
+        iconName2={'add'}
         placeholder={useTextLanguage({
-          vietnamese: "Tìm kiếm bài viết",
-          english: "Search posts",
+          vietnamese: 'Tìm kiếm bài viết',
+          english: 'Search posts',
         })}
         onIcon2Press={addEntry}
       />
@@ -92,7 +85,7 @@ export default function Diary() {
         <TextInput
           style={styles.input}
           placeholder={useTextLanguage({
-            vietnamese: "Bạn đang nghĩ gì?",
+            vietnamese: 'Bạn đang nghĩ gì?',
             english: "What's on your mind?",
           })}
           value={newEntry}
@@ -118,7 +111,7 @@ export default function Diary() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   inputContainer: {
     paddingHorizontal: BASE_UNIT * 0.03,
@@ -150,16 +143,16 @@ const styles = StyleSheet.create({
   },
   entryContent: {
     fontSize: textMediumSize,
-    fontWeight: "500",
+    fontWeight: '500',
     color: Colors.black,
   },
   entryActions: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: BASE_UNIT * 0.02,
   },
   actionButton: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginRight: BASE_UNIT * 0.05,
   },
   actionText: {
@@ -168,8 +161,8 @@ const styles = StyleSheet.create({
     color: Colors.grey,
   },
   navigationBar: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
-    width: "100%",
+    width: '100%',
   },
 });

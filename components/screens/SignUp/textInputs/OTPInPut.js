@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
-import { BASE_UNIT } from "@styles/constants/screen";
-import { textMediumPlus } from "@styles/constants/fontSize";
-import { Colors } from "@styles/Colors";
+import React, { useState, useRef } from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { BASE_UNIT } from '@styles/constants/screen';
+import { textMediumPlus } from '@styles/constants/fontSize';
+import { Colors } from '@styles/Colors';
 
 export default function OTPInPut({ otp, setOtp, onSubmit }) {
   const [focusedIndex, setFocusedIndex] = useState(null);
@@ -39,7 +39,7 @@ export default function OTPInPut({ otp, setOtp, onSubmit }) {
   };
 
   const handleSubmit = () => {
-    const enteredOtp = otp.join("");
+    const enteredOtp = otp.join('');
     onSubmit(enteredOtp);
   };
 
@@ -49,10 +49,7 @@ export default function OTPInPut({ otp, setOtp, onSubmit }) {
         <TextInput
           key={index}
           ref={inputRefs[index]}
-          style={[
-            styles.input,
-            focusedIndex === index && { borderColor: Colors.primary },
-          ]}
+          style={[styles.input, focusedIndex === index && { borderColor: Colors.primary }]}
           maxLength={1}
           keyboardType="numeric"
           value={digit}
@@ -68,20 +65,20 @@ export default function OTPInPut({ otp, setOtp, onSubmit }) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
     paddingHorizontal: BASE_UNIT * 0.1,
   },
   input: {
     width: BASE_UNIT * 0.1,
     height: BASE_UNIT * 0.12,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderWidth: 1,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: textMediumPlus,
-    fontWeight: "500",
+    fontWeight: '500',
     borderRadius: BASE_UNIT * 0.02,
   },
 });

@@ -1,17 +1,17 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "@components/shared/SimpleHeader";
-import ChooseButton from "@components/screens/SignUp/buttons/ChooseButton";
-import { BASE_UNIT } from "@styles/constants/screen";
-import { textMediumSize } from "@styles/constants/fontSize";
-import { Colors } from "@styles/Colors";
-import { useNavigation } from "@react-navigation/native";
-import { logout } from "@api/auth/logout";
-import useResetAllAtoms from "@hooks/useResetAllAtoms";
-import { useRecoilValue } from "recoil";
-import { loginResultState } from "@state/PrimaryState";
-import socket from "@services/socketService";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import SimpleHeader from '@components/shared/SimpleHeader';
+import ChooseButton from '@components/screens/SignUp/buttons/ChooseButton';
+import { BASE_UNIT } from '@styles/constants/screen';
+import { textMediumSize } from '@styles/constants/fontSize';
+import { Colors } from '@styles/Colors';
+import { useNavigation } from '@react-navigation/native';
+import { logout } from '@api/auth/logout';
+import useResetAllAtoms from '@hooks/useResetAllAtoms';
+import { useRecoilValue } from 'recoil';
+import { loginResultState } from '@state/PrimaryState';
+import socket from '@services/socketService';
 
 export default function ProfileSetting() {
   const navigation = useNavigation();
@@ -29,27 +29,24 @@ export default function ProfileSetting() {
     <SafeAreaView style={styles.container}>
       <SimpleHeader
         linearPrimary={true}
-        iconColor={"white"}
+        iconColor={'white'}
         text={loginResult.user.fullName}
         onPress={() => {
           navigation.goBack();
         }}
       />
-      <View style={{ width: "100%", paddingHorizontal: BASE_UNIT * 0.05 }}>
-        <ChooseButton text={"Thông tin"} textSize={textMediumSize} />
-        <ChooseButton text={"Đổi ảnh đại diện"} textSize={textMediumSize} />
-        <ChooseButton text={"Đổi ảnh bìa"} textSize={textMediumSize} />
-        <ChooseButton
-          text={"Cập nhật giới thiệu bản thân"}
-          textSize={textMediumSize}
-        />
-        <ChooseButton text={"Ví của tôi"} textSize={textMediumSize} />
+      <View style={{ width: '100%', paddingHorizontal: BASE_UNIT * 0.05 }}>
+        <ChooseButton text={'Thông tin'} textSize={textMediumSize} />
+        <ChooseButton text={'Đổi ảnh đại diện'} textSize={textMediumSize} />
+        <ChooseButton text={'Đổi ảnh bìa'} textSize={textMediumSize} />
+        <ChooseButton text={'Cập nhật giới thiệu bản thân'} textSize={textMediumSize} />
+        <ChooseButton text={'Ví của tôi'} textSize={textMediumSize} />
       </View>
 
       <View
         style={{
           height: BASE_UNIT * 0.02,
-          width: "100%",
+          width: '100%',
           backgroundColor: Colors.lightGrey,
         }}
       ></View>
@@ -57,23 +54,21 @@ export default function ProfileSetting() {
         style={{
           marginTop: BASE_UNIT * 0.05,
           paddingHorizontal: BASE_UNIT * 0.05,
-          width: "100%",
+          width: '100%',
         }}
       >
-        <Text style={{ color: Colors.primary, fontWeight: "700" }}>
-          Cài đặt
-        </Text>
-        <ChooseButton text={"Mã QR của tôi"} textSize={textMediumSize} />
-        <ChooseButton text={"Quyền riêng tư"} textSize={textMediumSize} />
-        <ChooseButton text={"Quản lý tài khoản"} textSize={textMediumSize} />
-        <ChooseButton text={"Cài đặt chung"} textSize={textMediumSize} />
+        <Text style={{ color: Colors.primary, fontWeight: '700' }}>Cài đặt</Text>
+        <ChooseButton text={'Mã QR của tôi'} textSize={textMediumSize} />
+        <ChooseButton text={'Quyền riêng tư'} textSize={textMediumSize} />
+        <ChooseButton text={'Quản lý tài khoản'} textSize={textMediumSize} />
+        <ChooseButton text={'Cài đặt chung'} textSize={textMediumSize} />
       </View>
 
       <View
         style={{
           marginTop: BASE_UNIT * 0.05,
           paddingHorizontal: BASE_UNIT * 0.05,
-          width: "100%",
+          width: '100%',
         }}
       >
         <TouchableOpacity
@@ -84,15 +79,15 @@ export default function ProfileSetting() {
             socket.disconnect();
             navigation.reset({
               index: 0,
-              routes: [{ name: "Home" }],
+              routes: [{ name: 'Home' }],
             });
           }}
         >
           <Text
             style={{
               fontSize: textMediumSize,
-              color: "red",
-              fontWeight: "600",
+              color: 'red',
+              fontWeight: '600',
             }}
           >
             Đăng xuất
@@ -106,7 +101,7 @@ export default function ProfileSetting() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "white",
+    alignItems: 'center',
+    backgroundColor: 'white',
   },
 });

@@ -4,15 +4,15 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { appVideoCallID } from '../../ipConfig';
 
-const VideoCall = ({route}) => {
+const VideoCall = ({ route }) => {
   const { channelName } = route.params;
   const [videoCall, setVideoCall] = useState(true);
   const navigation = useNavigation();
 
   const props = {
     connectionData: {
-      appId: appVideoCallID, 
-      channel: channelName,         
+      appId: appVideoCallID,
+      channel: channelName,
     },
     rtcCallbacks: {
       EndCall: () => setVideoCall(false),
@@ -23,10 +23,15 @@ const VideoCall = ({route}) => {
     <AgoraUIKit {...props} />
   ) : (
     <View>
-    <Text>The call has ended</Text>
-    <TouchableOpacity onPress={()=>{navigation.navigate('HomeMessage')}}>
-      <Text>Quay lại</Text>
-    </TouchableOpacity></View> 
+      <Text>The call has ended</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('HomeMessage');
+        }}
+      >
+        <Text>Quay lại</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 

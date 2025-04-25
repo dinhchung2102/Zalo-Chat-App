@@ -1,36 +1,32 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect } from "react";
-import { BASE_UNIT } from "@styles/constants/screen";
-import { textMediumPlus, textMediumSize } from "@styles/constants/fontSize";
-import { Colors } from "@styles/Colors";
-import {
-  getListConversation,
-  unseenMessages,
-} from "@api/chat/conversation";
-import { getTimeAlong } from "@utils/getTimeAlong";
-import { useTextLanguage } from "@hooks/useTextLanguage";
-import { getShortNameRegister } from "@utils/getShortName";
-import { useNavigation } from "@react-navigation/native";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { BASE_UNIT } from '@styles/constants/screen';
+import { textMediumPlus, textMediumSize } from '@styles/constants/fontSize';
+import { Colors } from '@styles/Colors';
+import { getListConversation, unseenMessages } from '@api/chat/conversation';
+import { getTimeAlong } from '@utils/getTimeAlong';
+import { useTextLanguage } from '@hooks/useTextLanguage';
+import { getShortNameRegister } from '@utils/getShortName';
+import { useNavigation } from '@react-navigation/native';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   conversationState,
   messagesByConversationState,
   selectedConversationState,
-} from "@state/ChatState";
-import { getMessages } from "@api/chat/messages";
-import { loginResultState } from "@state/PrimaryState";
+} from '@state/ChatState';
+import { getMessages } from '@api/chat/messages';
+import { loginResultState } from '@state/PrimaryState';
 
 export default function MessageTitleRender() {
-  const locale = useTextLanguage({ vietnamese: "vi", english: "en" });
+  const locale = useTextLanguage({ vietnamese: 'vi', english: 'en' });
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
 
-  const [dataConversations, setDataConversations] =
-    useRecoilState(conversationState);
+  const [dataConversations, setDataConversations] = useRecoilState(conversationState);
   const [messages, setMessages] = useRecoilState(messagesByConversationState);
-  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState)
+  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
 
-  console.log("<<<[DEBUG]: dataConversations: ", dataConversations);
+  console.log('<<<[DEBUG]: dataConversations: ', dataConversations);
   console.log('[DEBUG]: messages: ', messages);
 
   //Cần nghiên cứu lại
@@ -52,21 +48,17 @@ export default function MessageTitleRender() {
               key={item._id}
               style={{
                 paddingBottom: BASE_UNIT * 0.05,
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
               }}
               onPress={async () => {
                 //console.log(`item sẽ truyền:`,item._id);
                 //console.log(loginResult.token);
                 const messages = await getMessages(loginResult.token, item._id);
-                await unseenMessages(
-                  loginResult.token,
-                  item._id,
-                  loginResult.user._id
-                );
+                await unseenMessages(loginResult.token, item._id, loginResult.user._id);
                 setMessages(messages);
-                setSelectedConversation(item)
-                navigation.navigate("PersonChat", {
+                setSelectedConversation(item);
+                navigation.navigate('PersonChat', {
                   userInfo: item,
                 });
               }}
@@ -76,8 +68,8 @@ export default function MessageTitleRender() {
                   backgroundColor: Colors.primary,
                   height: BASE_UNIT * 0.15,
                   width: BASE_UNIT * 0.15,
-                  alignItems: "center",
-                  justifyContent: "center",
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   borderRadius: BASE_UNIT * 0.15,
                 }}
               >
@@ -93,7 +85,7 @@ export default function MessageTitleRender() {
                 ) : item.participants.length === 1 ? (
                   <Image
                     source={{
-                      uri: "https://imgur.com/1L0lWDZ.png",
+                      uri: 'https://imgur.com/1L0lWDZ.png',
                     }}
                     style={{
                       width: BASE_UNIT * 0.12,
@@ -107,14 +99,12 @@ export default function MessageTitleRender() {
                       height: BASE_UNIT * 0.15,
                       borderRadius: BASE_UNIT * 0.15,
                       backgroundColor: Colors.primary,
-                      justifyContent: "center",
-                      alignItems: "center",
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
-                    <Text style={{ fontSize: textMediumPlus, color: "white" }}>
-                      {getShortNameRegister(
-                        item?.recipient?.fullName || item?.groupName || "Nhóm"
-                      )}
+                    <Text style={{ fontSize: textMediumPlus, color: 'white' }}>
+                      {getShortNameRegister(item?.recipient?.fullName || item?.groupName || 'Nhóm')}
                     </Text>
                   </View>
                 )}
@@ -122,23 +112,23 @@ export default function MessageTitleRender() {
               <View
                 style={{
                   flex: 1,
-                  height: "100%",
+                  height: '100%',
                   paddingLeft: BASE_UNIT * 0.03,
                   paddingVertical: BASE_UNIT * 0.01,
                 }}
               >
                 <View
                   style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
                   }}
                 >
                   <Text
                     style={{
                       fontSize: textMediumSize * 1.1,
                       marginBottom: BASE_UNIT * 0.01,
-                      fontWeight: item.unseenCount > 0 ? "bold" : "normal",
+                      fontWeight: item.unseenCount > 0 ? 'bold' : 'normal',
                     }}
                   >
                     {item.groupName || item.name}
@@ -150,41 +140,38 @@ export default function MessageTitleRender() {
 
                 <Text
                   style={{
-                    fontWeight: item.unseenCount > 0 ? "bold" : "normal",
+                    fontWeight: item.unseenCount > 0 ? 'bold' : 'normal',
                     fontSize: textMediumSize * 0.9,
-                    color: item.unseenCount > 0 ? "black" : Colors.grey,
-                    width: "80%"
+                    color: item.unseenCount > 0 ? 'black' : Colors.grey,
+                    width: '80%',
                   }}
                   numberOfLines={1}
                 >
                   {item.lastMessage
                     ? item.lastMessage.sender._id === loginResult.user._id
-                      ? "Bạn: " + item.lastMessage.content
+                      ? 'Bạn: ' + item.lastMessage.content
                       : item.isGroup === false
                       ? item.lastMessage.content
-                      : item.lastMessage.sender.fullName +
-                        ": " +
-                        item.lastMessage.content
+                      : item.lastMessage.sender.fullName + ': ' + item.lastMessage.content
                     : item.groupName
-                    ? "Chia sẻ tệp"
-                    : "Các bạn đã là bạn bè 😊"}
+                    ? 'Chia sẻ tệp'
+                    : 'Các bạn đã là bạn bè 😊'}
                 </Text>
                 <View
                   style={{
-                    position: "absolute",
+                    position: 'absolute',
                     right: 0,
                     bottom: BASE_UNIT * 0.03,
                     height: BASE_UNIT * 0.05,
                     width: BASE_UNIT * 0.05,
-                    alignItems: "center",
-                    justifyContent: "center",
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     borderRadius: BASE_UNIT * 0.05,
-                    backgroundColor:
-                      item.unseenCount > 0 ? "red" : "transparent",
+                    backgroundColor: item.unseenCount > 0 ? 'red' : 'transparent',
                   }}
                 >
-                  <Text style={{ color: "white" }}>
-                    {item.unseenCount > 0 ? item.unseenCount : ""}
+                  <Text style={{ color: 'white' }}>
+                    {item.unseenCount > 0 ? item.unseenCount : ''}
                   </Text>
                 </View>
               </View>

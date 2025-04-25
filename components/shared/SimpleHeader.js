@@ -1,15 +1,15 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
-import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "@styles/constants/iconSize";
-import { LinearGradient } from "expo-linear-gradient";
-import { BASE_UNIT } from "@styles/constants/screen";
-import { Colors } from "@styles/Colors";
-import { textMediumSize } from "@styles/constants/fontSize";
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ICON_MEDIUM } from '@styles/constants/iconSize';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BASE_UNIT } from '@styles/constants/screen';
+import { Colors } from '@styles/Colors';
+import { textMediumSize } from '@styles/constants/fontSize';
 
 export default function SimpleHeader({
   text,
-  textColor = "white",
+  textColor = 'white',
   onPress,
   linearPrimary,
   iconColor,
@@ -21,21 +21,17 @@ export default function SimpleHeader({
         style={styles.container}
         start={{ x: 0, y: 1 }}
         end={{ x: 1, y: 1 }}
-        colors={[Colors.primary, "#00BCFA"]}
+        colors={[Colors.primary, '#00BCFA']}
       >
         <TouchableOpacity onPress={onPress}>
-          <MaterialIcons
-            name="arrow-back"
-            size={ICON_MEDIUM}
-            color={iconColor}
-          />
+          <MaterialIcons name="arrow-back" size={ICON_MEDIUM} color={iconColor} />
         </TouchableOpacity>
 
         <Text
           style={{
             marginLeft: BASE_UNIT * 0.04,
             fontSize: textMediumSize,
-            fontWeight: "500",
+            fontWeight: '500',
             color: textColor,
           }}
         >
@@ -47,27 +43,23 @@ export default function SimpleHeader({
     return (
       <View
         style={{
-          width: "100%",
+          width: '100%',
           backgroundColor: backgroundColor,
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
           height: BASE_UNIT * 0.13,
           paddingHorizontal: BASE_UNIT * 0.02,
         }}
       >
         <TouchableOpacity onPress={onPress}>
-          <MaterialIcons
-            name="arrow-back"
-            size={ICON_MEDIUM}
-            color={iconColor}
-          />
+          <MaterialIcons name="arrow-back" size={ICON_MEDIUM} color={iconColor} />
         </TouchableOpacity>
 
         <Text
           style={{
             marginLeft: BASE_UNIT * 0.04,
             fontSize: textMediumSize,
-            fontWeight: "500",
+            fontWeight: '500',
             color: textColor,
           }}
         >
@@ -79,10 +71,10 @@ export default function SimpleHeader({
 }
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    backgroundColor: "white",
-    flexDirection: "row",
-    alignItems: "center",
+    width: '100%',
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
     height: BASE_UNIT * 0.13,
     paddingHorizontal: BASE_UNIT * 0.02,
   },

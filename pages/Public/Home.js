@@ -1,15 +1,15 @@
-import { View, StyleSheet } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import LanguageSelect from "@components/screens/SignUp/selects/LanguageSelect";
-import { BASE_UNIT } from "@styles/constants/screen";
-import LargeButton from "@components/shared/LargeButton";
-import { useRecoilState, useRecoilValue } from "recoil";
-import SelectLanguageModal from "@components/screens/SignUp/modals/SelectLanguageModal";
-import { modalLanguageState } from "@state/PrimaryState";
-import IntroSwiper from "@components/screens/Home/IntroSwiper";
-import { useNavigation } from "@react-navigation/native";
-import { useTextLanguage } from "@hooks/useTextLanguage";
+import { View, StyleSheet } from 'react-native';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import LanguageSelect from '@components/screens/SignUp/selects/LanguageSelect';
+import { BASE_UNIT } from '@styles/constants/screen';
+import LargeButton from '@components/shared/LargeButton';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import SelectLanguageModal from '@components/screens/SignUp/modals/SelectLanguageModal';
+import { modalLanguageState } from '@state/PrimaryState';
+import IntroSwiper from '@components/screens/Home/IntroSwiper';
+import { useNavigation } from '@react-navigation/native';
+import { useTextLanguage } from '@hooks/useTextLanguage';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -25,20 +25,20 @@ export default function Home() {
       </View>
       <View style={styles.footer}>
         <LargeButton
-          text={useTextLanguage({ vietnamese: "Đăng nhập", english: "Login" })}
-          color={"#006DFE"}
-          textColor={"white"}
-          onPress={() => navigation.navigate("Login")}
+          text={useTextLanguage({ vietnamese: 'Đăng nhập', english: 'Login' })}
+          color={'#006DFE'}
+          textColor={'white'}
+          onPress={() => navigation.navigate('Login')}
           disabled={false}
         />
         <LargeButton
           text={useTextLanguage({
-            vietnamese: "Tạo tài khoản mới",
-            english: "Create new account",
+            vietnamese: 'Tạo tài khoản mới',
+            english: 'Create new account',
           })}
-          onPress={() => navigation.navigate("SignUp")}
-          color={"#ECEDEF"}
-          textColor={"black"}
+          onPress={() => navigation.navigate('SignUp')}
+          color={'#ECEDEF'}
+          textColor={'black'}
           disabled={false}
         />
       </View>
@@ -50,22 +50,22 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     width: BASE_UNIT,
   },
   header: {
-    width: "100%",
-    alignItems: "flex-end",
+    width: '100%',
+    alignItems: 'flex-end',
     paddingRight: BASE_UNIT * 0.01,
   },
   content: {
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: BASE_UNIT * 0.02,
     flex: 1,
   },
   footer: {
-    alignItems: "center",
-    justifyContent: "flex-end",
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     flex: 0.3,
     paddingBottom: BASE_UNIT * 0.07,
   },

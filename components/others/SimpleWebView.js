@@ -1,6 +1,6 @@
-import { View, StyleSheet } from "react-native";
-import React from "react";
-import WebView from "react-native-webview";
+import { View, StyleSheet } from 'react-native';
+import React from 'react';
+import WebView from 'react-native-webview';
 
 export default function SimpleWebView({ url }) {
   return (

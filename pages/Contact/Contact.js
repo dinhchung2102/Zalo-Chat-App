@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import SearchHeader from "@components/shared/SearchHeader";
-import { BASE_UNIT } from "@styles/constants/screen";
-import NavigationBar from "@components/shared/NavigationBar";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import FriendTab from "../ContactTab/FriendTab";
-import GroupTab from "../ContactTab/GroupTab";
-import OATab from "../ContactTab/OATab";
+import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import SearchHeader from '@components/shared/SearchHeader';
+import { BASE_UNIT } from '@styles/constants/screen';
+import NavigationBar from '@components/shared/NavigationBar';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import FriendTab from '../ContactTab/FriendTab';
+import GroupTab from '../ContactTab/GroupTab';
+import OATab from '../ContactTab/OATab';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -16,15 +16,15 @@ export default function Contact() {
     <SafeAreaView style={styles.container}>
       <SearchHeader
         linearPrimary={true}
-        iconColor={"white"}
-        iconName2={"person-add-outline"}
+        iconColor={'white'}
+        iconName2={'person-add-outline'}
         iconName2Size={BASE_UNIT * 0.07}
       />
 
       <Tab.Navigator
         screenOptions={{
-          tabBarLabelStyle: { fontSize: 14, fontWeight: "bold" },
-          tabBarIndicatorStyle: { backgroundColor: "#3b82f6" },
+          tabBarLabelStyle: { fontSize: 14, fontWeight: 'bold' },
+          tabBarIndicatorStyle: { backgroundColor: '#3b82f6' },
         }}
       >
         <Tab.Screen name="Bạn bè" component={FriendTab} />
@@ -32,7 +32,7 @@ export default function Contact() {
         <Tab.Screen name="OA" component={OATab} />
       </Tab.Navigator>
 
-      <View style={{ position: "absolute", bottom: 0 }}>
+      <View style={{ position: 'absolute', bottom: 0 }}>
         <NavigationBar />
       </View>
     </SafeAreaView>
@@ -42,6 +42,6 @@ export default function Contact() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
 });

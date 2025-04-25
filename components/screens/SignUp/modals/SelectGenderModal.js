@@ -1,13 +1,18 @@
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
-import React from "react";
-import { BASE_UNIT } from "@styles/constants/screen";
-import { textMediumSize } from "@styles/constants/fontSize";
-import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "@styles/constants/iconSize";
-import { useTextLanguage } from "@hooks/useTextLanguage";
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { BASE_UNIT } from '@styles/constants/screen';
+import { textMediumSize } from '@styles/constants/fontSize';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ICON_MEDIUM } from '@styles/constants/iconSize';
+import { useTextLanguage } from '@hooks/useTextLanguage';
 
-export default function SelectGenderModal({onPress, selectedGender, setSelectedGender, modalVisible, setModalVisible}) {
-
+export default function SelectGenderModal({
+  onPress,
+  selectedGender,
+  setSelectedGender,
+  modalVisible,
+  setModalVisible,
+}) {
   return (
     <Modal
       animationType="slide"
@@ -15,85 +20,82 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
     >
-      <TouchableOpacity
-        style={styles.modalBackground}
-        onPress={onPress}
-      >
+      <TouchableOpacity style={styles.modalBackground} onPress={onPress}>
         <View style={styles.viewModal}>
           <View
             style={{
-              width: "100%",
-              alignItems: "center",
+              width: '100%',
+              alignItems: 'center',
               paddingTop: BASE_UNIT * 0.05,
             }}
           >
             <Text
               style={{
                 fontSize: textMediumSize,
-                fontWeight: "500",
+                fontWeight: '500',
                 marginBottom: BASE_UNIT * 0.04,
               }}
             >
-              {useTextLanguage({vietnamese:"Chọn giới tính" , english: "Select Gender"})}
+              {useTextLanguage({ vietnamese: 'Chọn giới tính', english: 'Select Gender' })}
             </Text>
             <TouchableOpacity
               onPress={() => {
-                setSelectedGender("Male");
+                setSelectedGender('Male');
                 setModalVisible(false);
               }}
               style={{
                 borderTopWidth: 1,
-                borderTopColor: "#f0f0f0",
-                flexDirection: "row",
-                alignItems: "center",
-                width: "100%",
+                borderTopColor: '#f0f0f0',
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: '100%',
                 height: BASE_UNIT * 0.15,
-                justifyContent: "space-between",
+                justifyContent: 'space-between',
               }}
             >
               <Text style={{ fontSize: textMediumSize }}>Nam</Text>
-              {selectedGender === "Male" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
+              {selectedGender === 'Male' && (
+                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'} />
               )}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setSelectedGender("Female");
+                setSelectedGender('Female');
                 setModalVisible(false);
               }}
               style={{
                 borderTopWidth: 1,
-                borderTopColor: "#f0f0f0",
-                width: "100%",
+                borderTopColor: '#f0f0f0',
+                width: '100%',
                 height: BASE_UNIT * 0.15,
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexDirection: "row",
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexDirection: 'row',
               }}
             >
               <Text style={{ fontSize: textMediumSize }}>Nữ</Text>
-              {selectedGender === "Female" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
+              {selectedGender === 'Female' && (
+                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'} />
               )}
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setSelectedGender("None");
+                setSelectedGender('None');
                 setModalVisible(false);
               }}
               style={{
                 borderTopWidth: 1,
-                borderTopColor: "#f0f0f0",
-                width: "100%",
+                borderTopColor: '#f0f0f0',
+                width: '100%',
                 height: BASE_UNIT * 0.15,
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexDirection: "row",
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexDirection: 'row',
               }}
             >
               <Text style={{ fontSize: textMediumSize }}>Không chia sẻ</Text>
-              {selectedGender === "None" && (
-                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'}/>
+              {selectedGender === 'None' && (
+                <MaterialIcons name="check" size={ICON_MEDIUM} color={'#006DFE'} />
               )}
             </TouchableOpacity>
           </View>
@@ -106,17 +108,17 @@ export default function SelectGenderModal({onPress, selectedGender, setSelectedG
 const styles = StyleSheet.create({
   modalBackground: {
     flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   viewModal: {
     width: BASE_UNIT,
-    height: BASE_UNIT * 0.600,
-    backgroundColor: "white",
+    height: BASE_UNIT * 0.6,
+    backgroundColor: 'white',
     borderTopRightRadius: BASE_UNIT * 0.05,
     borderTopLeftRadius: BASE_UNIT * 0.05,
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     padding: BASE_UNIT * 0.01,
   },
 });

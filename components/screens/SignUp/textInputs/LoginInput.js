@@ -1,40 +1,29 @@
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import React, { useState, forwardRef } from "react";
-import { textMediumPlus, textMediumSize } from "@styles/constants/fontSize";
-import { BASE_UNIT } from "@styles/constants/screen";
-import { Colors } from "@styles/Colors";
-import { useRecoilValue } from "recoil";
-import { languageState } from "@state/PrimaryState";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState, forwardRef } from 'react';
+import { textMediumPlus, textMediumSize } from '@styles/constants/fontSize';
+import { BASE_UNIT } from '@styles/constants/screen';
+import { Colors } from '@styles/Colors';
+import { useRecoilValue } from 'recoil';
+import { languageState } from '@state/PrimaryState';
 
 const LoginInput = forwardRef(
-  (
-    { placeholder, value, onChangeText, phoneNumber, password, autoFocus },
-    ref
-  ) => {
+  ({ placeholder, value, onChangeText, phoneNumber, password, autoFocus }, ref) => {
     const [focus, setFocus] = useState(false);
     const selectedLanguage = useRecoilValue(languageState);
     const [securePassword, setSecurePassword] = useState(true);
 
-    const [btnShowPwd, setBtnShowPwd] = useState(
-      selectedLanguage === "vie" ? "HIỆN" : "SHOW"
-    );
+    const [btnShowPwd, setBtnShowPwd] = useState(selectedLanguage === 'vie' ? 'HIỆN' : 'SHOW');
 
     const togglePasswordVisibility = () => {
       setSecurePassword(!securePassword);
       setBtnShowPwd(
-        selectedLanguage === "vie"
+        selectedLanguage === 'vie'
           ? securePassword
-            ? "ẨN"
-            : "HIỆN"
+            ? 'ẨN'
+            : 'HIỆN'
           : securePassword
-          ? "HIDE"
-          : "SHOW"
+          ? 'HIDE'
+          : 'SHOW'
       );
     };
 
@@ -51,13 +40,13 @@ const LoginInput = forwardRef(
             fontSize: textMediumPlus,
             borderBottomWidth: 1,
             flex: 1,
-            borderBottomColor: focus ? Colors.primary : "#f0f0f0",
+            borderBottomColor: focus ? Colors.primary : '#f0f0f0',
             marginTop: BASE_UNIT * 0.03,
-            paddingBottom: BASE_UNIT*0.01
+            paddingBottom: BASE_UNIT * 0.01,
           }}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
-          keyboardType={phoneNumber ? "phone-pad" : "default"}
+          keyboardType={phoneNumber ? 'phone-pad' : 'default'}
         />
         {password && (
           <TouchableOpacity onPress={togglePasswordVisibility}>
@@ -73,12 +62,12 @@ export default LoginInput;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   textButton: {
     fontSize: textMediumSize,
     color: Colors.grey,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });

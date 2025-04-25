@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Modal, View, Text, StyleSheet } from "react-native";
-import { Colors } from "@styles/Colors";
-import { BASE_UNIT } from "@styles/constants/screen";
-import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "@styles/constants/iconSize";
-import { textMediumSize } from "@styles/constants/fontSize";
+import React, { useEffect, useState } from 'react';
+import { Modal, View, Text, StyleSheet } from 'react-native';
+import { Colors } from '@styles/Colors';
+import { BASE_UNIT } from '@styles/constants/screen';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ICON_MEDIUM } from '@styles/constants/iconSize';
+import { textMediumSize } from '@styles/constants/fontSize';
 
 const OtpErrorModal = ({ visible, onClose }) => {
   const [showModal, setShowModal] = useState(visible);
@@ -25,7 +25,7 @@ const OtpErrorModal = ({ visible, onClose }) => {
     <Modal transparent visible={showModal} animationType="fade">
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
-          <MaterialIcons name="error" color={"red"} size={ICON_MEDIUM} />
+          <MaterialIcons name="error" color={'red'} size={ICON_MEDIUM} />
           <Text style={styles.modalText}>Mã OTP không hợp lệ. Vui lòng thử lại!</Text>
         </View>
       </View>
@@ -36,25 +36,25 @@ const OtpErrorModal = ({ visible, onClose }) => {
 const styles = StyleSheet.create({
   modalBackground: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)"
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
     width: BASE_UNIT * 0.5,
     padding: BASE_UNIT * 0.05,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: BASE_UNIT * 0.025,
-    alignItems: "center"
+    alignItems: 'center',
   },
   modalText: {
     fontSize: textMediumSize,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: BASE_UNIT * 0.03,
     marginBottom: BASE_UNIT * 0.02,
-    textAlign: "center",
-    color: "red"
-  }
+    textAlign: 'center',
+    color: 'red',
+  },
 });
 
 export default OtpErrorModal;

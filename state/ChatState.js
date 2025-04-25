@@ -1,16 +1,16 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const conversationState = atom({
-    key:'conversationState',
-    default: []
-})
+  key: 'conversationState',
+  default: [],
+});
 
 export const messagesByConversationState = atom({
-    key:'messagesByConversationState',
-    default:[]
-})
+  key: 'messagesByConversationState',
+  default: [],
+});
 
 export const selectedConversationState = atom({
-    key:"selectedConversationState",
-    default: null
-})
+  key: 'selectedConversationState',
+  default: null,
+});

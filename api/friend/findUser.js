@@ -1,5 +1,5 @@
-import apiClient from "../apiClient";
-import { formatPhoneNumber } from "@utils/formatPhoneNumber";
+import apiClient from '../apiClient';
+import { formatPhoneNumber } from '@utils/formatPhoneNumber';
 
 export const findUser = async (phoneNumber, token) => {
   try {
@@ -14,7 +14,7 @@ export const findUser = async (phoneNumber, token) => {
         },
       }
     );
-    console.log("📲 Kết quả tìm người dùng:", response.data);
+    console.log('📲 Kết quả tìm người dùng:', response.data);
     if (response.data) {
       return response.data;
     } else {
@@ -22,13 +22,10 @@ export const findUser = async (phoneNumber, token) => {
     }
   } catch (error) {
     if (error.response) {
-      console.warn(
-        "❌ Không tìm thấy user:",
-        error.response.data?.message || "Không có dữ liệu"
-      );
+      console.warn('❌ Không tìm thấy user:', error.response.data?.message || 'Không có dữ liệu');
       return null;
     }
-    console.error("🚫 Lỗi kết nối tới server:", error.message);
-    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+    console.error('🚫 Lỗi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
   }
 };
