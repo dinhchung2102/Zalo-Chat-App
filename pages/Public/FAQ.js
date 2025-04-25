@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import SimpleWebView from "../../components/others/SimpleWebView";
-import SimpleHeader from "../../components/headers/SimpleHeader";
+import SimpleHeader from "../../components/shared/SimpleHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "../../styles/Colors";
 import { useRecoilValue } from "recoil";

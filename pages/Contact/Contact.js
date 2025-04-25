@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SearchHeader from "../components/headers/SearchHeader";
-import { BASE_UNIT } from "../styles/constants/screen";
-import NavigationBar from "../components/shared/NavigationBar";
+import SearchHeader from "../../components/shared/SearchHeader";
+import { BASE_UNIT } from "../../styles/constants/screen";
+import NavigationBar from "../../components/shared/NavigationBar";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import FriendTab from "./ContactTab/FriendTab";
-import GroupTab from "./ContactTab/GroupTab";
-import OATab from "./ContactTab/OATab";
+import FriendTab from "../ContactTab/FriendTab";
+import GroupTab from "../ContactTab/GroupTab";
+import OATab from "../ContactTab/OATab";
 
 const Tab = createMaterialTopTabNavigator();
 

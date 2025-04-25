@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import { sendRequest } from "../../api/friend/sendRequest";
+import { sendRequest } from "../../../api/friend/sendRequest";
 import { useRecoilValue } from "recoil";
-import { loginResultState } from "../../state/PrimaryState";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { Colors } from "../../styles/Colors";
+import { loginResultState } from "../../../state/PrimaryState";
+import { BASE_UNIT } from "../../../styles/constants/screen";
+import { Colors } from "../../../styles/Colors";
 
 export default function AddFriendButton({ targetUser, onPress }) {
   const loginResult = useRecoilValue(loginResultState);

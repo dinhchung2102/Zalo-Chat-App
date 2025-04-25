@@ -9,12 +9,12 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import SearchHeader from "../components/headers/SearchHeader";
-import NavigationBar from "../components/shared/NavigationBar";
-import { Colors } from "../styles/Colors";
-import { BASE_UNIT, textMediumSize } from "../styles/constants/screen";
+import SearchHeader from "../../components/shared/SearchHeader";
+import NavigationBar from "../../components/shared/NavigationBar";
+import { Colors } from "../../styles/Colors";
+import { BASE_UNIT, textMediumSize } from "../../styles/constants/screen";
 import { useNavigation } from "@react-navigation/native";
-import { useTextLanguage } from "../hooks/useTextLanguage";
+import { useTextLanguage } from "../../hooks/useTextLanguage";
 
 // Dữ liệu giả lập cho Nhật Ký
 const mockDiaryEntries = [

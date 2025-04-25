@@ -1,8 +1,8 @@
 import { View, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../styles/constants/iconSize";
-import { BASE_UNIT } from "../../styles/constants/screen";
+import { ICON_MEDIUM } from "../../../../styles/constants/fontSize";
+import { BASE_UNIT } from "../../../../styles/constants/screen";
 
 export default function CircleButton({onPress, disabled, color}) {
   return (

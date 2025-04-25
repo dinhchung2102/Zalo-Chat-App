@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../../components/headers/SimpleHeader";
+import SimpleHeader from "../../components/shared/SimpleHeader";
 import { BASE_UNIT } from "../../styles/constants/screen";
 import {
   textHeaderSize,
@@ -11,8 +11,8 @@ import {
 import { useRecoilState, useRecoilValue } from "recoil";
 import { languageState, modalAuthRegister } from "../../state/PrimaryState";
 import { Colors } from "../../styles/Colors";
-import LargeButton from "../../components/buttons/LargeButton";
-import LinkButton from "../../components/buttons/LinkButton";
+import LargeButton from "../../components/shared/LargeButton";
+import LinkButton from "../../components/shared/LinkButton";
 import { useNavigation } from "@react-navigation/native";
 import { phoneNumberRegister } from "../../state/RegisterState";
 import { MaterialIcons } from "@expo/vector-icons";

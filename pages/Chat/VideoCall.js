@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AgoraUIKit from 'agora-rn-uikit';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { appVideoCallID } from '../ipConfig';
+import { appVideoCallID } from '../../ipConfig';
 
 const VideoCall = ({route}) => {
   const { channelName } = route.params;

@@ -1,12 +1,12 @@
 import { Alert, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SimpleHeader from "../../components/headers/SimpleHeader";
+import SimpleHeader from "../../components/shared/SimpleHeader";
 import HeaderText from "../../components/others/texts//HeaderText";
 import BirthdaySelect from "../../components/screens/SignUp/selects/BirthdaySelect";
 import { BASE_UNIT } from "../../styles/constants/screen";
 import GenderSelect from "../../components/screens/SignUp/selects/GenderSelect";
-import LargeButton from "../../components/buttons/LargeButton";
+import LargeButton from "../../components/shared/LargeButton";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
 import { useNavigation } from "@react-navigation/native";
 import SelectGenderModal from "../../components/screens/SignUp/modals/SelectGenderModal";

@@ -3,7 +3,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LanguageSelect from "../../components/screens/SignUp/selects/LanguageSelect";
 import { BASE_UNIT } from "../../styles/constants/screen";
-import LargeButton from "../../components/buttons/LargeButton";
+import LargeButton from "../../components/shared/LargeButton";
 import { useRecoilState, useRecoilValue } from "recoil";
 import SelectLanguageModal from "../../components/screens/SignUp/modals/SelectLanguageModal";
 import { modalLanguageState } from "../../state/PrimaryState";

@@ -16,7 +16,7 @@ import { nameRegister, profilePicRegister } from "../../state/RegisterState";
 import { getShortNameRegister } from "../../utils/getShortName";
 import { Colors } from "../../styles/Colors";
 import { textMediumPlus } from "../../styles/constants/fontSize";
-import LargeButton from "../../components/buttons/LargeButton";
+import LargeButton from "../../components/shared/LargeButton";
 import ConfirmNoAvt from "../../components/screens/SignUp/modals/ConfirmNoAvt";
 import SelectPhotoModal from "../../components/screens/SignUp/modals/SelectPhotoModal";
 import * as ImagePicker from "expo-image-picker";

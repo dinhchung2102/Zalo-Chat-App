@@ -19,8 +19,8 @@ import { findUserState } from "../../state/FriendState";
 import { getShortNameRegister } from "../../utils/getShortName";
 import { loginResultState } from "../../state/PrimaryState";
 import { sendRequest } from "../../api/friend/sendRequest";
-import AddFriendButton from "../../components/buttons/AddFriendButton";
-import SendMessageButton from "../../components/buttons/SendMessageButton";
+import AddFriendButton from "../../components/screens/Personal/AddFriendButton";
+import SendMessageButton from "../../components/screens/Chat/SendMessageButton";
 
 export default function SearchUser() {
   const navigation = useNavigation();

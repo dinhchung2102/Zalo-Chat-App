@@ -7,16 +7,16 @@ import {
 } from "react-native";
 import React from "react";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { ICON_LARGE } from "../../styles/constants/iconSize";
+import { ICON_LARGE } from "../../../styles/constants/iconSize";
 import { LinearGradient } from "expo-linear-gradient";
-import { BASE_UNIT } from "../../styles/constants/screen";
-import { Colors } from "../../styles/Colors";
-import { textMediumSize } from "../../styles/constants/fontSize";
-import { useTextLanguage } from "../../hooks/useTextLanguage";
+import { BASE_UNIT } from "../../../styles/constants/screen";
+import { Colors } from "../../../styles/Colors";
+import { textMediumSize } from "../../../styles/constants/fontSize";
+import { useTextLanguage } from "../../../hooks/useTextLanguage";
 import { useNavigation } from "@react-navigation/native";
 import { v4 as uuidv4 } from "uuid";
 import { useRecoilValue } from "recoil";
-import { selectedConversationState } from "../../state/ChatState";
+import { selectedConversationState } from "../../../state/ChatState";
 
 export default function ChatHeader({
   textColor = "white",

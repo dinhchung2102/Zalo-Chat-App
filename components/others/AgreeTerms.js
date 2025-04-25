@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { textMediumSize } from "../../styles/constants/fontSize";
-import LinkButton from "../buttons/LinkButton";
+import LinkButton from "../shared/LinkButton";
 import { Colors } from "../../styles/Colors";
 import { BASE_UNIT } from "../../styles/constants/screen";
 import { MaterialIcons } from "@expo/vector-icons";

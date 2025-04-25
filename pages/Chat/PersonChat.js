@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ChatHeader from "../../components/headers/ChatHeader";
+import ChatHeader from "../../components/screens/Chat/ChatHeader";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { BASE_UNIT } from "../../styles/constants/screen";

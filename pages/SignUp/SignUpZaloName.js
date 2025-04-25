@@ -7,7 +7,7 @@ import { useTextLanguage } from "../../hooks/useTextLanguage";
 import HeaderDesText from "../../components/others/texts//HeaderDesText";
 import { Colors } from "../../styles/Colors";
 import BorderInput from "../../components/screens/SignUp/textInputs/BorderInput";
-import LargeButton from "../../components/buttons/LargeButton";
+import LargeButton from "../../components/shared/LargeButton";
 import RuleList from "../../components/others/RuleList";
 import { validateUsernameLength, validateUsernameNotNumber } from "../../utils/nameValidator";
 import { useNavigation } from "@react-navigation/native";
