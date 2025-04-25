@@ -1,0 +1,35 @@
+# Thư mục build/output không cần format
+build
+dist
+coverage
+
+# React Native specific
+android
+ios
+
+# Node modules
+node_modules
+
+# Git
+.git
+.gitignore
+
+# Hệ điều hành
+.DS_Store
+
+# VSCode settings
+.vscode
+
+# Logs
+*.log
+
+# Bundle files
+*.bundle.js
+
+# Tạm thời
+temp
+tmp
+
+# Env file
+.env
+.env.*

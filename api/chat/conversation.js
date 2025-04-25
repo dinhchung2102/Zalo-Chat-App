@@ -1,7 +1,7 @@
-import apiClient from "../apiClient";
+import apiClient from '../apiClient';
 export const getListConversation = async (token) => {
   try {
-    const response = await apiClient.get("/conversations/getList", {
+    const response = await apiClient.get('/conversations/getList', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -10,11 +10,11 @@ export const getListConversation = async (token) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.log("error response:", error.response.data?.message);
+      console.log('error response:', error.response.data?.message);
       return error.response.data?.message;
     }
-    console.error("Lỗi khi kết nối tới server:", error.message);
-    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+    console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
   }
 };
 
@@ -35,11 +35,11 @@ export const createNewGroup = async (token, groupName, participantIds) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.log("[ERROR]: Khi Tạo nhóm", error.response.data?.message);
+      console.log('[ERROR]: Khi Tạo nhóm', error.response.data?.message);
       return error.response.data?.message;
     }
-    console.error("Lỗi khi kết nối tới server:", error.message);
-    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+    console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
   }
 };
 
@@ -57,11 +57,11 @@ export const unseenMessages = async (token, conversationId, userId) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.log("[ERROR]: Khi unseen Message", error.response.data?.message);
+      console.log('[ERROR]: Khi unseen Message', error.response.data?.message);
       return error.response.data?.message;
     }
-    console.error("Lỗi khi kết nối tới server:", error.message);
-    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+    console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
   }
 };
 
@@ -82,14 +82,11 @@ export const addNewMembers = async (token, conversationId, newMemberIds) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.log(
-        "[ERROR]: Khi Thêm thành viên mới",
-        error.response.data?.message
-      );
+      console.log('[ERROR]: Khi Thêm thành viên mới', error.response.data?.message);
       return error.response.data?.message;
     }
-    console.error("Lỗi khi kết nối tới server:", error.message);
-    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+    console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
   }
 };
 
@@ -104,39 +101,30 @@ export const getConversationById = async (token, conversationId) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.log(
-        "[ERROR]: Lỗi khi get Conversation by Id",
-        error.response.data?.message
-      );
+      console.log('[ERROR]: Lỗi khi get Conversation by Id', error.response.data?.message);
       return error.response.data?.message;
     }
-    console.error("Lỗi khi kết nối tới server:", error.message);
-    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+    console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
   }
 };
 
 export const deleteGroup = async (token, conversationId) => {
   try {
-    const response = await apiClient.delete(
-      `/conversations/delete-group/${conversationId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await apiClient.delete(`/conversations/delete-group/${conversationId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.log(
-        "[ERROR]: Lỗi khi  Giải tán nhóm",
-        error.response.data?.message
-      );
+      console.log('[ERROR]: Lỗi khi  Giải tán nhóm', error.response.data?.message);
       return error.response.data?.message;
     }
-    console.error("Lỗi khi kết nối tới server:", error.message);
-    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+    console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
   }
 };
 
@@ -157,17 +145,13 @@ export const outGroup = async (token, conversationId, newLeader) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.log(
-        "[ERROR]: Khi rời nhóm: ",
-        error.response.data?.message
-      );
+      console.log('[ERROR]: Khi rời nhóm: ', error.response.data?.message);
       return error.response.data?.message;
     }
-    console.error("Lỗi khi kết nối tới server:", error.message);
-    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+    console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
   }
 };
-
 
 export const removeMember = async (token, conversationId, memberId) => {
   try {
@@ -182,13 +166,10 @@ export const removeMember = async (token, conversationId, memberId) => {
     return response.data;
   } catch (error) {
     if (error.response) {
-      console.log(
-        "[ERROR]: Khi xóa thành viên khỏi nhóm: ",
-        error.response.data?.message
-      );
+      console.log('[ERROR]: Khi xóa thành viên khỏi nhóm: ', error.response.data?.message);
       return error.response.data?.message;
     }
-    console.error("Lỗi khi kết nối tới server:", error.message);
-    return "Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.";
+    console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
   }
 };

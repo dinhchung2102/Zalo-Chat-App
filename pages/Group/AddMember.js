@@ -7,20 +7,16 @@ import {
   Image,
   ScrollView,
   Dimensions,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { launchImageLibrary } from "react-native-image-picker";
-import { getListFriend } from "../../api/friend/getListFriend";
-import { useRecoilState, useRecoilValue } from "recoil";
-import frr, { loginResultState } from "../../state/PrimaryState";
-import {
-  addNewMembers,
-  createNewGroup,
-  getConversationById,
-} from "../../api/chat/conversation";
-import { useNavigation } from "@react-navigation/native";
-import { selectedConversationState } from "../../state/ChatState";
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { getListFriend } from '@api/friend/getListFriend';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import frr, { loginResultState } from '@state/PrimaryState';
+import { addNewMembers, createNewGroup, getConversationById } from '@api/chat/conversation';
+import { useNavigation } from '@react-navigation/native';
+import { selectedConversationState } from '@state/ChatState';
 
 // Header Component
 const AddToGroupHeader = ({ selectedUsers, navigation }) => {
@@ -52,7 +48,7 @@ const SearchBar = ({ searchText, setSearchText }) => {
 
 const AddMember = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const [participantIds, setParticipantIds] = useState([]);
   const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
 
@@ -65,7 +61,7 @@ const AddMember = ({ navigation }) => {
       const result = await getListFriend(loginResult.token);
       if (Array.isArray(result.data)) {
         setUsers(result.data);
-        console.log("my friends:", result.data);
+        console.log('my friends:', result.data);
       } else {
         setError(result);
       }
@@ -74,13 +70,9 @@ const AddMember = ({ navigation }) => {
     fetchFriends();
   }, []);
 
-  const groupMemberIds = selectedConversation.participants.map(
-    (member) => member._id
-  );
+  const groupMemberIds = selectedConversation.participants.map((member) => member._id);
   // Lọc danh sách bạn bè chưa có trong nhóm
-  const friendsNotInGroup = users.filter(
-    (friend) => !groupMemberIds.includes(friend._id)
-  );
+  const friendsNotInGroup = users.filter((friend) => !groupMemberIds.includes(friend._id));
 
   //=============================================================
 
@@ -110,8 +102,8 @@ const AddMember = ({ navigation }) => {
         loginResult.token,
         selectedConversation._id
       );
-      console.log("DEBUG: resultgetnewconversation",resultGetNewConversation);
-      
+      console.log('DEBUG: resultgetnewconversation', resultGetNewConversation);
+
       setSelectedConversation(resultGetNewConversation);
 
       navigation.goBack();
@@ -123,10 +115,7 @@ const AddMember = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
-        <AddToGroupHeader
-          selectedUsers={selectedUsers}
-          navigation={navigation}
-        />
+        <AddToGroupHeader selectedUsers={selectedUsers} navigation={navigation} />
         <SearchBar searchText={searchText} setSearchText={setSearchText} />
 
         <View style={styles.tabContainer}>
@@ -143,7 +132,7 @@ const AddMember = ({ navigation }) => {
             >
               <Image
                 source={{
-                  uri: user.profilePic || "https://i.pravatar.cc/150?img=1",
+                  uri: user.profilePic || 'https://i.pravatar.cc/150?img=1',
                 }}
                 style={styles.avatar}
               />
@@ -154,8 +143,7 @@ const AddMember = ({ navigation }) => {
               <View
                 style={[
                   styles.checkbox,
-                  selectedUsers.find((u) => u._id === user._id) &&
-                    styles.checkboxSelected,
+                  selectedUsers.find((u) => u._id === user._id) && styles.checkboxSelected,
                 ]}
               >
                 {selectedUsers.find((u) => u._id === user._id) && (
@@ -172,10 +160,7 @@ const AddMember = ({ navigation }) => {
           <ScrollView horizontal style={styles.selectedUsersContainer}>
             {selectedUsers.map((user) => (
               <View key={user._id} style={styles.selectedUserItem}>
-                <Image
-                  source={{ uri: user.profilePic }}
-                  style={styles.selectedUserAvatar}
-                />
+                <Image source={{ uri: user.profilePic }} style={styles.selectedUserAvatar} />
                 <TouchableOpacity
                   style={styles.removeButton}
                   onPress={() => removeSelectedUser(user._id)}
@@ -186,10 +171,7 @@ const AddMember = ({ navigation }) => {
             ))}
           </ScrollView>
           {selectedUsers.length > 0 && (
-            <TouchableOpacity
-              style={styles.nextButton}
-              onPress={handleAddNewMembers}
-            >
+            <TouchableOpacity style={styles.nextButton} onPress={handleAddNewMembers}>
               <Icon name="arrow-forward" size={24} color="#fff" />
             </TouchableOpacity>
           )}
@@ -202,35 +184,35 @@ const AddMember = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 16,
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   selectedCount: {
-    color: "#666",
+    color: '#666',
   },
   groupNameContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   avatarPlaceholder: {
     width: 50,
     height: 50,
-    backgroundColor: "#eee",
+    backgroundColor: '#eee',
     borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   groupNameInput: {
     flex: 1,
@@ -238,11 +220,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     margin: 16,
     padding: 8,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
     borderRadius: 8,
   },
   searchInput: {
@@ -263,40 +245,40 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   removeButton: {
-    position: "absolute",
+    position: 'absolute',
     top: -5,
     right: -5,
-    backgroundColor: "#666",
+    backgroundColor: '#666',
     borderRadius: 10,
     width: 20,
     height: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tabContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   activeTab: {
     marginRight: 16,
-    color: "#0084ff",
-    fontWeight: "bold",
+    color: '#0084ff',
+    fontWeight: 'bold',
   },
   inactiveTab: {
-    color: "#666",
+    color: '#666',
   },
   userList: {
     flex: 1,
     marginBottom: 80, // Add padding at bottom for selected users
   },
   userItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   avatar: {
     width: 50,
@@ -309,10 +291,10 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   userTime: {
-    color: "#666",
+    color: '#666',
     marginTop: 4,
   },
   checkbox: {
@@ -320,13 +302,13 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#ddd",
-    justifyContent: "center",
-    alignItems: "center",
+    borderColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   checkboxSelected: {
-    backgroundColor: "#0084ff",
-    borderColor: "#0084ff",
+    backgroundColor: '#0084ff',
+    borderColor: '#0084ff',
   },
   groupImage: {
     width: 50,
@@ -337,27 +319,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomSelectedUsers: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderTopWidth: 1,
-    borderTopColor: "#eee",
+    borderTopColor: '#eee',
     elevation: 3,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   nextButton: {
     width: 50,
     height: 50,
-    backgroundColor: "#0084ff",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#0084ff',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 16,
     borderRadius: 25,
   },

@@ -8,19 +8,25 @@ import {
   FlatList,
   Dimensions,
   SafeAreaView,
-} from "react-native";
-import React, { useState } from "react";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { loginResultState } from "../../state/PrimaryState";
-import { selectedConversationState } from "../../state/ChatState";
-import { getShortNameRegister } from "../../utils/getShortName";
-import { deleteGroup, getConversationById, getListConversation, outGroup, removeMember } from "../../api/chat/conversation";
-import { Alert } from "react-native";
+} from 'react-native';
+import React, { useState } from 'react';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { loginResultState } from '@state/PrimaryState';
+import { selectedConversationState } from '@state/ChatState';
+import { getShortNameRegister } from '@utils/getShortName';
+import {
+  deleteGroup,
+  getConversationById,
+  getListConversation,
+  outGroup,
+  removeMember,
+} from '@api/chat/conversation';
+import { Alert } from 'react-native';
 
 const Tab = createMaterialTopTabNavigator();
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 
 const MemberGroup = ({ navigation, route }) => {
   const [selectedMember, setSelectedMember] = useState(null);
@@ -35,10 +41,7 @@ const MemberGroup = ({ navigation, route }) => {
 
   const Header = () => (
     <View style={styles.header}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.headerLeft}
-      >
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerLeft}>
         <Icon name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
       <Text style={styles.headerTitle}>Quản lý thành viên</Text>
@@ -46,7 +49,7 @@ const MemberGroup = ({ navigation, route }) => {
         <TouchableOpacity
           style={styles.headerButton}
           onPress={() => {
-            navigation.navigate("AddMember");
+            navigation.navigate('AddMember');
           }}
         >
           <Icon name="person-add" size={24} color="#000" />
@@ -94,9 +97,7 @@ const MemberGroup = ({ navigation, route }) => {
           <Image source={{ uri: item.profilePic }} style={styles.avatar} />
         ) : (
           <View style={styles.avatar}>
-            <Text style={{ color: "white" }}>
-              {getShortNameRegister(item.fullName)}
-            </Text>
+            <Text style={{ color: 'white' }}>{getShortNameRegister(item.fullName)}</Text>
           </View>
         )}
 
@@ -104,10 +105,10 @@ const MemberGroup = ({ navigation, route }) => {
           <Text style={styles.memberName}>{item.fullName}</Text>
           <Text style={styles.memberRole}>
             {item._id === selectedConversation.groupLeader
-              ? "Nhóm trưởng"
+              ? 'Nhóm trưởng'
               : item._id === selectedConversation.groupDeputy
-              ? "Nhóm phó"
-              : "Thành viên"}
+              ? 'Nhóm phó'
+              : 'Thành viên'}
           </Text>
         </View>
       </View>
@@ -130,9 +131,7 @@ const MemberGroup = ({ navigation, route }) => {
         keyExtractor={(item) => item._id}
         ListFooterComponent={
           loginResult.user._id === selectedConversation.groupLeader && (
-            <View
-              style={{ marginTop: 20, width: "100%", alignItems: "center" }}
-            >
+            <View style={{ marginTop: 20, width: '100%', alignItems: 'center' }}>
               <TouchableOpacity
                 onPress={async () => {
                   console.log(selectedConversation._id);
@@ -142,14 +141,14 @@ const MemberGroup = ({ navigation, route }) => {
                     selectedConversation._id
                   );
                   if (resultDelete.status == 200) {
-                    navigation.navigate("HomeMessage");
+                    navigation.navigate('HomeMessage');
                   } else {
-                    console.log("[DEBUG]: Lỗi khi giải tán nhóm", resultDelete);
-                    Alert.alert("Lỗi", resultDelete);
+                    console.log('[DEBUG]: Lỗi khi giải tán nhóm', resultDelete);
+                    Alert.alert('Lỗi', resultDelete);
                   }
                 }}
               >
-                <Text style={{ color: "red", fontSize: 16 }}>Giải tán</Text>
+                <Text style={{ color: 'red', fontSize: 16 }}>Giải tán</Text>
               </TouchableOpacity>
             </View>
           )
@@ -189,19 +188,13 @@ const MemberGroup = ({ navigation, route }) => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setModalVisible(false)}
-          >
+          <TouchableOpacity style={styles.closeButton} onPress={() => setModalVisible(false)}>
             <Icon name="close" size={24} color="#000" />
           </TouchableOpacity>
           {selectedMember && (
             <>
               <Text style={styles.modalTitle}>Thông tin thành viên</Text>
-              <Image
-                source={{ uri: selectedMember.profilePic }}
-                style={styles.modalAvatar}
-              />
+              <Image source={{ uri: selectedMember.profilePic }} style={styles.modalAvatar} />
               <Text style={styles.modalName}>{selectedMember.fullName}</Text>
               <Text style={styles.modalRole}>{selectedMember.role}</Text>
 
@@ -225,21 +218,12 @@ const MemberGroup = ({ navigation, route }) => {
                     {/* Nếu groupDeputy chưa được bổ nhiệm */}
                     {selectedConversation.groupDeputy === null &&
                     selectedMember._id !== loginResult.user._id ? (
-                      <TouchableOpacity
-                        style={[styles.memberAction, styles.primaryAction]}
-                      >
-                        <Text style={styles.primaryText}>
-                          Bổ nhiệm làm phó nhóm
-                        </Text>
+                      <TouchableOpacity style={[styles.memberAction, styles.primaryAction]}>
+                        <Text style={styles.primaryText}>Bổ nhiệm làm phó nhóm</Text>
                       </TouchableOpacity>
-                    ) : selectedMember._id ===
-                      selectedConversation.groupDeputy ? (
-                      <TouchableOpacity
-                        style={[styles.memberAction, styles.warningAction]}
-                      >
-                        <Text style={styles.warningText}>
-                          Xoá quyền phó nhóm
-                        </Text>
+                    ) : selectedMember._id === selectedConversation.groupDeputy ? (
+                      <TouchableOpacity style={[styles.memberAction, styles.warningAction]}>
+                        <Text style={styles.warningText}>Xoá quyền phó nhóm</Text>
                       </TouchableOpacity>
                     ) : null}
                   </View>
@@ -254,13 +238,10 @@ const MemberGroup = ({ navigation, route }) => {
                   <TouchableOpacity
                     style={[styles.memberAction, styles.dangerAction]}
                     onPress={async () => {
-                      const result = await outGroup(
-                        loginResult.token,
-                        selectedConversation._id,
-                      );
+                      const result = await outGroup(loginResult.token, selectedConversation._id);
                       console.log(result);
-                      
-                      navigation.navigate("HomeMessage");
+
+                      navigation.navigate('HomeMessage');
                     }}
                   >
                     <Text style={styles.dangerText}>Rời nhóm</Text>
@@ -277,16 +258,17 @@ const MemberGroup = ({ navigation, route }) => {
                         loginResult.token,
                         selectedConversation._id,
                         selectedMember._id
-                      )
+                      );
                       console.log(result);
-                      const refreshConver = await getConversationById(loginResult.token ,selectedConversation._id);
+                      const refreshConver = await getConversationById(
+                        loginResult.token,
+                        selectedConversation._id
+                      );
                       console.log(refreshConver);
-                      setSelectedConversation(refreshConver)
-                      setModalVisible(false)
+                      setSelectedConversation(refreshConver);
+                      setModalVisible(false);
                     }}
                   >
-                    
-                    
                     <Text style={styles.dangerText}>Xoá khỏi cộng đồng</Text>
                   </TouchableOpacity>
                 ) : null}
@@ -323,14 +305,14 @@ export default MemberGroup;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   headerLeft: {
     width: 40,
@@ -338,11 +320,11 @@ const styles = StyleSheet.create({
   headerTitle: {
     flex: 1,
     fontSize: 18,
-    fontWeight: "600",
-    textAlign: "left",
+    fontWeight: '600',
+    textAlign: 'left',
   },
   headerRight: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   headerButton: {
     marginLeft: 15,
@@ -351,77 +333,77 @@ const styles = StyleSheet.create({
     elevation: 0,
     shadowOpacity: 0,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   tabLabel: {
     fontSize: 13,
-    textTransform: "none",
+    textTransform: 'none',
   },
   tabIndicator: {
-    backgroundColor: "#0068FF",
+    backgroundColor: '#0068FF',
   },
   screenContainer: {
     flex: 1,
   },
   approvalSection: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 16,
-    alignItems: "center",
+    alignItems: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   approvalIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#f0f0f0",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   approvalContent: {
     marginLeft: 12,
   },
   approvalTitle: {
     fontSize: 16,
-    color: "#000",
+    color: '#000',
   },
   memberListHeader: {
     padding: 16,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: '#f8f8f8',
   },
   memberCount: {
     fontSize: 15,
-    fontWeight: "500",
+    fontWeight: '500',
     marginBottom: 4,
   },
   memberListDescription: {
     fontSize: 14,
-    color: "#666",
+    color: '#666',
     lineHeight: 20,
   },
   linkText: {
-    color: "#0068FF",
+    color: '#0068FF',
   },
   memberItem: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 12,
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   memberLeftContent: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
   avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "blue",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'blue',
   },
   memberInfo: {
     marginLeft: 12,
@@ -429,48 +411,48 @@ const styles = StyleSheet.create({
   },
   memberName: {
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   memberRole: {
     fontSize: 14,
-    color: "#666",
+    color: '#666',
   },
   addFriendButton: {
     padding: 8,
     borderWidth: 1,
-    borderColor: "#0068FF",
+    borderColor: '#0068FF',
     borderRadius: 20,
     width: 40,
     height: 40,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   emptyTab: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    alignItems: "center",
-    height: "70%",
+    alignItems: 'center',
+    height: '70%',
   },
   closeButton: {
-    position: "absolute",
+    position: 'absolute',
     right: 20,
     top: 20,
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
   },
   modalAvatar: {
@@ -481,15 +463,15 @@ const styles = StyleSheet.create({
   },
   modalName: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 5,
   },
   modalRole: {
     fontSize: 16,
-    color: "#666",
+    color: '#666',
   },
   actionButtons: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 20,
     marginBottom: 20,
   },
@@ -497,80 +479,80 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#0068FF",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#0068FF',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginHorizontal: 10,
   },
   memberActions: {
-    width: "100%",
+    width: '100%',
   },
   memberAction: {
     padding: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-    width: "100%",
+    borderBottomColor: '#eee',
+    width: '100%',
   },
   dangerAction: {
     borderBottomWidth: 0,
   },
   dangerText: {
-    color: "red",
+    color: 'red',
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   statsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 16,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
   },
   statItem: {
     marginRight: 24,
   },
   statNumber: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#0068FF",
+    fontWeight: 'bold',
+    color: '#0068FF',
   },
   statLabel: {
     fontSize: 14,
-    color: "#666",
+    color: '#666',
   },
   approvalButtons: {
-    flexDirection: "row",
-    marginLeft: "auto",
+    flexDirection: 'row',
+    marginLeft: 'auto',
   },
   approveButton: {
-    backgroundColor: "#0068FF",
+    backgroundColor: '#0068FF',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
     marginRight: 8,
   },
   approveText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 12,
   },
   rejectButton: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: "#666",
+    borderColor: '#666',
   },
   rejectText: {
-    color: "#666",
+    color: '#666',
     fontSize: 12,
   },
 });

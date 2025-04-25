@@ -1,5 +1,5 @@
-import { useState } from "react";
-import * as ImagePicker from "expo-image-picker";
+import { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 
 const useImagePicker = () => {
   const [imageUri, setImageUri] = useState(null);
@@ -24,8 +24,8 @@ const useImagePicker = () => {
   // Chụp ảnh
   const takePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== "granted") {
-      alert("Bạn cần cấp quyền để sử dụng camera!");
+    if (status !== 'granted') {
+      alert('Bạn cần cấp quyền để sử dụng camera!');
       return null;
     }
 

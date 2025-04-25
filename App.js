@@ -1,31 +1,31 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import Home from "./pages/Public/Home";
-import { RecoilRoot } from "recoil";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp/SignUp";
-import SignUpOTP from "./pages/SignUp/SignUpOTP";
-import FAQ from "./pages/Public/FAQ";
-import SignUpZaloName from "./pages/SignUp/SignUpZaloName";
-import SignUpAddProfile from "./pages/SignUp/SignUpAddProfile";
-import HomeMessage from "./pages/Chat/HomeMessage";
-import Profile from "./pages/User/Profile";
-import UpdateAvatar from "./pages/SignUp/UpdateAvatar";
-import ProfileUser from "./pages/User/ProfileUser";
-import ProfileSetting from "./pages/User/ProfileSetting";
-import Contact from "./pages/Contact";
-import Explore from "./pages/Explore";
-import Diary from "./pages/Diary";
-import RequestFriend from "./pages/ContactTab/RequestFriend";
-import PersonChat from "./pages/Chat/PersonChat";
-import SearchUser from "./pages/Public/SearchUser";
-import VideoCall from "./pages/VideoCall";
-import * as Notifications from "expo-notifications";
-import { registerForPushNotificationsAsync } from "./services/notificationService";
-import { useEffect, useRef, useState } from "react";
-import CreateGroup from "./pages/Group/CreateGroup";
-import MemberGroup from "./pages/Group/MemberGroup";
-import AddMember from "./pages/Group/AddMember";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from './pages/Public/Home';
+import { RecoilRoot } from 'recoil';
+import Login from './pages/Public/Login';
+import SignUp from './pages/SignUp/SignUp';
+import SignUpOTP from './pages/SignUp/SignUpOTP';
+import FAQ from './pages/Public/FAQ';
+import SignUpZaloName from './pages/SignUp/SignUpZaloName';
+import SignUpAddProfile from './pages/SignUp/SignUpAddProfile';
+import HomeMessage from './pages/Chat/HomeMessage';
+import Profile from './pages/User/Profile';
+import UpdateAvatar from './pages/SignUp/UpdateAvatar';
+import ProfileUser from './pages/User/ProfileUser';
+import ProfileSetting from './pages/User/ProfileSetting';
+import Contact from './pages/Contact/Contact';
+import Explore from './pages/Util/Explore';
+import Diary from './pages/Diary/Diary';
+import RequestFriend from './pages/ContactTab/RequestFriend';
+import PersonChat from './pages/Chat/PersonChat';
+import SearchUser from './pages/Public/SearchUser';
+import VideoCall from './pages/Chat/VideoCall';
+import * as Notifications from 'expo-notifications';
+import { registerForPushNotificationsAsync } from './services/notificationService';
+import { useEffect, useRef, useState } from 'react';
+import CreateGroup from './pages/Group/CreateGroup';
+import MemberGroup from './pages/Group/MemberGroup';
+import AddMember from './pages/Group/AddMember';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -36,7 +36,7 @@ Notifications.setNotificationHandler({
 });
 export default function App() {
   const Stack = createStackNavigator();
-  const [expoPushToken, setExpoPushToken] = useState("");
+  const [expoPushToken, setExpoPushToken] = useState('');
   const notificationListener = useRef();
   const responseListener = useRef();
 
@@ -47,31 +47,24 @@ export default function App() {
     });
 
     // Lắng nghe thông báo đến
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        console.log("Thông báo đến:", notification);
-      });
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
+      console.log('Thông báo đến:', notification);
+    });
 
     // Lắng nghe khi người dùng tương tác với thông báo
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("Người dùng đã nhấn vào thông báo:", response);
-      });
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log('Người dùng đã nhấn vào thông báo:', response);
+    });
 
     return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
-      );
+      Notifications.removeNotificationSubscription(notificationListener.current);
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
   return (
     <RecoilRoot>
       <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="Home"
-          screenOptions={{ headerShown: false }}
-        >
+        <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
@@ -82,14 +75,14 @@ export default function App() {
           <Stack.Screen name="UpdateAvatar" component={UpdateAvatar} />
           <Stack.Screen
             options={{
-              animation: "none",
+              animation: 'none',
             }}
             name="HomeMessage"
             component={HomeMessage}
           />
           <Stack.Screen
             options={{
-              animation: "none",
+              animation: 'none',
             }}
             name="Profile"
             component={Profile}

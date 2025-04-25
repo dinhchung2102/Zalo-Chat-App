@@ -1,11 +1,11 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const requestState = atom({
-    key: 'requestState',
-    default: {}
-})
+  key: 'requestState',
+  default: {},
+});
 
 export const findUserState = atom({
-    key: 'findUserState',
-    default: {}
-})
+  key: 'findUserState',
+  default: {},
+});

@@ -8,15 +8,15 @@ import {
   ScrollView,
   Dimensions,
   Alert,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { launchImageLibrary } from "react-native-image-picker";
-import { getListFriend } from "../../api/friend/getListFriend";
-import { useRecoilValue } from "recoil";
-import frr, { loginResultState } from "../../state/PrimaryState";
-import { createNewGroup, outGroup } from "../../api/chat/conversation";
-import { useNavigation } from "@react-navigation/native";
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { getListFriend } from '@api/friend/getListFriend';
+import { useRecoilValue } from 'recoil';
+import frr, { loginResultState } from '@state/PrimaryState';
+import { createNewGroup, outGroup } from '@api/chat/conversation';
+import { useNavigation } from '@react-navigation/native';
 
 // const users = [
 //   {
@@ -111,23 +111,23 @@ const GroupInfo = ({ groupImage, setGroupImage, groupName, setGroupName }) => {
   const selectImage = async () => {
     try {
       const result = await launchImageLibrary({
-        mediaType: "photo",
+        mediaType: 'photo',
         quality: 0.5,
         includeBase64: false,
       });
 
-      console.log("Image picker response:", result);
+      console.log('Image picker response:', result);
 
       if (result.didCancel) {
-        console.log("User cancelled image picker");
+        console.log('User cancelled image picker');
       } else if (result.error) {
-        console.log("ImagePicker Error:", result.error);
+        console.log('ImagePicker Error:', result.error);
       } else if (result.assets && result.assets.length > 0) {
-        console.log("Selected image:", result.assets[0].uri);
+        console.log('Selected image:', result.assets[0].uri);
         setGroupImage(result.assets[0].uri);
       }
     } catch (error) {
-      console.log("Error selecting image:", error);
+      console.log('Error selecting image:', error);
     }
   };
 
@@ -169,9 +169,9 @@ const SearchBar = ({ searchText, setSearchText }) => {
 
 const CreateGroup = ({ navigation }) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const [groupImage, setGroupImage] = useState(null);
-  const [groupName, setGroupName] = useState("");
+  const [groupName, setGroupName] = useState('');
   const [participantIds, setParticipantIds] = useState([]);
 
   //================================================================
@@ -191,23 +191,18 @@ const CreateGroup = ({ navigation }) => {
   }, []);
 
   const handleCreateGroup = async () => {
-    
     if (!groupName.trim()) {
-      Alert.alert("Lỗi","Vui lòng nhập tên nhóm");
+      Alert.alert('Lỗi', 'Vui lòng nhập tên nhóm');
       return;
     }
 
-    const result = await createNewGroup(
-      loginResult.token,
-      groupName,
-      participantIds
-    );
+    const result = await createNewGroup(loginResult.token, groupName, participantIds);
 
-    if (typeof result === "string") {
-      Alert.alert("Lỗi", result.message);
+    if (typeof result === 'string') {
+      Alert.alert('Lỗi', result.message);
     } else {
-      console.log("Thông tin nhóm mới:", result.data);
-      navigation.navigate("HomeMessage")
+      console.log('Thông tin nhóm mới:', result.data);
+      navigation.navigate('HomeMessage');
     }
   };
   //=============================================================
@@ -253,7 +248,7 @@ const CreateGroup = ({ navigation }) => {
             >
               <Image
                 source={{
-                  uri: user.profilePic || "https://i.pravatar.cc/150?img=1",
+                  uri: user.profilePic || 'https://i.pravatar.cc/150?img=1',
                 }}
                 style={styles.avatar}
               />
@@ -264,8 +259,7 @@ const CreateGroup = ({ navigation }) => {
               <View
                 style={[
                   styles.checkbox,
-                  selectedUsers.find((u) => u._id === user._id) &&
-                    styles.checkboxSelected,
+                  selectedUsers.find((u) => u._id === user._id) && styles.checkboxSelected,
                 ]}
               >
                 {selectedUsers.find((u) => u._id === user._id) && (
@@ -282,10 +276,7 @@ const CreateGroup = ({ navigation }) => {
           <ScrollView horizontal style={styles.selectedUsersContainer}>
             {selectedUsers.map((user) => (
               <View key={user._id} style={styles.selectedUserItem}>
-                <Image
-                  source={{ uri: user.profilePic }}
-                  style={styles.selectedUserAvatar}
-                />
+                <Image source={{ uri: user.profilePic }} style={styles.selectedUserAvatar} />
                 <TouchableOpacity
                   style={styles.removeButton}
                   onPress={() => removeSelectedUser(user._id)}
@@ -296,10 +287,7 @@ const CreateGroup = ({ navigation }) => {
             ))}
           </ScrollView>
           {selectedUsers.length > 0 && (
-            <TouchableOpacity
-              style={styles.nextButton}
-              onPress={handleCreateGroup}
-            >
+            <TouchableOpacity style={styles.nextButton} onPress={handleCreateGroup}>
               <Icon name="arrow-forward" size={24} color="#fff" />
             </TouchableOpacity>
           )}
@@ -312,35 +300,35 @@ const CreateGroup = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 16,
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   selectedCount: {
-    color: "#666",
+    color: '#666',
   },
   groupNameContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   avatarPlaceholder: {
     width: 50,
     height: 50,
-    backgroundColor: "#eee",
+    backgroundColor: '#eee',
     borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   groupNameInput: {
     flex: 1,
@@ -348,11 +336,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     margin: 16,
     padding: 8,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
     borderRadius: 8,
   },
   searchInput: {
@@ -373,40 +361,40 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   removeButton: {
-    position: "absolute",
+    position: 'absolute',
     top: -5,
     right: -5,
-    backgroundColor: "#666",
+    backgroundColor: '#666',
     borderRadius: 10,
     width: 20,
     height: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tabContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   activeTab: {
     marginRight: 16,
-    color: "#0084ff",
-    fontWeight: "bold",
+    color: '#0084ff',
+    fontWeight: 'bold',
   },
   inactiveTab: {
-    color: "#666",
+    color: '#666',
   },
   userList: {
     flex: 1,
     marginBottom: 80, // Add padding at bottom for selected users
   },
   userItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: '#eee',
   },
   avatar: {
     width: 50,
@@ -419,10 +407,10 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   userTime: {
-    color: "#666",
+    color: '#666',
     marginTop: 4,
   },
   checkbox: {
@@ -430,13 +418,13 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#ddd",
-    justifyContent: "center",
-    alignItems: "center",
+    borderColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   checkboxSelected: {
-    backgroundColor: "#0084ff",
-    borderColor: "#0084ff",
+    backgroundColor: '#0084ff',
+    borderColor: '#0084ff',
   },
   groupImage: {
     width: 50,
@@ -447,27 +435,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomSelectedUsers: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderTopWidth: 1,
-    borderTopColor: "#eee",
+    borderTopColor: '#eee',
     elevation: 3,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   nextButton: {
     width: 50,
     height: 50,
-    backgroundColor: "#0084ff",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#0084ff',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 16,
     borderRadius: 25,
   },

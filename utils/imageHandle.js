@@ -1,8 +1,8 @@
-import * as ImagePicker from "expo-image-picker";
+import * as ImagePicker from 'expo-image-picker';
 
 export const pickImageFromLibrary = async () => {
   const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ["images"],
+    mediaTypes: ['images'],
     allowsEditing: true,
     aspect: [3, 3],
     quality: 1,
@@ -17,8 +17,8 @@ export const pickImageFromLibrary = async () => {
 
 export const takePhotoWithCamera = async () => {
   const { status } = await ImagePicker.requestCameraPermissionsAsync();
-  if (status !== "granted") {
-    alert("Bạn cần cấp quyền để sử dụng camera!");
+  if (status !== 'granted') {
+    alert('Bạn cần cấp quyền để sử dụng camera!');
     return null;
   }
 

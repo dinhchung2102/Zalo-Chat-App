@@ -3,8 +3,8 @@ import apiClient from '../apiClient';
 export const acceptFriend = async (reqId, token) => {
   try {
     const res = await apiClient.post(
-      "/friend/accept",
-      { requestId: reqId},
+      '/friend/accept',
+      { requestId: reqId },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -13,8 +13,7 @@ export const acceptFriend = async (reqId, token) => {
     );
     return res.data;
   } catch (err) {
-    console.log("❌ Lỗi acceptFriend:", err.response?.data || err.message);
+    console.log('❌ Lỗi acceptFriend:', err.response?.data || err.message);
     throw err;
   }
 };
-
