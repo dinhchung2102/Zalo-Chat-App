@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import SimpleWebView from "../../components/webviews/SimpleWebView";
+import SimpleWebView from "../../components/others/SimpleWebView";
 import SimpleHeader from "../../components/headers/SimpleHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "../../styles/Colors";

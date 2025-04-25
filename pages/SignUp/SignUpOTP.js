@@ -2,12 +2,12 @@ import { View, StyleSheet, Text } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SimpleHeader from "../../components/headers/SimpleHeader";
-import { BASE_UNIT } from "../../constants/screen";
+import { BASE_UNIT } from "../../styles/constants/screen";
 import {
   textHeaderSize,
   textMediumPlus,
   textMediumSize,
-} from "../../constants/fontSize";
+} from "../../styles/constants/fontSize";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { languageState, modalAuthRegister } from "../../state/PrimaryState";
 import { Colors } from "../../styles/Colors";
@@ -16,14 +16,14 @@ import LinkButton from "../../components/buttons/LinkButton";
 import { useNavigation } from "@react-navigation/native";
 import { phoneNumberRegister } from "../../state/RegisterState";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../constants/iconSize";
-import OTPInPut from "../../components/textInputs/OTPInPut";
+import { ICON_MEDIUM } from "../../styles/constants/iconSize";
+import OTPInPut from "../../components/screens/SignUp/textInputs/OTPInPut";
 import { useTextLanguage } from "../../hooks/useTextLanguage";
-import HeaderText from "../../components/texts/HeaderText";
-import HeaderDesText from "../../components/texts/HeaderDesText";
+import HeaderText from "../../components/others/texts//HeaderText";
+import HeaderDesText from "../../components/others/texts//HeaderDesText";
 import { verifyOTP } from "../../api/auth/register";
-import { getTempToken, saveTempToken } from "../../utils/asyncStorage";
-import OtpErrorModal from "../../components/modals/OtpErrorModal";
+import { getTempToken, saveTempToken } from "../../services/storageService";
+import OtpErrorModal from "../../components/screens/SignUp/modals/OtpErrorModal";
 import { formatPhoneNumber } from "../../utils/formatPhoneNumber";
 
 export default function SignUpOTP() {

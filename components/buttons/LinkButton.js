@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { textMediumSize } from "../../constants/fontSize";
-import { BASE_UNIT } from "../../constants/screen";
+import { textMediumSize } from "../../styles/constants/fontSize";
+import { BASE_UNIT } from "../../styles/constants/screen";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../constants/iconSize";
+import { ICON_MEDIUM } from "../../styles/constants/iconSize";
 
 export default function LinkButton({ text, onPress, icon, textColor, textSize}) {
   return (

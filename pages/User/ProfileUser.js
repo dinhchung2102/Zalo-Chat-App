@@ -9,14 +9,14 @@ import {
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../constants/iconSize";
-import { BASE_UNIT } from "../../constants/screen";
+import { ICON_MEDIUM } from "../../styles/constants/iconSize";
+import { BASE_UNIT } from "../../styles/constants/screen";
 import { Colors } from "../../styles/Colors";
-import { textLargeSize, textMediumSize } from "../../constants/fontSize";
+import { textLargeSize, textMediumSize } from "../../styles/constants/fontSize";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { updateAvatar } from "../../api/auth/update.avt";
-import { getLoginResult, getUserId } from "../../utils/asyncStorage";
+import { getLoginResult, getUserId } from "../../services/storageService";
 import { getShortNameRegister } from "../../utils/getShortName";
 export default function ProfileUser() {
   const navigation = useNavigation();

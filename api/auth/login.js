@@ -1,4 +1,4 @@
-import { saveLoginResult } from "../../utils/asyncStorage";
+import { saveLoginResult } from "../../services/storageService";
 import apiClient from "../apiClient";
 import {formatPhoneNumber} from "../../utils/formatPhoneNumber"
 

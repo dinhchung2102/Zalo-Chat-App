@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { BASE_UNIT } from '../../constants/screen'
+import { BASE_UNIT } from '../../styles/constants/screen'
 import { Colors } from '../../styles/Colors'
 
 export default function ChooseButton({text, onPress, textColor, textSize}) {

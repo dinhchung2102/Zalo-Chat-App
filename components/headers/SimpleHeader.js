@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICON_MEDIUM } from "../../constants/iconSize";
+import { ICON_MEDIUM } from "../../styles/constants/iconSize";
 import { LinearGradient } from "expo-linear-gradient";
-import { BASE_UNIT } from "../../constants/screen";
+import { BASE_UNIT } from "../../styles/constants/screen";
 import { Colors } from "../../styles/Colors";
-import { textMediumSize } from "../../constants/fontSize";
+import { textMediumSize } from "../../styles/constants/fontSize";
 
 export default function SimpleHeader({
   text,

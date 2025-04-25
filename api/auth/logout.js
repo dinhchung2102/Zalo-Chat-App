@@ -1,4 +1,4 @@
-import { removeLoginResult, removeTempToken } from "../../utils/asyncStorage";
+import { removeLoginResult, removeTempToken } from "../../services/storageService";
 import apiClient from "../apiClient";
 export const logout = async () => {
   try {

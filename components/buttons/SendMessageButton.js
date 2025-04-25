@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { BASE_UNIT } from "../../constants/screen";
+import { BASE_UNIT } from "../../styles/constants/screen";
 
 export default function SendMessageButton({ disabled, onPress }) {
   return (
