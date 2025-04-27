@@ -107,7 +107,6 @@ export default function SearchUser() {
           }}
         >
           <AddFriendButton targetUser={searchUser} />
-          <SendMessageButton disabled={true} />
         </View>
       ) : searchUser.status === 'pending' ? (
         <View
@@ -121,7 +120,6 @@ export default function SearchUser() {
           }}
         >
           <AddFriendButton targetUser={searchUser} />
-          <SendMessageButton disabled={true} />
         </View>
       ) : searchUser.status === 'accepted' ? (
         <View
