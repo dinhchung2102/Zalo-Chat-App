@@ -26,15 +26,15 @@ export default function MessageTitleRender() {
   const [messages, setMessages] = useRecoilState(messagesByConversationState);
   const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
 
-  console.log('<<<[DEBUG]: dataConversations: ', dataConversations);
-  console.log('[DEBUG]: messages: ', messages);
+  // console.log('<<<[DEBUG]: dataConversations: ', dataConversations);
+  // console.log('[DEBUG]: messages: ', messages);
 
   //Cần nghiên cứu lại
   useEffect(() => {
     const fetchConversations = async () => {
       const conversations = await getListConversation(loginResult.token);
       setDataConversations(conversations.data);
-      //console.log("<<<[DEBUG]: Conversations.data:", conversations.data);
+      // console.log('<<<[DEBUG]: Conversations.data:', conversations.data);
     };
     fetchConversations();
   }, [loginResult, messages]);
@@ -58,9 +58,9 @@ export default function MessageTitleRender() {
                 await unseenMessages(loginResult.token, item._id, loginResult.user._id);
                 setMessages(messages);
                 setSelectedConversation(item);
-                navigation.navigate('PersonChat', {
-                  userInfo: item,
-                });
+                //console.log('[DEBUGGGGGGGGGGG]:', item);
+
+                navigation.navigate('PersonChat');
               }}
             >
               <View
