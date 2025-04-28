@@ -27,5 +27,20 @@ export const navigationState = atom({
 
 export const loginResultState = atom({
   key: 'loginResultState',
-  default: '',
+  default: {
+    message: '',
+    token: '',
+    user: {
+      _id: '',
+      backgroundImage: '',
+      dateOfBirth: '',
+      email: '',
+      fullName: '',
+      gender: '',
+      isActive: true,
+      password_set: false,
+      phoneNumber: '',
+      profilePic: '',
+    },
+  },
 });

@@ -1,7 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import apiClient from '../apiClient';
 
-export const updateAvatar = async (userId, imageUri) => {
+export const updateAvatar = async (token, imageUri) => {
   try {
     const formData = new FormData();
 
@@ -24,6 +24,7 @@ export const updateAvatar = async (userId, imageUri) => {
     const res = await apiClient.put('/auth/update-avatar', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
       },
     });
 

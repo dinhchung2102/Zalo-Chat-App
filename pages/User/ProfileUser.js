@@ -11,21 +11,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { updateAvatar } from '@api/auth/update.avt';
 import { getLoginResult, getUserId } from '@services/storageService';
 import { getShortNameRegister } from '@utils/getShortName';
+import { useRecoilValue } from 'recoil';
+import { loginResultState } from '@state/PrimaryState';
 export default function ProfileUser() {
   const navigation = useNavigation();
   const [image, setImage] = useState(null);
 
-  const [loginResult, setLoginResult] = useState(null);
-
-  useEffect(() => {
-    const fetchLoginResult = async () => {
-      const result = await getLoginResult();
-      setLoginResult(result);
-      console.log(result);
-    };
-
-    fetchLoginResult();
-  }, []);
+  const loginResult = useRecoilValue(loginResultState);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -77,6 +69,7 @@ export default function ProfileUser() {
       console.log('heheheh');
     }
   };
+
   if (!loginResult) {
     return (
       <SafeAreaView style={styles.container}>
@@ -174,6 +167,7 @@ export default function ProfileUser() {
                 position: 'absolute',
                 alignItems: 'center',
                 justifyContent: 'center',
+                backgroundColor: 'blue',
               }}
             />
           </TouchableOpacity>
