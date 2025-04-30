@@ -44,3 +44,11 @@ export const loginResultState = atom({
     },
   },
 });
+
+export const globalModalState = atom({
+  key: 'globalModalState',
+  default: {
+    visible: false,
+    message: '',
+  },
+});

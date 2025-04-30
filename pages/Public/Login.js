@@ -101,6 +101,7 @@ export default function Login() {
                 english: 'Recover password',
               })}
               textColor={Colors.primary}
+              onPress={() => navigation.navigate('ConfirmPhoneNumber')}
             />
           </View>
         </View>
@@ -112,7 +113,7 @@ export default function Login() {
             vietnamese: 'Câu hỏi thường gặp',
             english: 'FAQ',
           })}
-          textColor={Colors.grey}
+          textColor={Colors.primary}
           icon={'chevron-right'}
           onPress={() => navigation.navigate('FAQ')}
         />
@@ -157,6 +158,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: BASE_UNIT * 0.03,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: BASE_UNIT * 1.5,
+    bottom: BASE_UNIT * 0.03,
+    position: 'absolute',
   },
 });

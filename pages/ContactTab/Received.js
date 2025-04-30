@@ -79,7 +79,7 @@ export default function Received() {
 
           <View>
             <Text style={{ fontSize: textMediumSize, fontWeight: 'bold' }}>
-              {item.actionUser.fullName}
+              {item.actionUser.fullName || 'Unknow'}
             </Text>
             <Text style={{ color: Colors.grey }}>{getTimeAlong(item.updatedAt)}</Text>
           </View>
