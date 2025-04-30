@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LanguageSelect from '@components/screens/SignUp/selects/LanguageSelect';
@@ -17,6 +17,7 @@ export default function Home() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle={'dark-content'} />
       <View style={styles.header}>
         <LanguageSelect onPress={() => setModalVisible(true)} />
       </View>

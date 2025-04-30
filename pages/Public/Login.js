@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaFrameContext } from 'react-native-safe-area-context';
 import SimpleHeader from '@components/shared/SimpleHeader';
 import LoginInput from '@components/screens/SignUp/textInputs/LoginInput';
 import { BASE_UNIT } from '@styles/constants/screen';
@@ -52,6 +52,7 @@ export default function Login() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={Colors.statusbarColor} barStyle={'light-content'} />
       <View>
         <SimpleHeader
           text={useTextLanguage({ vietnamese: 'Đăng nhập', english: 'Login' })}
