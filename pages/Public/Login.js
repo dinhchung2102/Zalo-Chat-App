@@ -16,8 +16,8 @@ import { loginResultState } from '@state/PrimaryState';
 export default function Login() {
   const navigation = useNavigation();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('0333222100');
+  const [password, setPassword] = useState('Abc1234@');
   const [securePassword, setSecurePassword] = useState(true);
   const [, setLoginResult] = useRecoilState(loginResultState);
   const [error, setError] = useState(null);

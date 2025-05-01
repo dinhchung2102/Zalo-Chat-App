@@ -2,7 +2,9 @@ import { removeLoginResult, removeTempToken } from '@services/storageService';
 import apiClient from '../apiClient';
 export const logout = async () => {
   try {
-    const response = await apiClient.post('/auth/logout', {});
+    const response = await apiClient.post('/auth/logout', {
+      deviceType: 'app',
+    });
     console.log('Đăng xuất thành công:', response.data);
 
     await removeTempToken();

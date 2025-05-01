@@ -21,7 +21,7 @@ export function SocketListener() {
   useEffect(() => {
     socket.connect();
 
-    socket.on('forceLogoutApp', (data) => {
+    socket.on('forceLogout', (data) => {
       setModal({
         visible: true,
         message: data.message || 'Bạn đã bị đăng xuất do đăng nhập nơi khác',
