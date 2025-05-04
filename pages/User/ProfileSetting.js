@@ -106,7 +106,7 @@ export default function ProfileSetting() {
         <TouchableOpacity
           style={{}}
           onPress={async () => {
-            await logout();
+            await logout(loginResult.token);
             resetAll();
             socket.disconnect();
             navigation.reset({
