@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { baseURL } from '../ipConfig';
+import { API_URL } from '@env';
+
 
 const apiClient = axios.create({
-  baseURL: baseURL,
+  baseURL: API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

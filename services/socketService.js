@@ -1,10 +1,10 @@
 import { io } from 'socket.io-client';
-import { baseURL, socketURL } from '../ipConfig';
 import { globalModalState } from '@state/PrimaryState';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { SOCKET_URL } from '@env';
 
-const socket = io(socketURL, {
+const socket = io(SOCKET_URL, {
   transports: ['websocket', 'polling'],
   autoConnect: false,
   query: {
