@@ -8,7 +8,7 @@ import { getTimeAlong } from '@utils/getTimeAlong';
 import { useTextLanguage } from '@hooks/useTextLanguage';
 import { getShortNameRegister } from '@utils/getShortName';
 import { useNavigation } from '@react-navigation/native';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   conversationState,
   messagesByConversationState,
@@ -16,6 +16,7 @@ import {
 } from '@state/ChatState';
 import { getMessages } from '@api/chat/messages';
 import { loginResultState } from '@state/PrimaryState';
+import { totalUnseenCountState } from '../../../state/ChatState';
 
 export default function MessageTitleRender() {
   const locale = useTextLanguage({ vietnamese: 'vi', english: 'en' });
@@ -24,7 +25,9 @@ export default function MessageTitleRender() {
 
   const [dataConversations, setDataConversations] = useRecoilState(conversationState);
   const [messages, setMessages] = useRecoilState(messagesByConversationState);
-  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
+  const setSelectedConversation = useSetRecoilState(selectedConversationState);
+  const setTotalUnseenCount = useSetRecoilState(totalUnseenCountState);
+
 
   // console.log('<<<[DEBUG]: dataConversations: ', dataConversations);
   // console.log('[DEBUG]: messages: ', messages);
@@ -34,10 +37,12 @@ export default function MessageTitleRender() {
     const fetchConversations = async () => {
       const conversations = await getListConversation(loginResult.token);
       setDataConversations(conversations.data);
+      const totalUnseen = conversations.data.reduce((sum, convo) => sum + (convo.unseenCount || 0), 0);
+      setTotalUnseenCount(totalUnseen);
       // console.log('<<<[DEBUG]: Conversations.data:', conversations.data);
     };
     fetchConversations();
-  }, [loginResult, messages]);
+  }, []);
 
   return (
     <View style={styles.container}>

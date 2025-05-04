@@ -14,3 +14,8 @@ export const selectedConversationState = atom({
   key: 'selectedConversationState',
   default: null,
 });
+
+export const totalUnseenCountState = atom({
+  key:"totalUnseenCountState",
+  default: 0
+})

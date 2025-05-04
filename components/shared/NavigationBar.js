@@ -5,12 +5,14 @@ import { Colors } from '@styles/Colors';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { ICON_MEDIUM } from '@styles/constants/iconSize';
 import { useNavigation } from '@react-navigation/native';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { navigationState } from '@state/PrimaryState';
+import { totalUnseenCountState } from '../../state/ChatState';
 
 export default function NavigationBar() {
   const navigation = useNavigation();
   const [navState, setNavigationState] = useRecoilState(navigationState);
+  const totalUnseenMessages = useRecoilValue(totalUnseenCountState);
 
   // Hàm thay đổi trạng thái navState
   const handleNavigation = (type) => {
@@ -54,7 +56,7 @@ export default function NavigationBar() {
           <View
             style={{
               position: 'absolute',
-              backgroundColor: 'red',
+              backgroundColor: totalUnseenMessages > 0 ? 'red' : 'transpirent',
               height: ICON_MEDIUM * 0.6,
               width: ICON_MEDIUM * 0.8,
               borderRadius: BASE_UNIT,
@@ -64,7 +66,7 @@ export default function NavigationBar() {
               top: 0,
             }}
           >
-            <Text style={{ color: 'white', fontSize: BASE_UNIT * 0.025 }}>49</Text>
+            <Text style={{ color: 'white', fontSize: BASE_UNIT * 0.025 }}>{totalUnseenMessages > 0 ? totalUnseenMessages : ""}</Text>
           </View>
         </View>
         {navState === 'message' ? (
