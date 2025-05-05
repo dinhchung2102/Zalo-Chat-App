@@ -27,7 +27,7 @@ import CreateGroup from './pages/Group/CreateGroup';
 import MemberGroup from './pages/Group/MemberGroup';
 import AddMember from './pages/Group/AddMember';
 import ConfirmPhoneNumber from './pages/Util/ForgetPassword/ConfirmPhoneNumber';
-import GlobalModalManager from '@pages/Util/GlobalModalManager';
+import GlobalModalManager from './pages/Util/GlobalModalManager';
 import { SocketListener } from './services/socketService';
 
 Notifications.setNotificationHandler({
