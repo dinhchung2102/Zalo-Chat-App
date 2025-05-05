@@ -34,14 +34,12 @@ import { downloadFile } from '@utils/downloadFile';
 import FileIcon from '@components/others/FileIcon';
 
 export default function PersonChat() {
-  // const route = useRoute();
-  // const { userInfo } = route.params;
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
   const [messagesData, setMessagesData] = useRecoilState(messagesByConversationState);
 
   // console.log(`<<<userInfo>>>: `,userInfo);
-  console.log(`<<DEBUG>>: messagesData`, messagesData);
+  // console.log(`<<DEBUG>>: messagesData`, messagesData);
 
   const [messages, setMessages] = useState('');
   const [messageList, setMessageList] = useState(messagesData.data);

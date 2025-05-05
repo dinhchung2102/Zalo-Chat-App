@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './pages/Public/Home';
-import { RecoilRoot } from 'recoil';
+import { RecoilRoot, useRecoilState } from 'recoil';
 import Login from './pages/Public/Login';
 import SignUp from './pages/SignUp/SignUp';
 import SignUpOTP from './pages/SignUp/SignUpOTP';
@@ -26,6 +26,9 @@ import { useEffect, useRef, useState } from 'react';
 import CreateGroup from './pages/Group/CreateGroup';
 import MemberGroup from './pages/Group/MemberGroup';
 import AddMember from './pages/Group/AddMember';
+import ConfirmPhoneNumber from './pages/Util/ForgetPassword/ConfirmPhoneNumber';
+import GlobalModalManager from './pages/Util/GlobalModalManager';
+import { SocketListener } from './services/socketService';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -61,9 +64,12 @@ export default function App() {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
+
   return (
     <RecoilRoot>
       <NavigationContainer>
+        <GlobalModalManager />
+        <SocketListener />
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={Login} />
@@ -99,6 +105,7 @@ export default function App() {
           <Stack.Screen name="CreateGroup" component={CreateGroup} />
           <Stack.Screen name="MemberGroup" component={MemberGroup} />
           <Stack.Screen name="AddMember" component={AddMember} />
+          <Stack.Screen name="ConfirmPhoneNumber" component={ConfirmPhoneNumber} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

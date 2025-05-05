@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import NavigationBar from '@components/shared/NavigationBar';
@@ -14,31 +14,14 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { nameRegister, profilePicRegister } from '@state/RegisterState';
 import { getShortNameRegister } from '@utils/getShortName';
 import { useNavigation } from '@react-navigation/native';
+import { loginResultState } from '@state/PrimaryState';
 
 export default function Profile() {
   const navigation = useNavigation();
-  const [profilePic, setProfilePic] = useRecoilState(profilePicRegister);
   const name = useRecoilValue(nameRegister);
 
-  const [loginResult, setLoginResult] = useState(null);
-
-  useEffect(() => {
-    const fetchLoginResult = async () => {
-      const result = await getLoginResult();
-      setLoginResult(result);
-      console.log(result);
-    };
-
-    fetchLoginResult();
-  }, []);
-
-  useEffect(() => {
-    if (loginResult && loginResult.user && profilePic === '') {
-      if (loginResult.user.profilePic !== '') {
-        setProfilePic(loginResult.user.profilePic);
-      }
-    }
-  }, [loginResult, profilePic, setProfilePic]);
+  const loginResult = useRecoilValue(loginResultState);
+  console.log(loginResult.user.profilePic);
 
   if (!loginResult) {
     return (
@@ -68,7 +51,7 @@ export default function Profile() {
           navigation.navigate('ProfileUser');
         }}
       >
-        {profilePic === '' ? (
+        {loginResult.user.profilePic === '' ? (
           <View
             style={{
               height: ICON_LARGE,
@@ -84,15 +67,21 @@ export default function Profile() {
             </Text>
           </View>
         ) : (
-          <Image
-            source={{ uri: profilePic }}
-            style={{
-              height: ICON_LARGE,
-              width: ICON_LARGE,
-              borderRadius: ICON_LARGE,
-              backgroundColor: Colors.primary,
-            }}
-          />
+          <>
+            <Image
+              source={{
+                uri: loginResult.user.profilePic,
+              }}
+              style={{
+                height: ICON_LARGE,
+                width: ICON_LARGE,
+                borderRadius: ICON_LARGE,
+                backgroundColor: Colors.primary,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            />
+          </>
         )}
 
         <View style={{ paddingLeft: BASE_UNIT * 0.04, flex: 1 }}>

@@ -1,8 +1,15 @@
 import { removeLoginResult, removeTempToken } from '@services/storageService';
 import apiClient from '../apiClient';
-export const logout = async () => {
+
+export const logout = async (token) => {
   try {
-    const response = await apiClient.post('/auth/logout', {});
+    const response = await apiClient.post('/auth/logout', {
+      deviceType: 'app',
+    },{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     console.log('Đăng xuất thành công:', response.data);
 
     await removeTempToken();
@@ -10,9 +17,6 @@ export const logout = async () => {
 
     return response;
   } catch (error) {
-    await removeTempToken();
-    await removeLoginResult();
-
     if (error.response) {
       console.log('error logout response:', error.response.data?.message);
       return error.response.data?.message;

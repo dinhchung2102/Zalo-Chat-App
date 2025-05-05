@@ -1,7 +1,10 @@
 import { io } from 'socket.io-client';
-import { baseURL, socketURL } from '../ipConfig';
+import { globalModalState } from '@state/PrimaryState';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { SOCKET_URL } from '@env';
 
-const socket = io(socketURL, {
+const socket = io(SOCKET_URL, {
   transports: ['websocket', 'polling'],
   autoConnect: false,
   query: {
@@ -11,3 +14,25 @@ const socket = io(socketURL, {
 });
 
 export default socket;
+
+export function SocketListener() {
+  const setModal = useSetRecoilState(globalModalState);
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.on('forceLogout', (data) => {
+      setModal({
+        visible: true,
+        message: data.message || 'Bạn đã bị đăng xuất do đăng nhập nơi khác',
+      });
+    });
+
+    return () => {
+      socket.off('forceLogout');
+      socket.disconnect();
+    };
+  }, []);
+
+  return null;
+}

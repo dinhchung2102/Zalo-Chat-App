@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaFrameContext } from 'react-native-safe-area-context';
 import SimpleHeader from '@components/shared/SimpleHeader';
 import LoginInput from '@components/screens/SignUp/textInputs/LoginInput';
 import { BASE_UNIT } from '@styles/constants/screen';
@@ -16,8 +16,8 @@ import { loginResultState } from '@state/PrimaryState';
 export default function Login() {
   const navigation = useNavigation();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('0333222100');
+  const [password, setPassword] = useState('Abc1234@');
   const [securePassword, setSecurePassword] = useState(true);
   const [, setLoginResult] = useRecoilState(loginResultState);
   const [error, setError] = useState(null);
@@ -52,6 +52,7 @@ export default function Login() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={Colors.statusbarColor} barStyle={'light-content'} />
       <View>
         <SimpleHeader
           text={useTextLanguage({ vietnamese: 'Đăng nhập', english: 'Login' })}
@@ -100,6 +101,7 @@ export default function Login() {
                 english: 'Recover password',
               })}
               textColor={Colors.primary}
+              onPress={() => navigation.navigate('ConfirmPhoneNumber')}
             />
           </View>
         </View>
@@ -111,7 +113,7 @@ export default function Login() {
             vietnamese: 'Câu hỏi thường gặp',
             english: 'FAQ',
           })}
-          textColor={Colors.grey}
+          textColor={Colors.primary}
           icon={'chevron-right'}
           onPress={() => navigation.navigate('FAQ')}
         />
@@ -156,6 +158,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: BASE_UNIT * 0.03,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: BASE_UNIT * 1.5,
+    bottom: BASE_UNIT * 0.03,
+    position: 'absolute',
   },
 });

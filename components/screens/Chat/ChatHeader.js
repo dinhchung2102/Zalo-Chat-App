@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { v4 as uuidv4 } from 'uuid';
 import { useRecoilValue } from 'recoil';
 import { selectedConversationState } from '@state/ChatState';
+import { loginResultState } from '@state/PrimaryState';
 
 export default function ChatHeader({
   textColor = 'white',
@@ -21,6 +22,7 @@ export default function ChatHeader({
 }) {
   const navigation = useNavigation();
   const selectedConversation = useRecoilValue(selectedConversationState);
+  const loginResult = useRecoilValue(loginResultState);
   if (linearPrimary) {
     return (
       <LinearGradient
@@ -54,9 +56,11 @@ export default function ChatHeader({
             }}
           >
             {selectedConversation?.name ||
-              selectedConversation?.fullName ||
-              selectedConversation?.groupName ||
-              'Tên người dùng test'}
+            selectedConversation?.fullName ||
+            selectedConversation?.groupName ||
+            selectedConversation?.participants[0]._id != loginResult.user._id
+              ? selectedConversation.participants[0].fullName
+              : selectedConversation.participants[1].fullName || 'Tên người dùng test'}
           </Text>
         </View>
 
