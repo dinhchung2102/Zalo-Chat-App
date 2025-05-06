@@ -22,8 +22,8 @@ const LoginInput = forwardRef(
             ? 'ẨN'
             : 'HIỆN'
           : securePassword
-          ? 'HIDE'
-          : 'SHOW'
+            ? 'HIDE'
+            : 'SHOW'
       );
     };
 

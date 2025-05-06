@@ -84,7 +84,7 @@ export default function AddFriendButton({ targetUser, onPress }) {
           justifyContent: 'center',
           borderRadius: BASE_UNIT * 0.05,
         }}
-        onPress={isPending ? handleAcceptRequest : handleSendRequest ?? onPress}
+        onPress={isPending ? handleAcceptRequest : (handleSendRequest ?? onPress)}
         disabled={relationshipLabel === 'Bạn bè' || relationshipLabel === 'Đã gửi'}
       >
         <Text style={{ color: 'white' }}>{relationshipLabel}</Text>

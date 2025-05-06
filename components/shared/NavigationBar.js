@@ -66,7 +66,9 @@ export default function NavigationBar() {
               top: 0,
             }}
           >
-            <Text style={{ color: 'white', fontSize: BASE_UNIT * 0.025 }}>{totalUnseenMessages > 0 ? totalUnseenMessages : ""}</Text>
+            <Text style={{ color: 'white', fontSize: BASE_UNIT * 0.025 }}>
+              {totalUnseenMessages > 0 ? totalUnseenMessages : ''}
+            </Text>
           </View>
         </View>
         {navState === 'message' ? (

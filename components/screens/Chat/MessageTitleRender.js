@@ -28,7 +28,6 @@ export default function MessageTitleRender() {
   const setSelectedConversation = useSetRecoilState(selectedConversationState);
   const setTotalUnseenCount = useSetRecoilState(totalUnseenCountState);
 
-
   // console.log('<<<[DEBUG]: dataConversations: ', dataConversations);
   // console.log('[DEBUG]: messages: ', messages);
 
@@ -37,7 +36,10 @@ export default function MessageTitleRender() {
     const fetchConversations = async () => {
       const conversations = await getListConversation(loginResult.token);
       setDataConversations(conversations.data);
-      const totalUnseen = conversations.data.reduce((sum, convo) => sum + (convo.unseenCount || 0), 0);
+      const totalUnseen = conversations.data.reduce(
+        (sum, convo) => sum + (convo.unseenCount || 0),
+        0
+      );
       setTotalUnseenCount(totalUnseen);
       // console.log('<<<[DEBUG]: Conversations.data:', conversations.data);
     };
@@ -156,11 +158,11 @@ export default function MessageTitleRender() {
                     ? item.lastMessage.sender._id === loginResult.user._id
                       ? 'Bạn: ' + item.lastMessage.content
                       : item.isGroup === false
-                      ? item.lastMessage.content
-                      : item.lastMessage.sender.fullName + ': ' + item.lastMessage.content
+                        ? item.lastMessage.content
+                        : item.lastMessage.sender.fullName + ': ' + item.lastMessage.content
                     : item.groupName
-                    ? 'Chia sẻ tệp'
-                    : 'Các bạn đã là bạn bè 😊'}
+                      ? 'Chia sẻ tệp'
+                      : 'Các bạn đã là bạn bè 😊'}
                 </Text>
                 <View
                   style={{

@@ -3,13 +3,17 @@ import apiClient from '../apiClient';
 
 export const logout = async (token) => {
   try {
-    const response = await apiClient.post('/auth/logout', {
-      deviceType: 'app',
-    },{
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const response = await apiClient.post(
+      '/auth/logout',
+      {
+        deviceType: 'app',
       },
-    });
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     console.log('Đăng xuất thành công:', response.data);
 
     await removeTempToken();

@@ -107,8 +107,8 @@ const MemberGroup = ({ navigation, route }) => {
             {item._id === selectedConversation.groupLeader
               ? 'Nhóm trưởng'
               : item._id === selectedConversation.groupDeputy
-              ? 'Nhóm phó'
-              : 'Thành viên'}
+                ? 'Nhóm phó'
+                : 'Thành viên'}
           </Text>
         </View>
       </View>

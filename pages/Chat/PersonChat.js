@@ -101,7 +101,7 @@ export default function PersonChat() {
   // console.log("[DEBUG]: loginResult:",loginResult);
   // const conversation = useRecoilValue(conversationState)
   // console.log("<<ConversationState: >>", conversation);
-  //console.log(messages);
+  // console.log(messages);
 
   const handleSendMessage = async () => {
     try {
