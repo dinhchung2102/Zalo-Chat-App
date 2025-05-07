@@ -16,12 +16,15 @@ import {
 } from '@state/ChatState';
 import { getMessages } from '@api/chat/messages';
 import { loginResultState } from '@state/PrimaryState';
-import { totalUnseenCountState } from '../../../state/ChatState';
+import { totalUnseenCountState } from '@state/ChatState';
+import { useLoading } from '@hooks/useLoading';
+import LoadingOverlay from '@components/shared/LoadingOverlay';
 
 export default function MessageTitleRender() {
   const locale = useTextLanguage({ vietnamese: 'vi', english: 'en' });
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
+  const { isLoading, withLoading } = useLoading();
 
   const [dataConversations, setDataConversations] = useRecoilState(conversationState);
   const setMessages = useSetRecoilState(messagesByConversationState);
@@ -32,13 +35,15 @@ export default function MessageTitleRender() {
     const fetchConversations = async () => {
       const conversations = await getListConversation(loginResult.token);
       setDataConversations(conversations.data);
-      const totalUnseen = dataConversations.reduce(
+
+      const totalUnseen = conversations.data.reduce(
         (sum, convo) => sum + (convo.unseenCount || 0),
         0
       );
       setTotalUnseenCount(totalUnseen);
     };
-    fetchConversations();
+
+    withLoading(fetchConversations());
   }, [loginResult]);
 
   useEffect(() => {
@@ -190,9 +195,7 @@ export default function MessageTitleRender() {
           );
         })
       ) : (
-        <View>
-          <Text>Không thể tải dữ liệu...</Text>
-        </View>
+        <LoadingOverlay visible={isLoading} />
       )}
     </View>
   );
