@@ -24,27 +24,27 @@ export default function MessageTitleRender() {
   const loginResult = useRecoilValue(loginResultState);
 
   const [dataConversations, setDataConversations] = useRecoilState(conversationState);
-  const [messages, setMessages] = useRecoilState(messagesByConversationState);
+  const setMessages = useSetRecoilState(messagesByConversationState);
   const setSelectedConversation = useSetRecoilState(selectedConversationState);
   const setTotalUnseenCount = useSetRecoilState(totalUnseenCountState);
 
-  // console.log('<<<[DEBUG]: dataConversations: ', dataConversations);
-  // console.log('[DEBUG]: messages: ', messages);
-
-  //Cần nghiên cứu lại
   useEffect(() => {
     const fetchConversations = async () => {
       const conversations = await getListConversation(loginResult.token);
       setDataConversations(conversations.data);
-      const totalUnseen = conversations.data.reduce(
+      const totalUnseen = dataConversations.reduce(
         (sum, convo) => sum + (convo.unseenCount || 0),
         0
       );
       setTotalUnseenCount(totalUnseen);
-      // console.log('<<<[DEBUG]: Conversations.data:', conversations.data);
     };
     fetchConversations();
-  }, []);
+  }, [loginResult]);
+
+  useEffect(() => {
+    const totalUnseen = dataConversations.reduce((sum, convo) => sum + (convo.unseenCount || 0), 0);
+    setTotalUnseenCount(totalUnseen);
+  }, [dataConversations]);
 
   return (
     <View style={styles.container}>
@@ -59,14 +59,18 @@ export default function MessageTitleRender() {
                 alignItems: 'center',
               }}
               onPress={async () => {
-                //console.log(`item sẽ truyền:`,item._id);
-                //console.log(loginResult.token);
                 const messages = await getMessages(loginResult.token, item._id);
                 await unseenMessages(loginResult.token, item._id, loginResult.user._id);
+
+                //Cập nhật đã xem trên giao diện
+                const updatedConversations = dataConversations.map((c) =>
+                  c._id === item._id ? { ...c, unseenCount: 0 } : c
+                );
+                setDataConversations(updatedConversations);
+
+                //cập nhật conve được chọn và tin nhắn
                 setMessages(messages);
                 setSelectedConversation(item);
-                //console.log('[DEBUGGGGGGGGGGG]:', item);
-
                 navigation.navigate('PersonChat');
               }}
             >
@@ -158,11 +162,11 @@ export default function MessageTitleRender() {
                     ? item.lastMessage.sender._id === loginResult.user._id
                       ? 'Bạn: ' + item.lastMessage.content
                       : item.isGroup === false
-                        ? item.lastMessage.content
-                        : item.lastMessage.sender.fullName + ': ' + item.lastMessage.content
+                      ? item.lastMessage.content
+                      : item.lastMessage.sender.fullName + ': ' + item.lastMessage.content
                     : item.groupName
-                      ? 'Chia sẻ tệp'
-                      : 'Các bạn đã là bạn bè 😊'}
+                    ? 'Chia sẻ tệp'
+                    : 'Các bạn đã là bạn bè 😊'}
                 </Text>
                 <View
                   style={{
