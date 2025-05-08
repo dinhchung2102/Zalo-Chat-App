@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { ICON_MEDIUM } from '@styles/constants/iconSize';
@@ -7,76 +7,24 @@ import { BASE_UNIT } from '@styles/constants/screen';
 import { Colors } from '@styles/Colors';
 import { textLargeSize, textMediumSize } from '@styles/constants/fontSize';
 import { useNavigation } from '@react-navigation/native';
-import * as ImagePicker from 'expo-image-picker';
-import { updateAvatar } from '@api/auth/update.avt';
-import { getLoginResult, getUserId } from '@services/storageService';
 import { getShortNameRegister } from '@utils/getShortName';
 import { useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
+import LoadingOverlay from '@components/shared/LoadingOverlay';
+
 export default function ProfileUser() {
   const navigation = useNavigation();
-  const [image, setImage] = useState(null);
-
   const loginResult = useRecoilValue(loginResultState);
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect: [3, 3],
-      quality: 1,
-    });
-
-    //console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-      //const resultUpdate = await updateAvatar(getUserId(), result.assets[0].uri);
-      //console.log(resultUpdate);
-    }
-  };
-
-  const takePhoto = async () => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Bạn cần cấp quyền để sử dụng camera!');
-      return;
-    }
-
-    let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [3, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-      //const resultUpdate = await updateAvatar(getUserId(), result.assets[0].uri);
-    }
-  };
-
-  const handleSetAvatar = async () => {
-    if (image != null) {
-      const resultUpdate = await updateAvatar(getUserId(), image);
-      setImage(null);
-      console.log(resultUpdate);
-    }
-  };
-
-  const handleSetBackgroundImage = async () => {
-    if (image != null) {
-      //const resultUpdate = await update//.....
-      console.log('heheheh');
-    }
-  };
 
   if (!loginResult) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text>Đang tải thông tin người dùng...</Text>
+        <LoadingOverlay visible={true} />
       </SafeAreaView>
     );
   }
+
+  console.log('DEBUG: loginresult.user.profilePic', loginResult.user.profilePic);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -122,7 +70,7 @@ export default function ProfileUser() {
           justifyContent: 'center',
         }}
       >
-        {loginResult.user.profilePic == '' ? (
+        {loginResult.user.profilePic === '' ? (
           <View
             style={{
               backgroundColor: Colors.primary,
@@ -156,23 +104,27 @@ export default function ProfileUser() {
               position: 'absolute',
               alignItems: 'center',
               justifyContent: 'center',
+              backgroundColor: 'blue',
             }}
           >
             <Image
-              source={{ uri: loginResult.user.profilePic }}
+              alt="Ảnh đại diện"
+              source={{
+                uri: loginResult.user.profilePic,
+              }}
               style={{
                 height: 95,
                 width: 95,
                 borderRadius: 50,
-                position: 'absolute',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'blue',
+                //backgroundColor: 'red',
               }}
+              height={95}
+              width={95}
             />
           </TouchableOpacity>
         )}
       </View>
+
       <Text
         style={{
           marginTop: BASE_UNIT * 0.16,

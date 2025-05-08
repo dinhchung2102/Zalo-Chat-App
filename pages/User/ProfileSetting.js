@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SimpleHeader from '@components/shared/SimpleHeader';
 import ChooseButton from '@components/shared/buttons/ChooseButton';
@@ -9,39 +9,44 @@ import { Colors } from '@styles/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { logout } from '@api/auth/logout';
 import useResetAllAtoms from '@hooks/useResetAllAtoms';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import socket from '@services/socketService';
 import ImagePickerModal from '../../components/shared/ImagePickerModal';
 import { updateAvatar } from '../../api/auth/update.avt';
+import { useLoading } from '@hooks/useLoading';
+import LoadingOverlay from '@components/shared/LoadingOverlay';
+import { profilePicRegister } from '../../state/RegisterState';
 
 export default function ProfileSetting() {
   const navigation = useNavigation();
   const [loginResult, setLoginResult] = useRecoilState(loginResultState);
   const resetAll = useResetAllAtoms();
+  const { isLoading, withLoading } = useLoading();
 
   const [modalPickImageVisible, setModalPickImageVisible] = useState(false);
+  const setTempProfilePic = useSetRecoilState(profilePicRegister);
 
-  const handleImageSelected = async (image) => {
-    const resUpdate = await updateAvatar(loginResult.token, image.uri);
-    console.log(resUpdate);
+  const handleImageSelected = (image) => {
+    withLoading(async () => {
+      const resUpdate = await updateAvatar(loginResult.token, image.uri);
+      setTempProfilePic(image.uri);
 
-    setLoginResult((prev) => ({
-      ...prev,
-      user: {
-        ...prev.user,
-        profilePic: resUpdate.profilePic,
-      },
-    }));
-    //console.log('DEBUG:image: ', image);
-    navigation.navigate('ProfileUser');
-    // console.log(loginResult);
+      setLoginResult((prev) => ({
+        ...prev,
+        user: {
+          ...prev.user,
+          profilePic: resUpdate.profilePic,
+        },
+      }));
+      navigation.goBack();
+    });
   };
 
   if (!loginResult) {
     return (
-      <View>
-        <Text>Đang load...</Text>
+      <View style={styles.container}>
+        <LoadingOverlay visible={true} />
       </View>
     );
   }
@@ -131,6 +136,7 @@ export default function ProfileSetting() {
         onClose={() => setModalPickImageVisible(false)}
         onImageSelected={handleImageSelected}
       />
+      <LoadingOverlay visible={isLoading} />
     </SafeAreaView>
   );
 }
