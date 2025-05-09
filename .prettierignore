@@ -6,6 +6,9 @@ coverage
 # React Native specific
 android
 ios
+eas.json
+package-lock.json
+package.json
 
 # Node modules
 node_modules
@@ -33,3 +36,4 @@ tmp
 # Env file
 .env
 .env.*
+README.md

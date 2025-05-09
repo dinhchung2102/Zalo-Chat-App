@@ -10,10 +10,12 @@ import { modalLanguageState } from '@state/PrimaryState';
 import IntroSwiper from '@components/screens/Home/IntroSwiper';
 import { useNavigation } from '@react-navigation/native';
 import { useTextLanguage } from '@hooks/useTextLanguage';
+import { API_URL, SOCKET_URL } from '@env';
 
 export default function Home() {
   const navigation = useNavigation();
   const [, setModalVisible] = useRecoilState(modalLanguageState);
+  console.log(API_URL, SOCKET_URL);
 
   return (
     <SafeAreaView style={styles.container}>

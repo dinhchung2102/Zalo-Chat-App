@@ -1,13 +1,20 @@
 import { useEffect } from 'react';
 import socket from '../services/socketService';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { requestState } from '../state/FriendState';
-import { messagesByConversationState } from '../state/ChatState';
+import {
+  conversationState,
+  messagesByConversationState,
+  selectedConversationState,
+} from '../state/ChatState';
 import * as Notifications from 'expo-notifications'; // Thêm import cho Notifications
 
 export default function useSocketEvents(userId, onNewMessage) {
-  const [requests, setRequests] = useRecoilState(requestState);
-  const [messages, setMessages] = useRecoilState(messagesByConversationState);
+  const setRequests = useSetRecoilState(requestState);
+  const setMessages = useSetRecoilState(messagesByConversationState);
+  const setConversationData = useSetRecoilState(conversationState);
+  const selectedConversation = useRecoilValue(selectedConversationState);
+
   useEffect(() => {
     if (!userId) {
       console.log('⚠️ Không có userId, không thể kết nối socket.');
@@ -61,22 +68,53 @@ export default function useSocketEvents(userId, onNewMessage) {
     });
 
     socket.on('newMessage', (data) => {
-      console.log('💬 Tin nhắn đến:', data);
+      if (data.senderId._id != userId) {
+        console.log('💬 Tin nhắn đến:', data);
+      }
+
       // TODO: cập nhật messageState hoặc truyền callback tùy nơi xử lý
       if (onNewMessage) {
         onNewMessage(data);
       }
-      setMessages((prev) => {
-        const conversationId = data.conversationId;
-        const newMessage = data.message;
-        const existingMessages = prev[conversationId] || [];
-        const updatedMessages = [...existingMessages, newMessage];
 
-        return {
-          ...prev,
-          [conversationId]: updatedMessages,
-        };
+      //Set lại ở màn screen hiện list Conversation
+      setConversationData((prevData) => {
+        const updated = prevData.map((convo) => {
+          if (convo._id === data.conversationId) {
+            return {
+              ...convo,
+              lastMessage: {
+                _id: data._id,
+                content: data.content,
+                sender: { _id: data.senderId._id, fullName: data.senderId.fullName },
+                timestamp: data.createdAt,
+              },
+              latestActivityTime: data.createdAt,
+              unseenCount: data.senderId._id != userId ? convo.unseenCount + 1 : 0,
+            };
+          }
+          return convo;
+        });
+        // Sắp xếp lại theo thời gian hoạt động mới nhất
+        updated.sort((a, b) => new Date(b.latestActivityTime) - new Date(a.latestActivityTime));
+        return updated;
       });
+
+      //Set lại tin nhắn trong Conversation được chọn
+      if (data.conversationId === selectedConversation._id) {
+        setMessages((prev) => {
+          const exists = prev.data.some((msg) => msg._id === data._id);
+          if (!exists) {
+            return {
+              ...prev,
+              data: [...prev.data, data],
+            };
+          }
+          return prev;
+        });
+      }
+
+      //Thông báo đẩy chỉ cho người nhận
       if (data.senderId._id != userId) {
         Notifications.scheduleNotificationAsync({
           content: {
@@ -84,7 +122,7 @@ export default function useSocketEvents(userId, onNewMessage) {
             body: `${data.senderId.fullName}: ${data.content}`,
             sound: 'default',
           },
-          trigger: null, // Thông báo ngay lập tức
+          trigger: null,
         });
       }
     });

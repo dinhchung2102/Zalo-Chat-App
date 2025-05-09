@@ -16,33 +16,40 @@ import {
 } from '@state/ChatState';
 import { getMessages } from '@api/chat/messages';
 import { loginResultState } from '@state/PrimaryState';
-import { totalUnseenCountState } from '../../../state/ChatState';
+import { totalUnseenCountState } from '@state/ChatState';
+import { useLoading } from '@hooks/useLoading';
+import LoadingOverlay from '@components/shared/LoadingOverlay';
 
 export default function MessageTitleRender() {
   const locale = useTextLanguage({ vietnamese: 'vi', english: 'en' });
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
+  const { isLoading, withLoading } = useLoading();
 
   const [dataConversations, setDataConversations] = useRecoilState(conversationState);
-  const [messages, setMessages] = useRecoilState(messagesByConversationState);
+  const setMessages = useSetRecoilState(messagesByConversationState);
   const setSelectedConversation = useSetRecoilState(selectedConversationState);
   const setTotalUnseenCount = useSetRecoilState(totalUnseenCountState);
 
-
-  // console.log('<<<[DEBUG]: dataConversations: ', dataConversations);
-  // console.log('[DEBUG]: messages: ', messages);
-
-  //Cần nghiên cứu lại
   useEffect(() => {
     const fetchConversations = async () => {
       const conversations = await getListConversation(loginResult.token);
       setDataConversations(conversations.data);
-      const totalUnseen = conversations.data.reduce((sum, convo) => sum + (convo.unseenCount || 0), 0);
+
+      const totalUnseen = conversations.data.reduce(
+        (sum, convo) => sum + (convo.unseenCount || 0),
+        0
+      );
       setTotalUnseenCount(totalUnseen);
-      // console.log('<<<[DEBUG]: Conversations.data:', conversations.data);
     };
-    fetchConversations();
-  }, []);
+
+    withLoading(fetchConversations());
+  }, [loginResult]);
+
+  useEffect(() => {
+    const totalUnseen = dataConversations.reduce((sum, convo) => sum + (convo.unseenCount || 0), 0);
+    setTotalUnseenCount(totalUnseen);
+  }, [dataConversations]);
 
   return (
     <View style={styles.container}>
@@ -57,14 +64,18 @@ export default function MessageTitleRender() {
                 alignItems: 'center',
               }}
               onPress={async () => {
-                //console.log(`item sẽ truyền:`,item._id);
-                //console.log(loginResult.token);
                 const messages = await getMessages(loginResult.token, item._id);
                 await unseenMessages(loginResult.token, item._id, loginResult.user._id);
+
+                //Cập nhật đã xem trên giao diện
+                const updatedConversations = dataConversations.map((c) =>
+                  c._id === item._id ? { ...c, unseenCount: 0 } : c
+                );
+                setDataConversations(updatedConversations);
+
+                //cập nhật conve được chọn và tin nhắn
                 setMessages(messages);
                 setSelectedConversation(item);
-                //console.log('[DEBUGGGGGGGGGGG]:', item);
-
                 navigation.navigate('PersonChat');
               }}
             >
@@ -184,9 +195,7 @@ export default function MessageTitleRender() {
           );
         })
       ) : (
-        <View>
-          <Text>Không thể tải dữ liệu...</Text>
-        </View>
+        <LoadingOverlay visible={isLoading} />
       )}
     </View>
   );

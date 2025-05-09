@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, StatusBar, SafeAreaView } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaFrameContext } from 'react-native-safe-area-context';
 import SimpleHeader from '@components/shared/SimpleHeader';
 import LoginInput from '@components/screens/SignUp/textInputs/LoginInput';
 import { BASE_UNIT } from '@styles/constants/screen';
@@ -12,9 +11,12 @@ import { useTextLanguage } from '@hooks/useTextLanguage';
 import { login } from '@api/auth/login';
 import { useRecoilState } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
+import { useLoading } from '@hooks/useLoading';
+import LoadingOverlay from '@components/shared/LoadingOverlay';
 
 export default function Login() {
   const navigation = useNavigation();
+  const { isLoading, withLoading } = useLoading();
 
   const [username, setUsername] = useState('0333222100');
   const [password, setPassword] = useState('Abc1234@');
@@ -36,14 +38,16 @@ export default function Login() {
   const handleLogin = async () => {
     if (handleCheckNull()) {
       try {
-        const response = await login(username, password);
-        console.log('[DEBUG]: Lưu thông tin đăng nhập vào Recoil: ', response.data);
-        setLoginResult(response.data);
-        if (response.status == 200) {
-          navigation.navigate('HomeMessage');
-        } else {
-          setError(response);
-        }
+        await withLoading(async () => {
+          const response = await login(username, password);
+          console.log('[DEBUG]: Lưu thông tin đăng nhập vào Recoil: ', response.data);
+          setLoginResult(response.data);
+          if (response.status === 200) {
+            navigation.navigate('HomeMessage');
+          } else {
+            setError(response);
+          }
+        });
       } catch (err) {
         console.log(err);
       }
@@ -93,7 +97,7 @@ export default function Login() {
             password={true}
             securePassword={securePassword}
           />
-          {error && <Text style={{ color: 'red', fontStyle: 'itali' }}>{error}</Text>}
+          {error && <Text style={{ color: 'red', fontStyle: 'italic' }}>{error}</Text>}
           <View style={{ marginTop: BASE_UNIT * 0.02 }}>
             <LinkButton
               text={useTextLanguage({
@@ -134,6 +138,7 @@ export default function Login() {
           }}
         />
       </View>
+      <LoadingOverlay visible={isLoading} />
     </SafeAreaView>
   );
 }

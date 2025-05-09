@@ -20,15 +20,9 @@ import { textMediumSize } from '@styles/constants/fontSize';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import { sendFile, sendMessage } from '@api/chat/messages';
-import useSocketEvents from '@hooks/useSocketEvents';
 import { getShortNameRegister } from '@utils/getShortName';
 import ImagePickerModal from '@components/shared/ImagePickerModal';
-import {
-  conversationState,
-  messagesByConversationState,
-  selectedConversationState,
-} from '@state/ChatState';
-import { getListConversation } from '@api/chat/conversation';
+import { messagesByConversationState, selectedConversationState } from '@state/ChatState';
 import FileViewer from 'react-native-file-viewer';
 import { downloadFile } from '@utils/downloadFile';
 import FileIcon from '@components/others/FileIcon';
@@ -37,26 +31,12 @@ export default function PersonChat() {
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
   const [messagesData, setMessagesData] = useRecoilState(messagesByConversationState);
-
-  // console.log(`<<<userInfo>>>: `,userInfo);
-  // console.log(`<<DEBUG>>: messagesData`, messagesData);
+  const selectedConversation = useRecoilValue(selectedConversationState);
 
   const [messages, setMessages] = useState('');
-  const [messageList, setMessageList] = useState(messagesData.data);
-  const [conversation, setConversation] = useRecoilState(conversationState);
   const [modalVisible, setModalVisible] = useState(false);
-  const selectedConversation = useRecoilValue(selectedConversationState);
-  //console.log(selectedConversation);
-  const conversationId = selectedConversation._id;
 
-  useEffect(() => {
-    const fetchConversations = async () => {
-      const conversations = await getListConversation(loginResult.token);
-      setConversation(conversations.data);
-      //console.log("<<<[DEBUG]: Conversations.data:", conversations.data);
-    };
-    fetchConversations();
-  }, [loginResult, messages]);
+  const conversationId = selectedConversation._id;
 
   const handleSendFile = async (selectedFile) => {
     const senderId = loginResult.user._id;
@@ -65,13 +45,13 @@ export default function PersonChat() {
       `[DEBUG]: {conversationId: ${conversationId}, senderId: ${senderId}, token: ${token}, file: ${selectedFile}}`
     );
     const response = await sendFile(conversationId, selectedFile, senderId, token);
-    setMessageList((prev) => {
-      const exists = prev.some((msg) => msg._id === response._id);
-      if (!exists) {
-        return [...prev, response];
-      }
-      return prev;
-    });
+    // setMessageList((prev) => {
+    //   const exists = prev.some((msg) => msg._id === response._id);
+    //   if (!exists) {
+    //     return [...prev, response];
+    //   }
+    //   return prev;
+    // });
 
     console.log('[DEBUG]: Kết quả gửi file:', response);
   };
@@ -81,27 +61,10 @@ export default function PersonChat() {
     handleSendFile(image);
   };
 
-  useSocketEvents(loginResult.user._id, (newMessage) => {
-    if (newMessage.conversationId === conversationId) {
-      setMessageList((prev) => {
-        const exists = prev.some((msg) => msg._id === newMessage._id);
-        if (!exists) {
-          return [...prev, newMessage];
-        }
-        return prev;
-      });
-    }
-  });
-
   const scrollViewRef = useRef();
   useEffect(() => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
-  }, [messageList]);
-
-  // console.log("[DEBUG]: loginResult:",loginResult);
-  // const conversation = useRecoilValue(conversationState)
-  // console.log("<<ConversationState: >>", conversation);
-  //console.log(messages);
+  }, [messagesData]);
 
   const handleSendMessage = async () => {
     try {
@@ -111,11 +74,13 @@ export default function PersonChat() {
 
       setMessages('');
 
-      // 👇 Kiểm tra xem đã có tin nhắn này chưa (dựa vào _id)
-      setMessageList((prev) => {
-        const exists = prev.some((msg) => msg._id === response._id);
+      setMessagesData((prev) => {
+        const exists = prev.data.some((msg) => msg._id === response._id);
         if (!exists) {
-          return [...prev, response];
+          return {
+            ...prev,
+            data: [...prev.data, response],
+          };
         }
         return prev;
       });
@@ -143,7 +108,7 @@ export default function PersonChat() {
         }}
       />
       <ScrollView ref={scrollViewRef} contentContainerStyle={{ paddingBottom: BASE_UNIT * 0.2 }}>
-        {messageList.map((item, index, array) => {
+        {messagesData.data.map((item, index, array) => {
           const isMe = item.senderId._id === loginResult.user._id;
           const isFirstMessageFromSender =
             index === 0 || item.senderId._id !== array[index - 1].senderId._id;
