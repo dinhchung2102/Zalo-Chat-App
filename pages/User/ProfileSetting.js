@@ -61,7 +61,13 @@ export default function ProfileSetting() {
         }}
       />
       <View style={{ width: '100%', paddingHorizontal: BASE_UNIT * 0.05 }}>
-        <ChooseButton text={'Thông tin'} textSize={textMediumSize} />
+        <ChooseButton
+          text={'Thông tin'}
+          textSize={textMediumSize}
+          onPress={() => {
+            navigation.navigate('ProfileUpdate');
+          }}
+        />
         <ChooseButton
           text={'Đổi ảnh đại diện'}
           textSize={textMediumSize}
@@ -97,7 +103,13 @@ export default function ProfileSetting() {
         <Text style={{ color: Colors.primary, fontWeight: '700' }}>Cài đặt</Text>
         <ChooseButton text={'Mã QR của tôi'} textSize={textMediumSize} />
         <ChooseButton text={'Quyền riêng tư'} textSize={textMediumSize} />
-        <ChooseButton text={'Quản lý tài khoản'} textSize={textMediumSize} />
+        <ChooseButton
+          text={'Quản lý tài khoản'}
+          textSize={textMediumSize}
+          onPress={() => {
+            navigation.navigate('Account_Security');
+          }}
+        />
         <ChooseButton text={'Cài đặt chung'} textSize={textMediumSize} />
       </View>
 

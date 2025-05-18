@@ -1,6 +1,16 @@
 import { atom } from 'recoil';
 import uuid from 'react-native-uuid';
 
+export const tempTokenState = atom({
+  key: 'tempTokenState',
+  default: '',
+});
+
+export const resetTokenState = atom({
+  key: 'resetTokenState',
+  default: '',
+});
+
 export const phoneNumberRegister = atom({
   key: 'phoneNumberRegister',
   default: '',

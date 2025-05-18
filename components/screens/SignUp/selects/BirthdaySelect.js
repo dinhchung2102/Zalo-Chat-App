@@ -1,51 +1,21 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import { Text, TouchableOpacity } from 'react-native';
 import { BASE_UNIT } from '@styles/constants/screen';
-import { Colors } from '@styles/Colors';
 import { textMediumSize } from '@styles/constants/fontSize';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ICON_MEDIUM_PLUS } from '@styles/constants/iconSize';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { useTextLanguage } from '@hooks/useTextLanguage';
 import { useRecoilValue } from 'recoil';
 import { languageState } from '@state/PrimaryState';
+import { useBirthdayPicker } from '@hooks/useBirthdayPicker';
 
 export default function BirthdaySelect({ minimumAge, dateValue, setDateValue }) {
-  const [borderColor, setBorderColor] = useState(Colors.grey);
   const language = useRecoilValue(languageState);
+  const { showDatePicker, handleDateString, borderColor } = useBirthdayPicker({
+    minimumAge,
+    dateValue,
+    setDateValue,
+    language,
+  });
 
-  const showDatePicker = () => {
-    DateTimePickerAndroid.open({
-      value: dateValue,
-      mode: 'date',
-      display: 'default',
-      onChange: handleDateChange,
-      minimumDate: new Date().setFullYear(new Date().getFullYear() - 100),
-      maximumDate: new Date().setFullYear(new Date().getFullYear() - minimumAge),
-    });
-  };
-
-  const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || dateValue;
-    setDateValue(currentDate);
-
-    if (currentDate.getFullYear() < new Date().getFullYear()) setBorderColor(Colors.primary);
-    else setBorderColor(Colors.grey);
-  };
-
-  //DD/MM/YY
-  const formatDate = (date) => {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString();
-
-    return `${day}/${month}/${year}`;
-  };
-
-  const handleDateString = (date) => {
-    if (language === 'vie') return formatDate(date);
-    if (language === 'eng') return date.toLocaleDateString();
-  };
   return (
     <TouchableOpacity
       style={{

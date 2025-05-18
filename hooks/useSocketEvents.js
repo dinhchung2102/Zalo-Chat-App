@@ -1,19 +1,18 @@
 import { useEffect } from 'react';
 import socket from '../services/socketService';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { requestState } from '../state/FriendState';
 import {
   conversationState,
   messagesByConversationState,
   selectedConversationState,
 } from '../state/ChatState';
-import * as Notifications from 'expo-notifications'; // Thêm import cho Notifications
+import * as Notifications from 'expo-notifications';
 
 export default function useSocketEvents(userId, onNewMessage) {
   const setRequests = useSetRecoilState(requestState);
-  const setMessages = useSetRecoilState(messagesByConversationState);
+  const [messages, setMessages] = useRecoilState(messagesByConversationState);
   const setConversationData = useSetRecoilState(conversationState);
-  const selectedConversation = useRecoilValue(selectedConversationState);
 
   useEffect(() => {
     if (!userId) {
@@ -67,12 +66,8 @@ export default function useSocketEvents(userId, onNewMessage) {
       console.log('✅ Lời mời đã được chấp nhận:', data);
     });
 
+    console.log('Đăng ký socket.on(newMessage)');
     socket.on('newMessage', (data) => {
-      if (data.senderId._id != userId) {
-        console.log('💬 Tin nhắn đến:', data);
-      }
-
-      // TODO: cập nhật messageState hoặc truyền callback tùy nơi xử lý
       if (onNewMessage) {
         onNewMessage(data);
       }
@@ -100,8 +95,21 @@ export default function useSocketEvents(userId, onNewMessage) {
         return updated;
       });
 
-      //Set lại tin nhắn trong Conversation được chọn
-      if (data.conversationId === selectedConversation._id) {
+      const messageExist = messages.data.some((msg) => msg._id === data._id);
+
+      //Người nhận
+      if (data.senderId._id != userId && messageExist === false) {
+        console.log('💬 Tin nhắn đến:', data);
+
+        Notifications.scheduleNotificationAsync({
+          content: {
+            title: 'Tin nhắn mới',
+            body: `${data.senderId.fullName}: ${data.content}`,
+            sound: 'default',
+          },
+          trigger: null,
+        });
+        //Set lại tin nhắn trong Conversation được chọn
         setMessages((prev) => {
           const exists = prev.data.some((msg) => msg._id === data._id);
           if (!exists) {
@@ -111,18 +119,6 @@ export default function useSocketEvents(userId, onNewMessage) {
             };
           }
           return prev;
-        });
-      }
-
-      //Thông báo đẩy chỉ cho người nhận
-      if (data.senderId._id != userId) {
-        Notifications.scheduleNotificationAsync({
-          content: {
-            title: 'Tin nhắn mới',
-            body: `${data.senderId.fullName}: ${data.content}`,
-            sound: 'default',
-          },
-          trigger: null,
         });
       }
     });
