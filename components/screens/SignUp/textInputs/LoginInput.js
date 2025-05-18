@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { languageState } from '@state/PrimaryState';
 
 const LoginInput = forwardRef(
-  ({ placeholder, value, onChangeText, phoneNumber, password, autoFocus }, ref) => {
+  ({ placeholder, value, onChangeText, phoneNumber, password, autoFocus, fontSize }, ref) => {
     const [focus, setFocus] = useState(false);
     const selectedLanguage = useRecoilValue(languageState);
     const [securePassword, setSecurePassword] = useState(true);
@@ -22,8 +22,8 @@ const LoginInput = forwardRef(
             ? 'ẨN'
             : 'HIỆN'
           : securePassword
-            ? 'HIDE'
-            : 'SHOW'
+          ? 'HIDE'
+          : 'SHOW'
       );
     };
 
@@ -37,7 +37,7 @@ const LoginInput = forwardRef(
           ref={ref}
           autoFocus={autoFocus}
           style={{
-            fontSize: textMediumPlus,
+            fontSize: fontSize ? fontSize : textMediumPlus,
             borderBottomWidth: 1,
             flex: 1,
             borderBottomColor: focus ? Colors.primary : '#f0f0f0',

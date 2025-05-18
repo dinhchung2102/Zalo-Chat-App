@@ -31,6 +31,8 @@ import GlobalModalManager from './pages/Util/GlobalModalManager';
 import { SocketListener } from './services/socketService';
 import ProfileUpdate from './pages/User/ProfileUpdate';
 import ProfileUpdate_Handle from './pages/User/ProfileUpdate_Handle';
+import Account_Security from './pages/User/Account_Security';
+import PasswordUpdate from './pages/User/PasswordUpdate';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -110,6 +112,8 @@ export default function App() {
           <Stack.Screen name="ConfirmPhoneNumber" component={ConfirmPhoneNumber} />
           <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
           <Stack.Screen name="ProfileUpdate_Handle" component={ProfileUpdate_Handle} />
+          <Stack.Screen name="Account_Security" component={Account_Security} />
+          <Stack.Screen name="PasswordUpdate" component={PasswordUpdate} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
