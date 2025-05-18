@@ -1,31 +1,104 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import SimpleHeader from '../../components/shared/SimpleHeader';
 import { useNavigation } from '@react-navigation/native';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import { formatDate } from '../../utils/formatDate';
 import { Ionicons } from '@expo/vector-icons';
 import LargeButton from '@components/shared/LargeButton';
 import { useState } from 'react';
+import { useBirthdayPicker } from '@hooks/useBirthdayPicker';
+import { languageState } from '@state/PrimaryState';
+import { updateProfile } from '../../api/auth/update.profile';
 
 export default function ProfileUpdate_Handle() {
   const navigation = useNavigation();
-  const loginResult = useRecoilValue(loginResultState);
+  const [loginResult, setLoginResult] = useRecoilState(loginResultState);
+  const selectedLanguage = useRecoilValue(languageState);
+
   const [name, setName] = useState(loginResult.user.fullName);
-  const [dateOfBirth, setDateOfBirth] = useState(loginResult.user.dateOfBirth);
+  const [dateOfBirth, setDateOfBirth] = useState(new Date(loginResult.user.dateOfBirth));
   const [gender, setGender] = useState(loginResult.user.gender);
+  const [loading, setLoading] = useState(true);
+
+  const { showDatePicker } = useBirthdayPicker({
+    minimumAge: 15,
+    dateValue: dateOfBirth,
+    setDateValue: setDateOfBirth,
+    language: selectedLanguage,
+  });
+
+  const handleUpdate = async () => {
+    const response = await updateProfile(
+      loginResult.user._id,
+      name,
+      dateOfBirth,
+      gender,
+      loginResult.token
+    );
+    setLoginResult((prev) => ({
+      ...prev,
+      user: {
+        ...prev.user,
+        fullName: name,
+        dateOfBirth,
+        gender,
+      },
+    }));
+    navigation.goBack();
+  };
 
   return (
     <View style={styles.container}>
-      <SimpleHeader linearPrimary={true} iconColor={'white'} text={'Chỉnh sửa thông tin'} />
+      <SimpleHeader
+        onPress={() => {
+          navigation.goBack();
+        }}
+        linearPrimary={true}
+        iconColor={'white'}
+        text={'Chỉnh sửa thông tin'}
+      />
       <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
-        <Image
-          source={{ uri: loginResult.user.profilePic }}
-          height={80}
-          width={80}
-          borderRadius={40}
-          style={{ marginLeft: 10, marginTop: 5 }}
-        />
+        <View
+          style={{
+            height: 80,
+            width: 80,
+            borderRadius: 40,
+            overflow: 'hidden',
+            marginLeft: 10,
+            marginTop: 5,
+            backgroundColor: '#006AF5',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {loading && <ActivityIndicator size="small" color="#ffffff" />}
+          <Image
+            source={{ uri: loginResult.user.profilePic }}
+            style={{
+              height: 80,
+              width: 80,
+              borderRadius: 40,
+              position: 'absolute',
+              top: 0,
+              left: 0,
+            }}
+            onLoadStart={() => setLoading(true)}
+            onLoad={() => setLoading(false)}
+            onError={(error) => {
+              console.log('Lỗi load ảnh:', error.nativeEvent);
+              setLoading(false);
+            }}
+          />
+        </View>
         <View style={{ flexDirection: 'column', marginLeft: 20, flex: 1, marginRight: 10 }}>
           <TextInput
             value={name}
@@ -49,6 +122,7 @@ export default function ProfileUpdate_Handle() {
               borderBottomColor: 'grey',
               alignItems: 'center',
             }}
+            onPress={showDatePicker}
           >
             <TextInput
               value={formatDate(dateOfBirth)}
@@ -78,7 +152,7 @@ export default function ProfileUpdate_Handle() {
           <Ionicons
             name={gender === 'Male' ? 'checkmark-circle' : 'checkmark-circle-outline'}
             size={26}
-            color={'#006AF5'}
+            color={gender === 'Male' ? '#006AF5' : 'grey'}
           />
           <Text style={{ marginLeft: 10, fontSize: 17 }}>Nam</Text>
         </TouchableOpacity>
@@ -91,13 +165,19 @@ export default function ProfileUpdate_Handle() {
           <Ionicons
             name={gender === 'Female' ? 'checkmark-circle' : 'checkmark-circle-outline'}
             size={26}
-            color={'#006AF5'}
+            color={gender === 'Female' ? '#006AF5' : 'grey'}
           />
           <Text style={{ marginLeft: 10, fontSize: 17 }}>Nữ</Text>
         </TouchableOpacity>
       </View>
       <View style={{ width: '100%', alignItems: 'center', marginTop: 20 }}>
-        <LargeButton text={'Thay đổi'} disabled={false} color={'#006AF5'} textColor={'white'} />
+        <LargeButton
+          onPress={handleUpdate}
+          text={'Thay đổi'}
+          disabled={false}
+          color={'#006AF5'}
+          textColor={'white'}
+        />
       </View>
     </View>
   );

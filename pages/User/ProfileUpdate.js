@@ -61,7 +61,9 @@ export default function ProfileUpdate() {
                 }}
               />
             </View>
-            <Text style={{ fontSize: 16, color: 'white', marginLeft: 10 }}>Võ Đình Chung</Text>
+            <Text style={{ fontSize: 16, color: 'white', marginLeft: 10 }}>
+              {loginResult.user.fullName}
+            </Text>
           </View>
         </ImageBackground>
       </TouchableOpacity>
