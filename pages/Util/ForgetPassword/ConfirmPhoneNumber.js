@@ -7,14 +7,36 @@ import LoginInput from '@components/screens/SignUp/textInputs/LoginInput';
 import CircleButton from '@components/screens/SignUp/buttons/CircleButton';
 import { Colors } from '@styles/Colors';
 import { useNavigation } from '@react-navigation/native';
+import { requestForgetPwd } from '@api/auth/forgetPassword';
+import { useSetRecoilState } from 'recoil';
+import { phoneNumberRegister } from '@state/RegisterState';
+import { formatPhoneNumber } from '@utils/formatPhoneNumber';
+import { tempTokenState } from '@state/RegisterState';
 
 export default function ConfirmPhoneNumber() {
   const navigation = useNavigation();
-  const usernameInputRef = useRef(null);
-  const [username, setUsername] = useState('');
+  const inputRef = useRef(null);
+  const [note, setNote] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const setPhoneNumberRegister = useSetRecoilState(phoneNumberRegister);
+  const setTempToken = useSetRecoilState(tempTokenState);
 
   const handleCheckNull = () => {
-    return username != '';
+    return phoneNumber != '';
+  };
+
+  const handleRequestOTP = async () => {
+    const response = await requestForgetPwd(phoneNumber);
+    if (response.status === 200) {
+      console.log(response.data);
+      setNote('');
+      setPhoneNumberRegister(formatPhoneNumber(phoneNumber));
+      setTempToken(response.data.tempToken);
+
+      navigation.navigate('ForgetPwdOTP');
+    } else {
+      setNote(response);
+    }
   };
 
   return (
@@ -48,20 +70,19 @@ export default function ConfirmPhoneNumber() {
             vietnamese: 'Số điện thoại',
             english: 'Phone number',
           })}
-          value={username}
-          onChangeText={(text) => setUsername(text)}
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
           phoneNumber={true}
           autoFocus={true}
-          ref={usernameInputRef}
+          ref={inputRef}
         />
+        <Text style={{ marginTop: 10, fontStyle: 'italic', color: 'red' }}>{note}</Text>
       </View>
       <View style={{ position: 'absolute', bottom: BASE_UNIT * 0.03, right: BASE_UNIT * 0.03 }}>
         <CircleButton
           disabled={!handleCheckNull()}
           color={handleCheckNull() ? Colors.primary : Colors.grey}
-          onPress={async () => {
-            console.log('enter phone');
-          }}
+          onPress={handleRequestOTP}
         />
       </View>
     </SafeAreaView>

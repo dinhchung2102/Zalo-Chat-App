@@ -33,6 +33,8 @@ import ProfileUpdate from './pages/User/ProfileUpdate';
 import ProfileUpdate_Handle from './pages/User/ProfileUpdate_Handle';
 import Account_Security from './pages/User/Account_Security';
 import PasswordUpdate from './pages/User/PasswordUpdate';
+import ForgetPwdOTP from './pages/Util/ForgetPassword/ForgetPwdOTP';
+import NewPassword from './pages/Util/ForgetPassword/NewPassword';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -114,6 +116,8 @@ export default function App() {
           <Stack.Screen name="ProfileUpdate_Handle" component={ProfileUpdate_Handle} />
           <Stack.Screen name="Account_Security" component={Account_Security} />
           <Stack.Screen name="PasswordUpdate" component={PasswordUpdate} />
+          <Stack.Screen name="ForgetPwdOTP" component={ForgetPwdOTP} />
+          <Stack.Screen name="NewPassword" component={NewPassword} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
