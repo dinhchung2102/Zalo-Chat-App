@@ -29,6 +29,8 @@ import AddMember from './pages/Group/AddMember';
 import ConfirmPhoneNumber from './pages/Util/ForgetPassword/ConfirmPhoneNumber';
 import GlobalModalManager from './pages/Util/GlobalModalManager';
 import { SocketListener } from './services/socketService';
+import ProfileUpdate from './pages/User/ProfileUpdate';
+import ProfileUpdate_Handle from './pages/User/ProfileUpdate_Handle';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -106,6 +108,8 @@ export default function App() {
           <Stack.Screen name="MemberGroup" component={MemberGroup} />
           <Stack.Screen name="AddMember" component={AddMember} />
           <Stack.Screen name="ConfirmPhoneNumber" component={ConfirmPhoneNumber} />
+          <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} />
+          <Stack.Screen name="ProfileUpdate_Handle" component={ProfileUpdate_Handle} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

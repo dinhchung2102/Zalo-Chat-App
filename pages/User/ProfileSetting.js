@@ -61,7 +61,13 @@ export default function ProfileSetting() {
         }}
       />
       <View style={{ width: '100%', paddingHorizontal: BASE_UNIT * 0.05 }}>
-        <ChooseButton text={'Thông tin'} textSize={textMediumSize} />
+        <ChooseButton
+          text={'Thông tin'}
+          textSize={textMediumSize}
+          onPress={() => {
+            navigation.navigate('ProfileUpdate');
+          }}
+        />
         <ChooseButton
           text={'Đổi ảnh đại diện'}
           textSize={textMediumSize}

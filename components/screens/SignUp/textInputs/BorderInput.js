@@ -11,6 +11,7 @@ export default function BorderInput({ placeholder, borderColor, onChangeText }) 
         borderWidth: 1,
         width: '100%',
         paddingHorizontal: '2%',
+        paddingVertical: '2%',
         borderColor: isFocused ? borderColor : 'grey',
         borderRadius: BASE_UNIT * 0.024,
       }}
