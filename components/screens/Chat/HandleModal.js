@@ -5,6 +5,7 @@ import { recallMessage } from '@api/chat/messages';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import { messagesByConversationState } from '@state/ChatState';
+import { deleteMessage } from '@api/chat/messages';
 
 export default function HandleModal({ visible, setVisible, onPressOverlay, isMe, messageId }) {
   const loginResult = useRecoilValue(loginResultState);
@@ -14,13 +15,24 @@ export default function HandleModal({ visible, setVisible, onPressOverlay, isMe,
     const response = await recallMessage(messageId, loginResult.token);
   };
 
+  const handleDeleteMessage = async () => {
+    const response = await deleteMessage(messageId, loginResult.token);
+  };
+
   return (
     <Modal transparent visible={visible} animationType="fade">
       <TouchableOpacity style={styles.overlay} onPress={onPressOverlay}>
         <View style={styles.container}>
           <View style={styles.row}>
             <TouchableOpacity style={styles.button}>
-              <Ionicons name="arrow-undo-outline" color={'purple'} size={30} />
+              <Ionicons
+                name="arrow-undo-outline"
+                color={'purple'}
+                size={30}
+                onPress={() => {
+                  console.log('Trả lời');
+                }}
+              />
               <Text style={styles.textButton}>Trả lời</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}>
@@ -37,7 +49,6 @@ export default function HandleModal({ visible, setVisible, onPressOverlay, isMe,
                 onPress={() => {
                   handleRecallMessage();
                   setVisible(false);
-
                   setMessagesData((prevMessages) => {
                     if (!prevMessages?.data || !Array.isArray(prevMessages.data)) {
                       return prevMessages; // hoặc trả về một object mặc định nếu cần
@@ -137,7 +148,23 @@ export default function HandleModal({ visible, setVisible, onPressOverlay, isMe,
                 <Ionicons name="alert-circle-outline" color={'purple'} size={30} />
                 <Text style={styles.textButton}>Chi tiết</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  handleDeleteMessage();
+                  setMessagesData((prevMessages) => {
+                    if (!prevMessages?.data || !Array.isArray(prevMessages.data)) {
+                      return prevMessages;
+                    }
+
+                    return {
+                      ...prevMessages,
+                      data: prevMessages.data.filter((msg) => msg._id !== messageId),
+                    };
+                  });
+                  setVisible(false);
+                }}
+              >
                 <Ionicons name="trash-outline" color={'red'} size={30} />
                 <Text style={styles.textButton}>Xóa</Text>
               </TouchableOpacity>
@@ -146,7 +173,23 @@ export default function HandleModal({ visible, setVisible, onPressOverlay, isMe,
 
           {isMe ? (
             <View style={styles.row}>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  handleDeleteMessage();
+                  setMessagesData((prevMessages) => {
+                    if (!prevMessages?.data || !Array.isArray(prevMessages.data)) {
+                      return prevMessages;
+                    }
+
+                    return {
+                      ...prevMessages,
+                      data: prevMessages.data.filter((msg) => msg._id !== messageId),
+                    };
+                  });
+                  setVisible(false);
+                }}
+              >
                 <Ionicons name="trash-outline" color={'red'} size={30} />
                 <Text style={styles.textButton}>Xóa</Text>
               </TouchableOpacity>

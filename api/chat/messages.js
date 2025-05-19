@@ -92,3 +92,24 @@ export const recallMessage = async (messageId, token) => {
     return err.message;
   }
 };
+
+export const deleteMessage = async (messageId, token) => {
+  try {
+    const res = await apiClient.post(
+      `/messages/delete-message`,
+      {
+        messageId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log('API recall message res.data: ', res.data);
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi gửi message:', err);
+    return err.message;
+  }
+};
