@@ -71,3 +71,24 @@ export const sendFile = async (conversationId, file, senderId, token) => {
     return { error: 'Đã xảy ra lỗi khi gửi tệp. Vui lòng thử lại!' };
   }
 };
+
+export const recallMessage = async (messageId, token) => {
+  try {
+    const res = await apiClient.post(
+      `/messages/recall-message`,
+      {
+        messageId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log('API recall message res.data: ', res.data);
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi gửi message:', err);
+    return err.message;
+  }
+};

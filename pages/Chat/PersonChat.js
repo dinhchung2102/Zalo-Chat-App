@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ChatHeader from '@components/screens/Chat/ChatHeader';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { BASE_UNIT } from '@styles/constants/screen';
 import { ICON_MEDIUM_PLUS } from '@styles/constants/iconSize';
@@ -26,6 +26,7 @@ import { messagesByConversationState, selectedConversationState } from '@state/C
 import FileViewer from 'react-native-file-viewer';
 import { downloadFile } from '@utils/downloadFile';
 import FileIcon from '@components/others/FileIcon';
+import HandleModal from '../../components/screens/Chat/HandleModal';
 
 export default function PersonChat() {
   const navigation = useNavigation();
@@ -35,6 +36,9 @@ export default function PersonChat() {
 
   const [messages, setMessages] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalHandleVisible, setModalHandleVisible] = useState(false);
+  const [isMe, setIsMe] = useState(null);
+  const [selectedMessageId, setSelectedMessageId] = useState('');
 
   const conversationId = selectedConversation._id;
 
@@ -115,11 +119,16 @@ export default function PersonChat() {
 
           if (isMe) {
             return (
-              <View
+              <TouchableOpacity
                 key={item._id}
                 style={{
                   flexDirection: 'row-reverse',
                   padding: BASE_UNIT * 0.01,
+                }}
+                onLongPress={() => {
+                  setIsMe(true);
+                  setModalHandleVisible(true);
+                  setSelectedMessageId(item._id);
                 }}
               >
                 {item.messageType === 'image' ? (
@@ -163,10 +172,18 @@ export default function PersonChat() {
                       borderColor: '#d2e7f2',
                     }}
                   >
-                    <Text style={{ fontSize: textMediumSize }}>{item.content}</Text>
+                    <Text
+                      style={{
+                        fontSize: textMediumSize,
+                        fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                        color: item.status === 'recalled' ? 'grey' : null,
+                      }}
+                    >
+                      {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : item.content}
+                    </Text>
                   </View>
                 )}
-              </View>
+              </TouchableOpacity>
             );
           } else {
             return (
@@ -200,13 +217,18 @@ export default function PersonChat() {
                     </View>
                   ))}
 
-                <View
+                <TouchableOpacity
                   style={{
                     backgroundColor: 'red',
                     borderRadius: BASE_UNIT * 0.02,
                     maxWidth: BASE_UNIT * 0.7,
                     marginLeft: isFirstMessageFromSender ? 0 : BASE_UNIT * 0.12,
                     minHeight: BASE_UNIT * 0.1,
+                  }}
+                  onLongPress={() => {
+                    setIsMe(false);
+                    setModalHandleVisible(true);
+                    setSelectedMessageId(item._id);
                   }}
                 >
                   {item.messageType === 'image' ? (
@@ -283,10 +305,18 @@ export default function PersonChat() {
                         borderColor: '#d2e7f2',
                       }}
                     >
-                      <Text style={{ fontSize: textMediumSize }}>{item.content}</Text>
+                      <Text
+                        style={{
+                          fontSize: textMediumSize,
+                          fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                          color: item.status === 'recalled' ? 'grey' : null,
+                        }}
+                      >
+                        {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : item.content}
+                      </Text>
                     </View>
                   )}
-                </View>
+                </TouchableOpacity>
               </View>
             );
           }
@@ -350,10 +380,18 @@ export default function PersonChat() {
           </>
         )}
       </Pressable>
+
       <ImagePickerModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onImageSelected={handleImageSelected}
+      />
+      <HandleModal
+        visible={modalHandleVisible}
+        setVisible={setModalHandleVisible}
+        onPressOverlay={() => setModalHandleVisible(false)}
+        isMe={isMe}
+        messageId={selectedMessageId}
       />
     </SafeAreaView>
   );
