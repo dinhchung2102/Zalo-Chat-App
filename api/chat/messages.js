@@ -113,3 +113,26 @@ export const deleteMessage = async (messageId, token) => {
     return err.message;
   }
 };
+
+export const forwardMessage = async (originalMessageId, senderId, targetConversationIds, token) => {
+  try {
+    const res = await apiClient.post(
+      `/messages/forward`,
+      {
+        originalMessageId,
+        senderId,
+        targetConversationIds,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log('API forward message res.data: ', res.data);
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi forward message:', err);
+    return err.message;
+  }
+};

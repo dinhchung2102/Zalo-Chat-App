@@ -6,10 +6,20 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import { messagesByConversationState } from '@state/ChatState';
 import { deleteMessage } from '@api/chat/messages';
+import { forwardMessage } from '@api/chat/messages';
+import { useNavigation } from '@react-navigation/native';
 
-export default function HandleModal({ visible, setVisible, onPressOverlay, isMe, messageId }) {
+export default function HandleModal({
+  visible,
+  setVisible,
+  onPressOverlay,
+  isMe,
+  messageId,
+  targetConversation,
+}) {
   const loginResult = useRecoilValue(loginResultState);
   const [messagesData, setMessagesData] = useRecoilState(messagesByConversationState);
+  const navigation = useNavigation();
 
   const handleRecallMessage = async () => {
     const response = await recallMessage(messageId, loginResult.token);
@@ -35,7 +45,12 @@ export default function HandleModal({ visible, setVisible, onPressOverlay, isMe,
               />
               <Text style={styles.textButton}>Trả lời</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                navigation.navigate('HandleConve', { messageId });
+              }}
+            >
               <Ionicons name="arrow-redo-outline" color={'#006AF5'} size={30} />
               <Text style={styles.textButton}>Chuyển tiếp</Text>
             </TouchableOpacity>

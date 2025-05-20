@@ -35,6 +35,7 @@ import Account_Security from './pages/User/Account_Security';
 import PasswordUpdate from './pages/User/PasswordUpdate';
 import ForgetPwdOTP from './pages/Util/ForgetPassword/ForgetPwdOTP';
 import NewPassword from './pages/Util/ForgetPassword/NewPassword';
+import HandleConve from './pages/Chat/HandleConve';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -118,6 +119,7 @@ export default function App() {
           <Stack.Screen name="PasswordUpdate" component={PasswordUpdate} />
           <Stack.Screen name="ForgetPwdOTP" component={ForgetPwdOTP} />
           <Stack.Screen name="NewPassword" component={NewPassword} />
+          <Stack.Screen name="HandleConve" component={HandleConve} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
