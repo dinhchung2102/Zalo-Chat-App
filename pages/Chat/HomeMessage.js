@@ -1,5 +1,4 @@
-import { StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchHeader from '@components/shared/SearchHeader';
 import MessageTitleRender from '@components/screens/Chat/MessageTitleRender';
@@ -7,15 +6,16 @@ import { BASE_UNIT } from '@styles/constants/screen';
 import NavigationBar from '@components/shared/NavigationBar';
 import { Colors } from '@styles/Colors';
 import useSocketEvents from '@hooks/useSocketEvents';
-import socket from '@services/socketService';
 import { useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
-import * as Notifications from 'expo-notifications';
 import { useNavigation } from '@react-navigation/native';
+import ChatSettingModal from '@components/screens/Chat/modals/ChatSettingModal';
+import { useState } from 'react';
 
 export default function HomeMessage() {
   const loginResult = useRecoilValue(loginResultState);
   const navigation = useNavigation();
+  const [modalSettingVisible, setModalSettingVisible] = useState(false);
 
   useSocketEvents(loginResult?.user?._id);
 
@@ -29,7 +29,7 @@ export default function HomeMessage() {
         iconName={'qr-code-outline'}
         iconName2={'add'}
         iconOnpress2={() => {
-          navigation.navigate('CreateGroup');
+          setModalSettingVisible(true);
         }}
       />
 
@@ -44,6 +44,7 @@ export default function HomeMessage() {
       <View style={{ position: 'absolute', bottom: 0 }}>
         <NavigationBar />
       </View>
+      <ChatSettingModal visible={modalSettingVisible} setVisible={setModalSettingVisible} />
     </SafeAreaView>
   );
 }

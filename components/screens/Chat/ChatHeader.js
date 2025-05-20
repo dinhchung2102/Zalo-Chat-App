@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import React from 'react';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { ICON_LARGE } from '@styles/constants/iconSize';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,7 +7,6 @@ import { Colors } from '@styles/Colors';
 import { textMediumSize } from '@styles/constants/fontSize';
 import { useTextLanguage } from '@hooks/useTextLanguage';
 import { useNavigation } from '@react-navigation/native';
-import { v4 as uuidv4 } from 'uuid';
 import { useRecoilValue } from 'recoil';
 import { selectedConversationState } from '@state/ChatState';
 import { loginResultState } from '@state/PrimaryState';
@@ -80,7 +78,13 @@ export default function ChatHeader({
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('MemberGroup');
+            if (selectedConversation.isGroup == true) {
+              navigation.navigate('GroupDetailScreen');
+            } else {
+              navigation.navigate('PersonalDetailScreen');
+            }
+
+            // navigation.navigate('MemberGroup');
           }}
         >
           <Ionicons name="list-outline" size={ICON_LARGE * 0.8} color={iconColor} />

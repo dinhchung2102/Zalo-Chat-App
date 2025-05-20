@@ -36,6 +36,8 @@ import PasswordUpdate from './pages/User/PasswordUpdate';
 import ForgetPwdOTP from './pages/Util/ForgetPassword/ForgetPwdOTP';
 import NewPassword from './pages/Util/ForgetPassword/NewPassword';
 import HandleConve from './pages/Chat/HandleConve';
+import PersonalDetailScreen from './pages/Chat/PersonalDetailScreen';
+import GroupDetailScreen from './pages/Chat/GroupDetailScreen';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -120,6 +122,8 @@ export default function App() {
           <Stack.Screen name="ForgetPwdOTP" component={ForgetPwdOTP} />
           <Stack.Screen name="NewPassword" component={NewPassword} />
           <Stack.Screen name="HandleConve" component={HandleConve} />
+          <Stack.Screen name="GroupDetailScreen" component={GroupDetailScreen} />
+          <Stack.Screen name="PersonalDetailScreen" component={PersonalDetailScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
