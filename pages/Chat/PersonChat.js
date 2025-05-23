@@ -26,7 +26,7 @@ import { messagesByConversationState, selectedConversationState } from '@state/C
 import FileViewer from 'react-native-file-viewer';
 import { downloadFile } from '@utils/downloadFile';
 import FileIcon from '@components/others/FileIcon';
-import HandleModal from '../../components/screens/Chat/HandleModal';
+import HandleModal from '@components/screens/Chat/HandleModal';
 
 export default function PersonChat() {
   const navigation = useNavigation();
@@ -39,6 +39,7 @@ export default function PersonChat() {
   const [modalHandleVisible, setModalHandleVisible] = useState(false);
   const [isMe, setIsMe] = useState(null);
   const [selectedMessageId, setSelectedMessageId] = useState('');
+  const [selectedContentMessage, setSelectedContentMessage] = useState('');
 
   const conversationId = selectedConversation._id;
 
@@ -129,6 +130,7 @@ export default function PersonChat() {
                   setIsMe(true);
                   setModalHandleVisible(true);
                   setSelectedMessageId(item._id);
+                  setSelectedContentMessage(item.content);
                 }}
               >
                 {item.messageType === 'image' ? (
@@ -229,6 +231,7 @@ export default function PersonChat() {
                     setIsMe(false);
                     setModalHandleVisible(true);
                     setSelectedMessageId(item._id);
+                    setSelectedContentMessage(item.content);
                   }}
                 >
                   {item.messageType === 'image' ? (
@@ -392,6 +395,7 @@ export default function PersonChat() {
         onPressOverlay={() => setModalHandleVisible(false)}
         isMe={isMe}
         messageId={selectedMessageId}
+        contentMessage={selectedContentMessage}
       />
     </SafeAreaView>
   );

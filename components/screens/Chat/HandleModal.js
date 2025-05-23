@@ -2,12 +2,12 @@ import { View, Text, Modal, StyleSheet, TouchableOpacity } from 'react-native';
 import { BASE_UNIT } from '@styles/constants/screen';
 import { Ionicons } from '@expo/vector-icons';
 import { recallMessage } from '@api/chat/messages';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import { messagesByConversationState } from '@state/ChatState';
 import { deleteMessage } from '@api/chat/messages';
-import { forwardMessage } from '@api/chat/messages';
 import { useNavigation } from '@react-navigation/native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 export default function HandleModal({
   visible,
@@ -16,9 +16,10 @@ export default function HandleModal({
   isMe,
   messageId,
   targetConversation,
+  contentMessage,
 }) {
   const loginResult = useRecoilValue(loginResultState);
-  const [messagesData, setMessagesData] = useRecoilState(messagesByConversationState);
+  const setMessagesData = useSetRecoilState(messagesByConversationState);
   const navigation = useNavigation();
 
   const handleRecallMessage = async () => {
@@ -27,6 +28,10 @@ export default function HandleModal({
 
   const handleDeleteMessage = async () => {
     const response = await deleteMessage(messageId, loginResult.token);
+  };
+  const copyToClipboard = () => {
+    Clipboard.setString(contentMessage);
+    //Alert.alert('Đã copy vào bộ nhớ tạm');
   };
 
   return (
@@ -84,7 +89,13 @@ export default function HandleModal({
                 <Text style={styles.textButton}>Thu hồi</Text>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  copyToClipboard();
+                  setVisible(false);
+                }}
+              >
                 <Ionicons name="copy-outline" color={'#006AF5'} size={30} />
                 <Text style={styles.textButton}>Sao chép</Text>
               </TouchableOpacity>
@@ -93,7 +104,13 @@ export default function HandleModal({
 
           {isMe ? (
             <View style={styles.row}>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  copyToClipboard();
+                  setVisible(false);
+                }}
+              >
                 <Ionicons name="copy-outline" color={'#006AF5'} size={30} />
                 <Text style={styles.textButton}>Sao chép</Text>
               </TouchableOpacity>
