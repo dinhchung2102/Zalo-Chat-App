@@ -53,10 +53,9 @@ export default function ChatHeader({
               maxWidth: '80%', // hoặc một giá trị phù hợp
             }}
           >
-            {selectedConversation?.name ||
-            selectedConversation?.fullName ||
-            selectedConversation?.groupName ||
-            selectedConversation?.participants[0]._id != loginResult.user._id
+            {selectedConversation?.groupName
+              ? selectedConversation.groupName
+              : selectedConversation?.participants[0]._id != loginResult.user._id
               ? selectedConversation.participants[0].fullName
               : selectedConversation.participants[1].fullName || 'Tên người dùng test'}
           </Text>
