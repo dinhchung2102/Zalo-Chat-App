@@ -8,13 +8,11 @@ import { Colors } from '@styles/Colors';
 import useSocketEvents from '@hooks/useSocketEvents';
 import { useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
-import { useNavigation } from '@react-navigation/native';
 import ChatSettingModal from '@components/screens/Chat/modals/ChatSettingModal';
 import { useState } from 'react';
 
 export default function HomeMessage() {
   const loginResult = useRecoilValue(loginResultState);
-  const navigation = useNavigation();
   const [modalSettingVisible, setModalSettingVisible] = useState(false);
 
   useSocketEvents(loginResult?.user?._id);

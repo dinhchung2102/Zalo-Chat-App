@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { BASE_UNIT } from '@styles/constants/screen';
 import { textMediumPlus, textMediumSize } from '@styles/constants/fontSize';
 import { Colors } from '@styles/Colors';
@@ -64,7 +64,11 @@ export default function MessageTitleRender() {
                 alignItems: 'center',
               }}
               onPress={async () => {
+                setSelectedConversation(item);
                 const messages = await getMessages(loginResult.token, item._id);
+
+                //cập nhật conve được chọn và tin nhắn
+                setMessages(messages);
                 await unseenMessages(loginResult.token, item._id, loginResult.user._id);
 
                 //Cập nhật đã xem trên giao diện
@@ -73,9 +77,6 @@ export default function MessageTitleRender() {
                 );
                 setDataConversations(updatedConversations);
 
-                //cập nhật conve được chọn và tin nhắn
-                setMessages(messages);
-                setSelectedConversation(item);
                 navigation.navigate('PersonChat');
               }}
             >

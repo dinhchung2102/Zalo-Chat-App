@@ -7,7 +7,6 @@ export const getMessages = async (token, conversationId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log('Lấy tin nhắn theo conversationid: ', response.data);
 
     return response.data;
   } catch (error) {
