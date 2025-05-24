@@ -32,7 +32,7 @@ export default function PersonChat() {
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
   const [messagesData, setMessagesData] = useRecoilState(messagesByConversationState);
-  const selectedConversation = useRecoilValue(selectedConversationState);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
 
   const [messages, setMessages] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -102,6 +102,11 @@ export default function PersonChat() {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      setSelectedConversation(null);
+    };
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <ChatHeader
@@ -110,6 +115,7 @@ export default function PersonChat() {
         userInfo={selectedConversation}
         onPress={() => {
           navigation.goBack();
+          //setSelectedConversation(null);
         }}
       />
       <ScrollView ref={scrollViewRef} contentContainerStyle={{ paddingBottom: BASE_UNIT * 0.2 }}>
