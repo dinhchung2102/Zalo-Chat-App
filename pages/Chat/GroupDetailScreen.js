@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import GlobalModal from '@components/shared/GlobalModal';
 import { loginResultState } from '@state/PrimaryState';
 import { deleteGroup } from '@api/chat/conversation';
+import { outGroup } from '../../api/chat/conversation';
 
 const GroupDetailScreen = () => {
   const selectedConversation = useRecoilValue(selectedConversationState);
@@ -30,7 +31,8 @@ const GroupDetailScreen = () => {
       console.log('Nhóm trưởng không được rời nhóm');
     } else if (actionType === 'memberLeaveGroup') {
       // Xử lý rời nhóm
-      console.log('Rời nhóm thành công');
+      const res = await outGroup(loginResult.token, selectedConversation._id);
+      navigation.navigate('HomeMessage');
     } else if (actionType === 'disbandGroup') {
       // Xử lý giải tán nhóm
       try {
