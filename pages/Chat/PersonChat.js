@@ -30,6 +30,7 @@ import HandleModal from '@components/screens/Chat/HandleModal';
 import { shortenFilename } from '../../utils/shortenFileName';
 import { getFileType } from '../../utils/getFileType';
 import { formatFileSize } from '../../utils/formatFileSize';
+import RNFS from 'react-native-fs';
 
 export default function PersonChat() {
   const navigation = useNavigation();
@@ -110,6 +111,31 @@ export default function PersonChat() {
       setSelectedConversation(null);
     };
   }, []);
+
+  //Thêm field để check xem file đã tải chưa
+  useEffect(() => {
+    const updateIsDownloadedFlags = async () => {
+      if (!messagesData?.data) return;
+
+      const updatedMessages = await Promise.all(
+        messagesData.data.map(async (msg) => {
+          if (msg.fileInfo?.fileName) {
+            const filePath = `${RNFS.DocumentDirectoryPath}/${msg.fileInfo.fileName}`;
+            const exists = await RNFS.exists(filePath);
+            return { ...msg, isDownloadedDevice: exists };
+          }
+          return { ...msg, isDownloadedDevice: false };
+        })
+      );
+
+      setMessagesData((prev) => ({ ...prev, data: updatedMessages }));
+    };
+
+    updateIsDownloadedFlags();
+  }, []);
+
+  console.log(messagesData.data);
+
   return (
     <SafeAreaView style={styles.container}>
       <ChatHeader
@@ -269,14 +295,26 @@ export default function PersonChat() {
                         flexDirection: 'row',
                       }}
                       onPress={async () => {
-                        const localFilePath = await downloadFile(item.fileInfo);
-                        if (localFilePath) {
-                          openFile(localFilePath);
+                        const localPath = `${RNFS.DocumentDirectoryPath}/${item.fileInfo.fileName}`;
+                        const exists = await isFileDownloaded(item.fileInfo.fileName);
+                        if (exists) {
+                          openFile(localPath);
+                        } else {
+                          const localFilePath = await downloadFile(item.fileInfo);
+                          if (localFilePath) {
+                            setMessagesData((prev) => {
+                              const updatedData = prev.data.map((m) =>
+                                m._id === item._id ? { ...m, isDownloadedDevice: true } : m
+                              );
+                              return { ...prev, data: updatedData };
+                            });
+                            openFile(localFilePath);
+                          }
                         }
                       }}
                     >
                       <FileIcon fileType={getFileType(item.fileInfo.fileName)} />
-                      <View style={{ paddingBottom: 20 }}>
+                      <View style={{ paddingBottom: 0 }}>
                         <Text
                           style={{
                             fontSize: textMediumSize,
@@ -292,6 +330,18 @@ export default function PersonChat() {
                           </Text>
                           <Text style={{ color: 'grey', fontSize: 12 }}>
                             {formatFileSize(item.fileInfo.fileSize)}
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            display: item.isDownloadedDevice === true ? 'flex' : 'none',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Ionicons name="checkmark-circle" color={'green'} size={15} />
+                          <Text style={{ color: 'green', fontSize: 12, marginLeft: 5 }}>
+                            Đã có trên máy
                           </Text>
                         </View>
                       </View>
