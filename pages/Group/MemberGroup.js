@@ -6,27 +6,18 @@ import {
   Image,
   Modal,
   FlatList,
-  Dimensions,
   SafeAreaView,
 } from 'react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import { selectedConversationState } from '@state/ChatState';
 import { getShortNameRegister } from '@utils/getShortName';
-import {
-  deleteGroup,
-  getConversationById,
-  getListConversation,
-  outGroup,
-  removeMember,
-} from '@api/chat/conversation';
-import { Alert } from 'react-native';
+import { getConversationById, outGroup, removeMember } from '@api/chat/conversation';
 
 const Tab = createMaterialTopTabNavigator();
-const { width } = Dimensions.get('window');
 
 const MemberGroup = ({ navigation, route }) => {
   const [selectedMember, setSelectedMember] = useState(null);
@@ -107,8 +98,8 @@ const MemberGroup = ({ navigation, route }) => {
             {item._id === selectedConversation.groupLeader
               ? 'Nhóm trưởng'
               : item._id === selectedConversation.groupDeputy
-                ? 'Nhóm phó'
-                : 'Thành viên'}
+              ? 'Nhóm phó'
+              : 'Thành viên'}
           </Text>
         </View>
       </View>
@@ -129,30 +120,6 @@ const MemberGroup = ({ navigation, route }) => {
         data={dummyData}
         renderItem={({ item }) => <MemberItem item={item} />}
         keyExtractor={(item) => item._id}
-        ListFooterComponent={
-          loginResult.user._id === selectedConversation.groupLeader && (
-            <View style={{ marginTop: 20, width: '100%', alignItems: 'center' }}>
-              <TouchableOpacity
-                onPress={async () => {
-                  console.log(selectedConversation._id);
-
-                  const resultDelete = await deleteGroup(
-                    loginResult.token,
-                    selectedConversation._id
-                  );
-                  if (resultDelete.status == 200) {
-                    navigation.navigate('HomeMessage');
-                  } else {
-                    console.log('[DEBUG]: Lỗi khi giải tán nhóm', resultDelete);
-                    Alert.alert('Lỗi', resultDelete);
-                  }
-                }}
-              >
-                <Text style={{ color: 'red', fontSize: 16 }}>Giải tán</Text>
-              </TouchableOpacity>
-            </View>
-          )
-        }
       />
     </View>
   );

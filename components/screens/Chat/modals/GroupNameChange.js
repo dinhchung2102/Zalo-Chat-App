@@ -28,9 +28,10 @@ export default function GroupNameChange({ visible, setVisible, groupName, setGro
               marginTop: 10,
             }}
           >
-            <TouchableOpacity onPress={setVisible(false)}>
+            <TouchableOpacity onPress={() => setVisible(false)}>
               <Text style={{ fontSize: 18, color: 'grey' }}>Hủy</Text>
             </TouchableOpacity>
+
             <TouchableOpacity style={{ marginLeft: 20 }}>
               <Text style={{ fontSize: 18, color: '#006AF5' }}>Lưu</Text>
             </TouchableOpacity>
