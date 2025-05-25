@@ -27,6 +27,9 @@ import FileViewer from 'react-native-file-viewer';
 import { downloadFile } from '@utils/downloadFile';
 import FileIcon from '@components/others/FileIcon';
 import HandleModal from '@components/screens/Chat/HandleModal';
+import { shortenFilename } from '../../utils/shortenFileName';
+import { getFileType } from '../../utils/getFileType';
+import { formatFileSize } from '../../utils/formatFileSize';
 
 export default function PersonChat() {
   const navigation = useNavigation();
@@ -259,7 +262,7 @@ export default function PersonChat() {
                         backgroundColor: 'white',
                         padding: BASE_UNIT * 0.02,
                         borderRadius: BASE_UNIT * 0.02,
-                        maxWidth: BASE_UNIT * 0.7,
+                        maxWidth: BASE_UNIT * 0.9,
                         minHeight: BASE_UNIT * 0.12,
                         borderWidth: 1,
                         borderColor: '#d2e7f2',
@@ -272,20 +275,26 @@ export default function PersonChat() {
                         }
                       }}
                     >
-                      <FileIcon fileType={item.fileInfo.fileType} />
-                      <Text style={{ fontSize: textMediumSize, maxWidth: '80%' }} numberOfLines={1}>
-                        {item.fileInfo.fileName}
-                      </Text>
-                      <Text
-                        style={{
-                          position: 'absolute',
-                          right: 10,
-                          bottom: 0,
-                          color: 'grey',
-                        }}
-                      >
-                        {item.fileInfo.fileSize}KB
-                      </Text>
+                      <FileIcon fileType={getFileType(item.fileInfo.fileName)} />
+                      <View style={{ paddingBottom: 20 }}>
+                        <Text
+                          style={{
+                            fontSize: textMediumSize,
+                            fontWeight: 'bold',
+                          }}
+                          numberOfLines={1}
+                        >
+                          {shortenFilename(item.fileInfo.fileName, 24)}
+                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Text style={{ color: 'grey', fontSize: 12 }}>
+                            {getFileType(item.fileInfo.fileName) + ' - '}
+                          </Text>
+                          <Text style={{ color: 'grey', fontSize: 12 }}>
+                            {formatFileSize(item.fileInfo.fileSize)}
+                          </Text>
+                        </View>
+                      </View>
                     </TouchableOpacity>
                   ) : item.messageType === 'folder' ? (
                     <TouchableOpacity
