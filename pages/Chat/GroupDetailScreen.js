@@ -5,10 +5,13 @@ import SimpleHeader from '@components/shared/SimpleHeader';
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { selectedConversationState } from '@state/ChatState';
+import GroupNameChange from '../../components/screens/Chat/modals/GroupNameChange';
+import { useState } from 'react';
 
 const GroupDetailScreen = () => {
   const selectedConversation = useRecoilValue(selectedConversationState);
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const quickActions = [
     {
@@ -51,13 +54,15 @@ const GroupDetailScreen = () => {
           }
           avatar={selectedConversation.profilePic || 'https://i.pravatar.cc/150?img=6'}
           isGroup={selectedConversation.isGroup}
-          onEditName={() => console.log('Edit name')}
+          onEditName={() => setModalVisible(true)}
         />
 
         <QuickActionButtons actions={quickActions} />
 
         <View style={styles.section}></View>
       </ScrollView>
+
+      <GroupNameChange visible={modalVisible} setVisible={setModalVisible} />
     </View>
   );
 };
