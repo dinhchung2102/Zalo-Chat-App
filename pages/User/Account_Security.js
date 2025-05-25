@@ -49,7 +49,14 @@ export default function Account_Security() {
             title={'Số điện thoại'}
             value={loginResult.user.phoneNumber}
           />
-          <InfoButton iconName={'mail-outline'} title={'Email'} value={loginResult.user.email} />
+          <InfoButton
+            onPress={() => {
+              navigation.navigate('EmailUpdate');
+            }}
+            iconName={'mail-outline'}
+            title={'Email'}
+            value={loginResult.user.email}
+          />
           <InfoButton iconName={'person-outline'} title={'Định danh tài khoản'} />
           <InfoButton iconName={'qr-code-outline'} title={'Mã QR của tôi'} />
         </View>

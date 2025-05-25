@@ -43,3 +43,24 @@ export const updatePassword = async (token, oldPassword, newPassword) => {
     return error.response.data;
   }
 };
+
+export const updateEmail = async (id, email, token) => {
+  try {
+    const response = await apiClient.put(
+      `/auth/update-profile/${id}`,
+      {
+        email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log('Cập nhật thành công:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Lỗi khi gọi API:', error.response ? error.response.data : error.message);
+  }
+};

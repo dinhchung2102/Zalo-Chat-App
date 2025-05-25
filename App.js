@@ -38,6 +38,7 @@ import NewPassword from './pages/Util/ForgetPassword/NewPassword';
 import HandleConve from './pages/Chat/HandleConve';
 import PersonalDetailScreen from './pages/Chat/PersonalDetailScreen';
 import GroupDetailScreen from './pages/Chat/GroupDetailScreen';
+import EmailUpdate from './pages/User/EmailUpdate';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -124,6 +125,7 @@ export default function App() {
           <Stack.Screen name="HandleConve" component={HandleConve} />
           <Stack.Screen name="GroupDetailScreen" component={GroupDetailScreen} />
           <Stack.Screen name="PersonalDetailScreen" component={PersonalDetailScreen} />
+          <Stack.Screen name="EmailUpdate" component={EmailUpdate} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
