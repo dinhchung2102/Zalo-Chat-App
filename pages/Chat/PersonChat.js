@@ -27,9 +27,13 @@ import FileViewer from 'react-native-file-viewer';
 import { downloadFile } from '@utils/downloadFile';
 import FileIcon from '@components/others/FileIcon';
 import HandleModal from '@components/screens/Chat/HandleModal';
-import { shortenFilename } from '../../utils/shortenFileName';
-import { getFileType } from '../../utils/getFileType';
-import { formatFileSize } from '../../utils/formatFileSize';
+import { shortenFilename } from '@utils/shortenFileName';
+import { getFileType } from '@utils/getFileType';
+import { formatFileSize } from '@utils/formatFileSize';
+import DocumentPicker from 'react-native-document-picker';
+import LoadingOverlay from '@components/shared/LoadingOverlay';
+import { useLoading } from '@hooks/useLoading';
+
 import RNFS from 'react-native-fs';
 
 export default function PersonChat() {
@@ -44,25 +48,25 @@ export default function PersonChat() {
   const [isMe, setIsMe] = useState(null);
   const [selectedMessageId, setSelectedMessageId] = useState('');
   const [selectedContentMessage, setSelectedContentMessage] = useState('');
+  const { isLoading, withLoading } = useLoading();
 
   const conversationId = selectedConversation._id;
 
   const handleSendFile = async (selectedFile) => {
     const senderId = loginResult.user._id;
     const token = loginResult.token;
-    console.log(
-      `[DEBUG]: {conversationId: ${conversationId}, senderId: ${senderId}, token: ${token}, file: ${selectedFile}}`
-    );
-    const response = await sendFile(conversationId, selectedFile, senderId, token);
-    // setMessageList((prev) => {
-    //   const exists = prev.some((msg) => msg._id === response._id);
-    //   if (!exists) {
-    //     return [...prev, response];
-    //   }
-    //   return prev;
-    // });
+    // console.log(
+    //   `[DEBUG]: {conversationId: ${conversationId}, senderId: ${senderId}, token: ${token}, file: ${selectedFile}}`
+    // );
+    await withLoading(async () => {
+      const response = await sendFile(conversationId, selectedFile, senderId, token);
+      setMessagesData((prev) => ({
+        ...prev,
+        data: [...(prev.data || []), response],
+      }));
+    });
 
-    console.log('[DEBUG]: Kết quả gửi file:', response);
+    // console.log('[DEBUG]: Kết quả gửi file:', response);
   };
 
   const handleImageSelected = async (image) => {
@@ -106,6 +110,27 @@ export default function PersonChat() {
     }
   };
 
+  //Open để chọn file
+  const pickFile = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+
+      console.log('File:', res);
+      //sendFile(res[0]); // gửi file đầu tiên
+      console.log('File đã chọn: ', res.uri);
+
+      await handleSendFile(res[0]);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log('User cancelled the picker');
+      } else {
+        throw err;
+      }
+    }
+  };
+
   useEffect(() => {
     return () => {
       setSelectedConversation(null);
@@ -134,7 +159,7 @@ export default function PersonChat() {
     updateIsDownloadedFlags();
   }, []);
 
-  console.log(messagesData.data);
+  console.log(messagesData);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -182,20 +207,69 @@ export default function PersonChat() {
                     />
                   </TouchableOpacity>
                 ) : item.messageType === 'file' ? (
-                  <View
+                  <TouchableOpacity
                     style={{
-                      backgroundColor: '#d4f1ff',
+                      backgroundColor: 'white',
                       padding: BASE_UNIT * 0.02,
                       borderRadius: BASE_UNIT * 0.02,
-                      maxWidth: BASE_UNIT * 0.7,
-                      marginLeft: isFirstMessageFromSender ? BASE_UNIT * 0.12 : 0,
+                      maxWidth: BASE_UNIT * 0.9,
                       minHeight: BASE_UNIT * 0.12,
                       borderWidth: 1,
                       borderColor: '#d2e7f2',
+                      flexDirection: 'row',
+                    }}
+                    onPress={async () => {
+                      const localPath = `${RNFS.DocumentDirectoryPath}/${item.fileInfo.fileName}`;
+                      const exists = await isFileDownloaded(item.fileInfo.fileName);
+                      if (exists) {
+                        openFile(localPath);
+                      } else {
+                        const localFilePath = await downloadFile(item.fileInfo);
+                        if (localFilePath) {
+                          setMessagesData((prev) => {
+                            const updatedData = prev.data.map((m) =>
+                              m._id === item._id ? { ...m, isDownloadedDevice: true } : m
+                            );
+                            return { ...prev, data: updatedData };
+                          });
+                          openFile(localFilePath);
+                        }
+                      }
                     }}
                   >
-                    <Text style={{ fontSize: textMediumSize }}>{'file nè'}</Text>
-                  </View>
+                    <FileIcon fileType={getFileType(item.fileInfo.fileName)} />
+                    <View style={{ paddingBottom: 0 }}>
+                      <Text
+                        style={{
+                          fontSize: textMediumSize,
+                          fontWeight: 'bold',
+                        }}
+                        numberOfLines={1}
+                      >
+                        {shortenFilename(item.fileInfo.fileName, 24)}
+                      </Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ color: 'grey', fontSize: 12 }}>
+                          {getFileType(item.fileInfo.fileName) + ' - '}
+                        </Text>
+                        <Text style={{ color: 'grey', fontSize: 12 }}>
+                          {formatFileSize(item.fileInfo.fileSize)}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          display: item.isDownloadedDevice === true ? 'flex' : 'none',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Ionicons name="checkmark-circle" color={'green'} size={15} />
+                        <Text style={{ color: 'green', fontSize: 12, marginLeft: 5 }}>
+                          Đã có trên máy
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
                 ) : (
                   <View
                     style={{
@@ -432,7 +506,7 @@ export default function PersonChat() {
           </>
         ) : (
           <>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={pickFile}>
               <Ionicons name="ellipsis-horizontal-outline" size={ICON_MEDIUM_PLUS} color={'grey'} />
             </TouchableOpacity>
             <TouchableOpacity style={{ marginLeft: BASE_UNIT * 0.05 }}>
@@ -462,6 +536,7 @@ export default function PersonChat() {
         messageId={selectedMessageId}
         contentMessage={selectedContentMessage}
       />
+      <LoadingOverlay visible={isLoading} />
     </SafeAreaView>
   );
 }
