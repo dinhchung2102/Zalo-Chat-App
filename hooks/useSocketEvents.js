@@ -73,6 +73,17 @@ export default function useSocketEvents(userId, onNewMessage) {
         }
         return prev; // Không thay đổi state
       });
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Lời mời kết bạn',
+          body: `${data.senderInfo.fullName} đã gửi cho bạn một lời mời kết bạn`,
+          sound: 'default',
+          data: {
+            type: 'friendRequest',
+          },
+        },
+        trigger: null,
+      });
     });
 
     socket.on('friendRequestAccepted', (data) => {
@@ -151,7 +162,12 @@ export default function useSocketEvents(userId, onNewMessage) {
               title: 'Tin nhắn mới',
               body: `${data.senderId.fullName}: ${data.content}`,
               sound: 'default',
+              data: {
+                type: 'newMessage',
+                conversationId: data.conversationId,
+              },
             },
+
             trigger: null,
           });
         }

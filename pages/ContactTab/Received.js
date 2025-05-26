@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import React, { useEffect, useState } from 'react';
 import { requestState } from '@state/FriendState';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,25 +8,26 @@ import { getTimeAlong } from '@utils/getTimeAlong';
 import { textMediumSize } from '@styles/constants/fontSize';
 import { Colors } from '@styles/Colors';
 import { acceptFriend } from '@api/friend/acceptFriend';
-import { getLoginResult } from '@services/storageService';
+import { loginResultState } from '@state/PrimaryState';
+import { useEffect } from 'react';
+import { getRequests } from '../../api/friend/getRequests';
 
 export default function Received() {
   const [requests, setRequests] = useRecoilState(requestState);
-  const [loginResult, setLoginResult] = useState(null);
+  const loginResult = useRecoilValue(loginResultState);
 
   useEffect(() => {
-    const fetchLoginResult = async () => {
-      const result = await getLoginResult();
-      setLoginResult(result);
-      console.log('Xem kết quả login', result);
+    const fetchDataRequest = async () => {
+      const reqs = await getRequests(loginResult.token, loginResult.user._id);
+      setRequests(reqs);
     };
 
-    fetchLoginResult();
+    fetchDataRequest();
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      {requests.data.requests.map((item) => (
+      {requests?.data.requests.map((item) => (
         <TouchableOpacity
           key={item.actionUser._id}
           style={{
