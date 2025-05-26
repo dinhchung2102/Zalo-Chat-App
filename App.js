@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './pages/Public/Home';
-import { RecoilRoot, useRecoilState } from 'recoil';
+import { RecoilRoot } from 'recoil';
 import Login from './pages/Public/Login';
 import SignUp from './pages/SignUp/SignUp';
 import SignUpOTP from './pages/SignUp/SignUpOTP';
@@ -21,8 +21,6 @@ import PersonChat from './pages/Chat/PersonChat';
 import SearchUser from './pages/Public/SearchUser';
 import VideoCall from './pages/Chat/VideoCall';
 import * as Notifications from 'expo-notifications';
-import { registerForPushNotificationsAsync } from './services/notificationService';
-import { useEffect, useRef, useState } from 'react';
 import CreateGroup from './pages/Group/CreateGroup';
 import MemberGroup from './pages/Group/MemberGroup';
 import AddMember from './pages/Group/AddMember';
@@ -35,6 +33,12 @@ import Account_Security from './pages/User/Account_Security';
 import PasswordUpdate from './pages/User/PasswordUpdate';
 import ForgetPwdOTP from './pages/Util/ForgetPassword/ForgetPwdOTP';
 import NewPassword from './pages/Util/ForgetPassword/NewPassword';
+import HandleConve from './pages/Chat/HandleConve';
+import PersonalDetailScreen from './pages/Chat/PersonalDetailScreen';
+import GroupDetailScreen from './pages/Chat/GroupDetailScreen';
+import EmailUpdate from './pages/User/EmailUpdate';
+import { navigationRef } from './services/RootNavigation';
+import AIChat from './pages/Chat/AIChat';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -45,35 +49,10 @@ Notifications.setNotificationHandler({
 });
 export default function App() {
   const Stack = createStackNavigator();
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const notificationListener = useRef();
-  const responseListener = useRef();
-
-  useEffect(() => {
-    // Gọi hàm tách riêng của bạn
-    registerForPushNotificationsAsync().then((token) => {
-      if (token) setExpoPushToken(token);
-    });
-
-    // Lắng nghe thông báo đến
-    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
-      console.log('Thông báo đến:', notification);
-    });
-
-    // Lắng nghe khi người dùng tương tác với thông báo
-    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log('Người dùng đã nhấn vào thông báo:', response);
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
 
   return (
     <RecoilRoot>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <GlobalModalManager />
         <SocketListener />
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
@@ -118,6 +97,11 @@ export default function App() {
           <Stack.Screen name="PasswordUpdate" component={PasswordUpdate} />
           <Stack.Screen name="ForgetPwdOTP" component={ForgetPwdOTP} />
           <Stack.Screen name="NewPassword" component={NewPassword} />
+          <Stack.Screen name="HandleConve" component={HandleConve} />
+          <Stack.Screen name="GroupDetailScreen" component={GroupDetailScreen} />
+          <Stack.Screen name="PersonalDetailScreen" component={PersonalDetailScreen} />
+          <Stack.Screen name="EmailUpdate" component={EmailUpdate} />
+          <Stack.Screen name="AIChat" component={AIChat} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>

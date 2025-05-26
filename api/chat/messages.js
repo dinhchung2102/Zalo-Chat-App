@@ -7,7 +7,6 @@ export const getMessages = async (token, conversationId) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log('Lấy tin nhắn theo conversationid: ', response.data);
 
     return response.data;
   } catch (error) {
@@ -27,6 +26,46 @@ export const sendMessage = async (conversationId, messageText, token) => {
       {
         conversationId,
         content: messageText,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi gửi message:', err);
+  }
+};
+
+export const sendMessageVideoCall = async (conversationId, messageText, token) => {
+  try {
+    const res = await apiClient.post(
+      `/messages/sendMessage`,
+      {
+        conversationId,
+        content: messageText,
+        messageType: 'videoCall',
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi gửi message:', err);
+  }
+};
+
+export const sendMessageAI = async (prompt, token) => {
+  try {
+    const res = await apiClient.post(
+      `/gemini/generate`,
+      {
+        prompt,
       },
       {
         headers: {
@@ -69,5 +108,70 @@ export const sendFile = async (conversationId, file, senderId, token) => {
   } catch (err) {
     console.error('❌ Lỗi gửi file:', err);
     return { error: 'Đã xảy ra lỗi khi gửi tệp. Vui lòng thử lại!' };
+  }
+};
+
+export const recallMessage = async (messageId, token) => {
+  try {
+    const res = await apiClient.post(
+      `/messages/recall-message`,
+      {
+        messageId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log('API recall message res.data: ', res.data);
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi gửi message:', err);
+    return err.message;
+  }
+};
+
+export const deleteMessage = async (messageId, token) => {
+  try {
+    const res = await apiClient.post(
+      `/messages/delete-message`,
+      {
+        messageId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log('API Xóa message res.data: ', res.data);
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi gửi message:', err);
+    return err.message;
+  }
+};
+
+export const forwardMessage = async (originalMessageId, senderId, targetConversationIds, token) => {
+  try {
+    const res = await apiClient.post(
+      `/messages/forward`,
+      {
+        originalMessageId,
+        senderId,
+        targetConversationIds,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log('API forward message res.data: ', res.data);
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi forward message:', err);
+    return err.message;
   }
 };

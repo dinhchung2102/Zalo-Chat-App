@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import React from 'react';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { ICON_LARGE } from '@styles/constants/iconSize';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,10 +7,11 @@ import { Colors } from '@styles/Colors';
 import { textMediumSize } from '@styles/constants/fontSize';
 import { useTextLanguage } from '@hooks/useTextLanguage';
 import { useNavigation } from '@react-navigation/native';
-import { v4 as uuidv4 } from 'uuid';
 import { useRecoilValue } from 'recoil';
 import { selectedConversationState } from '@state/ChatState';
 import { loginResultState } from '@state/PrimaryState';
+import uuid from 'react-native-uuid';
+import { sendMessageVideoCall } from '@api/chat/messages';
 
 export default function ChatHeader({
   textColor = 'white',
@@ -23,7 +23,21 @@ export default function ChatHeader({
   const navigation = useNavigation();
   const selectedConversation = useRecoilValue(selectedConversationState);
   const loginResult = useRecoilValue(loginResultState);
-  if (linearPrimary) {
+
+  const handleRequestVideoCall = async (messageSend) => {
+    try {
+      const res = await sendMessageVideoCall(
+        selectedConversation._id,
+        messageSend,
+        loginResult.token
+      );
+      console.log('Request video call: ', res);
+    } catch (error) {
+      console.error('Lỗi gửi yêu cầu gọi video:', error);
+    }
+  };
+
+  if (linearPrimary && selectedConversation) {
     return (
       <LinearGradient
         style={styles.container}
@@ -55,10 +69,9 @@ export default function ChatHeader({
               maxWidth: '80%', // hoặc một giá trị phù hợp
             }}
           >
-            {selectedConversation?.name ||
-            selectedConversation?.fullName ||
-            selectedConversation?.groupName ||
-            selectedConversation?.participants[0]._id != loginResult.user._id
+            {selectedConversation?.groupName
+              ? selectedConversation.groupName
+              : selectedConversation?.participants[0]._id != loginResult.user._id
               ? selectedConversation.participants[0].fullName
               : selectedConversation.participants[1].fullName || 'Tên người dùng test'}
           </Text>
@@ -69,9 +82,11 @@ export default function ChatHeader({
         </TouchableOpacity>
         <TouchableOpacity
           onPress={async () => {
-            const channelName = 'demo';
-            //Thiếu gửi thông báo đến nhóm
-            navigation.navigate('VideoCall', { channelName });
+            // const channelName = 'demo';
+            // //Thiếu gửi thông báo đến nhóm
+            const messageSend = `${uuid.v4()}`; // tạo mới mỗi lần nhấn
+            await handleRequestVideoCall(messageSend); // gửi đi
+            navigation.navigate('VideoCall', { channelName: messageSend }); // truyền đi
           }}
           style={{ marginRight: BASE_UNIT * 0.08 }}
         >
@@ -80,7 +95,13 @@ export default function ChatHeader({
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('MemberGroup');
+            if (selectedConversation.isGroup == true) {
+              navigation.navigate('GroupDetailScreen');
+            } else {
+              navigation.navigate('PersonalDetailScreen');
+            }
+
+            // navigation.navigate('MemberGroup');
           }}
         >
           <Ionicons name="list-outline" size={ICON_LARGE * 0.8} color={iconColor} />

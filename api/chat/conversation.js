@@ -174,6 +174,80 @@ export const removeMember = async (token, conversationId, memberId) => {
   }
 };
 
+export const setGroupDeputy = async (token, deputyId, conversationId) => {
+  try {
+    const res = await apiClient.post(
+      '/conversations/set-group-deputy',
+      {
+        conversationId,
+        deputyId,
+      },
+      {
+        headers: {
+          Authorization: `Barear ${token}`,
+        },
+      }
+    );
+    return res;
+  } catch (error) {
+    if (error.response) {
+      console.log('[ERROR]: Khi set phó nhóm', error.response.data?.message);
+      return error.response.data?.message;
+    }
+    //console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
+  }
+};
+
+export const setGroupLeader = async (token, groupLeaderId, conversationId) => {
+  try {
+    const res = await apiClient.post(
+      '/conversations/set-group-leader',
+      {
+        conversationId,
+        groupLeaderId,
+      },
+      {
+        headers: {
+          Authorization: `Barear ${token}`,
+        },
+      }
+    );
+    return res;
+  } catch (error) {
+    if (error.response) {
+      console.log('[ERROR]: Khi set trưởng nhóm', error.response.data?.message);
+      return error.response.data?.message;
+    }
+    //console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
+  }
+};
+
+export const removeGroupDeputy = async (token, conversationId) => {
+  try {
+    const res = await apiClient.post(
+      '/conversations/remove-group-deputy',
+      {
+        conversationId,
+      },
+      {
+        headers: {
+          Authorization: `Barear ${token}`,
+        },
+      }
+    );
+    return res;
+  } catch (error) {
+    if (error.response) {
+      console.log('[ERROR]: Khi remove phó nhóm', error.response.data?.message);
+      return error.response.data?.message;
+    }
+    //console.error('Lỗi khi kết nối tới server:', error.message);
+    return 'Không thể kết nối tới server. Vui lòng kiểm tra lại kết nối mạng của bạn.';
+  }
+};
+
 export const getConversationByFriend = async (token, friendId) => {
   try {
     const response = await apiClient.get(`/conversations/get-friend-conversation/${friendId}`, {

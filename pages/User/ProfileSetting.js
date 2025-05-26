@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SimpleHeader from '@components/shared/SimpleHeader';
 import ChooseButton from '@components/shared/buttons/ChooseButton';
@@ -9,14 +9,14 @@ import { Colors } from '@styles/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { logout } from '@api/auth/logout';
 import useResetAllAtoms from '@hooks/useResetAllAtoms';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
-import socket from '@services/socketService';
-import ImagePickerModal from '../../components/shared/ImagePickerModal';
-import { updateAvatar } from '../../api/auth/update.avt';
+import ImagePickerModal from '@components/shared/ImagePickerModal';
+import { updateAvatar } from '@api/auth/update.avt';
 import { useLoading } from '@hooks/useLoading';
 import LoadingOverlay from '@components/shared/LoadingOverlay';
-import { profilePicRegister } from '../../state/RegisterState';
+import { profilePicRegister } from '@state/RegisterState';
+import { disconnectSocket } from '@services/socketService';
 
 export default function ProfileSetting() {
   const navigation = useNavigation();
@@ -125,7 +125,7 @@ export default function ProfileSetting() {
           onPress={async () => {
             await logout(loginResult.token);
             resetAll();
-            socket.disconnect();
+            disconnectSocket();
             navigation.reset({
               index: 0,
               routes: [{ name: 'Home' }],

@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ChatHeader from '@components/screens/Chat/ChatHeader';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { BASE_UNIT } from '@styles/constants/screen';
 import { ICON_MEDIUM_PLUS } from '@styles/constants/iconSize';
@@ -26,34 +26,48 @@ import { messagesByConversationState, selectedConversationState } from '@state/C
 import FileViewer from 'react-native-file-viewer';
 import { downloadFile } from '@utils/downloadFile';
 import FileIcon from '@components/others/FileIcon';
+import HandleModal from '@components/screens/Chat/HandleModal';
+import { shortenFilename } from '@utils/shortenFileName';
+import { getFileType } from '@utils/getFileType';
+import { formatFileSize } from '@utils/formatFileSize';
+import DocumentPicker from 'react-native-document-picker';
+import LoadingOverlay from '@components/shared/LoadingOverlay';
+import { useLoading } from '@hooks/useLoading';
+
+import RNFS from 'react-native-fs';
 
 export default function PersonChat() {
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
   const [messagesData, setMessagesData] = useRecoilState(messagesByConversationState);
-  const selectedConversation = useRecoilValue(selectedConversationState);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
 
   const [messages, setMessages] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalHandleVisible, setModalHandleVisible] = useState(false);
+  const [isMe, setIsMe] = useState(null);
+  const [selectedMessageId, setSelectedMessageId] = useState('');
+  const [selectedContentMessage, setSelectedContentMessage] = useState('');
+  const { isLoading, withLoading } = useLoading();
 
-  const conversationId = selectedConversation._id;
+  const conversationId =
+    selectedConversation && selectedConversation._id ? selectedConversation._id : '';
 
   const handleSendFile = async (selectedFile) => {
     const senderId = loginResult.user._id;
     const token = loginResult.token;
-    console.log(
-      `[DEBUG]: {conversationId: ${conversationId}, senderId: ${senderId}, token: ${token}, file: ${selectedFile}}`
-    );
-    const response = await sendFile(conversationId, selectedFile, senderId, token);
-    // setMessageList((prev) => {
-    //   const exists = prev.some((msg) => msg._id === response._id);
-    //   if (!exists) {
-    //     return [...prev, response];
-    //   }
-    //   return prev;
-    // });
+    // console.log(
+    //   `[DEBUG]: {conversationId: ${conversationId}, senderId: ${senderId}, token: ${token}, file: ${selectedFile}}`
+    // );
+    await withLoading(async () => {
+      const response = await sendFile(conversationId, selectedFile, senderId, token);
+      setMessagesData((prev) => ({
+        ...prev,
+        data: [...(prev.data || []), response],
+      }));
+    });
 
-    console.log('[DEBUG]: Kết quả gửi file:', response);
+    // console.log('[DEBUG]: Kết quả gửi file:', response);
   };
 
   const handleImageSelected = async (image) => {
@@ -97,6 +111,55 @@ export default function PersonChat() {
     }
   };
 
+  //Open để chọn file
+  const pickFile = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+
+      console.log('File:', res);
+      //sendFile(res[0]); // gửi file đầu tiên
+      console.log('File đã chọn: ', res.uri);
+
+      await handleSendFile(res[0]);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log('User cancelled the picker');
+      } else {
+        throw err;
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      setSelectedConversation(null);
+    };
+  }, []);
+
+  //Thêm field để check xem file đã tải chưa
+  useEffect(() => {
+    const updateIsDownloadedFlags = async () => {
+      if (!messagesData?.data) return;
+
+      const updatedMessages = await Promise.all(
+        messagesData.data.map(async (msg) => {
+          if (msg.fileInfo?.fileName) {
+            const filePath = `${RNFS.DocumentDirectoryPath}/${msg.fileInfo.fileName}`;
+            const exists = await RNFS.exists(filePath);
+            return { ...msg, isDownloadedDevice: exists };
+          }
+          return { ...msg, isDownloadedDevice: false };
+        })
+      );
+
+      setMessagesData((prev) => ({ ...prev, data: updatedMessages }));
+    };
+
+    updateIsDownloadedFlags();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ChatHeader
@@ -105,11 +168,13 @@ export default function PersonChat() {
         userInfo={selectedConversation}
         onPress={() => {
           navigation.goBack();
+          //setSelectedConversation(null);
         }}
       />
       <ScrollView ref={scrollViewRef} contentContainerStyle={{ paddingBottom: BASE_UNIT * 0.2 }}>
         {messagesData.data.map((item, index, array) => {
-          const isMe = item.senderId._id === loginResult.user._id;
+          const isMe = item.senderId?._id === loginResult.user._id;
+
           const isFirstMessageFromSender =
             index === 0 || item.senderId._id !== array[index - 1].senderId._id;
 
@@ -123,7 +188,25 @@ export default function PersonChat() {
                 }}
               >
                 {item.messageType === 'image' ? (
-                  <TouchableOpacity>
+                  //Tin nhắn kiểu image -- isMe
+                  <TouchableOpacity
+                    onLongPress={() => {
+                      setIsMe(true);
+                      setModalHandleVisible(true);
+                      setSelectedMessageId(item._id);
+                      setSelectedContentMessage(item.content);
+                    }}
+                    style={{
+                      backgroundColor: '#d4f1ff',
+                      padding: BASE_UNIT * 0.02,
+                      borderRadius: BASE_UNIT * 0.02,
+                      maxWidth: BASE_UNIT * 0.9,
+                      minHeight: BASE_UNIT * 0.12,
+                      borderWidth: 1,
+                      borderColor: '#d2e7f2',
+                      flexDirection: 'row',
+                    }}
+                  >
                     <Image
                       source={{ uri: item.fileInfo.fileUrl }}
                       resizeMode="contain"
@@ -132,26 +215,126 @@ export default function PersonChat() {
                         height: undefined,
                         aspectRatio: 1,
                         borderRadius: BASE_UNIT * 0.03,
+                        display: item.status === 'recalled' ? 'none' : 'flex',
                       }}
                     />
+                    <Text
+                      style={{
+                        fontSize: textMediumSize,
+                        fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                        color: item.status === 'recalled' ? 'grey' : null,
+                        display: item.status === 'recalled' ? 'flex' : 'none',
+                      }}
+                    >
+                      {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : item.content}
+                    </Text>
                   </TouchableOpacity>
                 ) : item.messageType === 'file' ? (
-                  <View
+                  //Nếu tin nhắn kiểu file -- isMe
+                  <TouchableOpacity
                     style={{
                       backgroundColor: '#d4f1ff',
                       padding: BASE_UNIT * 0.02,
                       borderRadius: BASE_UNIT * 0.02,
+                      maxWidth: BASE_UNIT * 0.9,
+                      minHeight: BASE_UNIT * 0.12,
+                      borderWidth: 1,
+                      borderColor: '#d2e7f2',
+                      flexDirection: 'row',
+                    }}
+                    onLongPress={() => {
+                      setIsMe(true);
+                      setModalHandleVisible(true);
+                      setSelectedMessageId(item._id);
+                      setSelectedContentMessage(item.content);
+                    }}
+                    onPress={async () => {
+                      const localPath = `${RNFS.DocumentDirectoryPath}/${item.fileInfo.fileName}`;
+                      const exists = await isFileDownloaded(item.fileInfo.fileName);
+                      if (exists) {
+                        openFile(localPath);
+                      } else {
+                        const localFilePath = await downloadFile(item.fileInfo);
+                        if (localFilePath) {
+                          setMessagesData((prev) => {
+                            const updatedData = prev.data.map((m) =>
+                              m._id === item._id ? { ...m, isDownloadedDevice: true } : m
+                            );
+                            return { ...prev, data: updatedData };
+                          });
+                          openFile(localFilePath);
+                        }
+                      }
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: textMediumSize,
+                        fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                        color: item.status === 'recalled' ? 'grey' : null,
+                      }}
+                    >
+                      {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : null}
+                    </Text>
+                    <View style={{ display: item.status === 'recalled' ? 'none' : 'flex' }}>
+                      <FileIcon fileType={getFileType(item.fileInfo.fileName)} />
+                    </View>
+
+                    <View
+                      style={{
+                        paddingBottom: 0,
+                        display: item.status === 'recalled' ? 'none' : 'flex',
+                        backgroundColor: '#d4f1ff',
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: textMediumSize,
+                          fontWeight: 'bold',
+                        }}
+                        numberOfLines={1}
+                      >
+                        {shortenFilename(item.fileInfo.fileName, 24)}
+                      </Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ color: 'grey', fontSize: 12 }}>
+                          {getFileType(item.fileInfo.fileName) + ' - '}
+                        </Text>
+                        <Text style={{ color: 'grey', fontSize: 12 }}>
+                          {formatFileSize(item.fileInfo.fileSize)}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          display: item.isDownloadedDevice === true ? 'flex' : 'none',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Ionicons name="checkmark-circle" color={'green'} size={15} />
+                        <Text style={{ color: 'green', fontSize: 12, marginLeft: 5 }}>
+                          Đã có trên máy
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ) : item.messageType === 'videoCall' ? (
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: 'rgba(255, 240, 26, 0.7)',
+                      padding: BASE_UNIT * 0.02,
+                      borderRadius: BASE_UNIT * 0.02,
                       maxWidth: BASE_UNIT * 0.7,
-                      marginLeft: isFirstMessageFromSender ? BASE_UNIT * 0.12 : 0,
                       minHeight: BASE_UNIT * 0.12,
                       borderWidth: 1,
                       borderColor: '#d2e7f2',
                     }}
                   >
-                    <Text style={{ fontSize: textMediumSize }}>{'file nè'}</Text>
-                  </View>
+                    <Text style={{ fontStyle: 'italic' }}>Tham gia cuộc gọi</Text>
+                  </TouchableOpacity>
                 ) : (
-                  <View
+                  //Tin nhắn kiểu text -- isMe
+                  <TouchableOpacity
                     style={{
                       backgroundColor: '#d4f1ff',
                       padding: BASE_UNIT * 0.02,
@@ -162,9 +345,23 @@ export default function PersonChat() {
                       borderWidth: 1,
                       borderColor: '#d2e7f2',
                     }}
+                    onLongPress={() => {
+                      setIsMe(true);
+                      setModalHandleVisible(true);
+                      setSelectedMessageId(item._id);
+                      setSelectedContentMessage(item.content);
+                    }}
                   >
-                    <Text style={{ fontSize: textMediumSize }}>{item.content}</Text>
-                  </View>
+                    <Text
+                      style={{
+                        fontSize: textMediumSize,
+                        fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                        color: item.status === 'recalled' ? 'grey' : null,
+                      }}
+                    >
+                      {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : item.content}
+                    </Text>
+                  </TouchableOpacity>
                 )}
               </View>
             );
@@ -200,17 +397,40 @@ export default function PersonChat() {
                     </View>
                   ))}
 
-                <View
+                <TouchableOpacity
                   style={{
-                    backgroundColor: 'red',
+                    backgroundColor: 'white',
                     borderRadius: BASE_UNIT * 0.02,
                     maxWidth: BASE_UNIT * 0.7,
                     marginLeft: isFirstMessageFromSender ? 0 : BASE_UNIT * 0.12,
                     minHeight: BASE_UNIT * 0.1,
                   }}
+                  onLongPress={() => {
+                    setIsMe(false);
+                    setModalHandleVisible(true);
+                    setSelectedMessageId(item._id);
+                    setSelectedContentMessage(item.content);
+                  }}
                 >
                   {item.messageType === 'image' ? (
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onLongPress={() => {
+                        setIsMe(false);
+                        setModalHandleVisible(true);
+                        setSelectedMessageId(item._id);
+                        setSelectedContentMessage(item.content);
+                      }}
+                      style={{
+                        backgroundColor: 'white',
+                        padding: BASE_UNIT * 0.02,
+                        borderRadius: BASE_UNIT * 0.02,
+                        maxWidth: BASE_UNIT * 0.9,
+                        minHeight: BASE_UNIT * 0.12,
+                        borderWidth: 1,
+                        borderColor: '#d2e7f2',
+                        flexDirection: 'row',
+                      }}
+                    >
                       <Image
                         source={{ uri: item.fileInfo.fileUrl }}
                         resizeMode="contain"
@@ -219,8 +439,19 @@ export default function PersonChat() {
                           height: undefined,
                           aspectRatio: 1,
                           borderRadius: BASE_UNIT * 0.03,
+                          display: item.status === 'recalled' ? 'none' : 'flex',
                         }}
                       />
+                      <Text
+                        style={{
+                          fontSize: textMediumSize,
+                          fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                          color: item.status === 'recalled' ? 'grey' : null,
+                          display: item.status === 'recalled' ? 'flex' : 'none',
+                        }}
+                      >
+                        {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : item.content}
+                      </Text>
                     </TouchableOpacity>
                   ) : item.messageType === 'file' ? (
                     <TouchableOpacity
@@ -228,33 +459,85 @@ export default function PersonChat() {
                         backgroundColor: 'white',
                         padding: BASE_UNIT * 0.02,
                         borderRadius: BASE_UNIT * 0.02,
-                        maxWidth: BASE_UNIT * 0.7,
+                        maxWidth: BASE_UNIT * 0.9,
                         minHeight: BASE_UNIT * 0.12,
                         borderWidth: 1,
                         borderColor: '#d2e7f2',
                         flexDirection: 'row',
                       }}
+                      onLongPress={() => {
+                        setIsMe(false);
+                        setModalHandleVisible(true);
+                        setSelectedMessageId(item._id);
+                        setSelectedContentMessage(item.content);
+                      }}
                       onPress={async () => {
-                        const localFilePath = await downloadFile(item.fileInfo);
-                        if (localFilePath) {
-                          openFile(localFilePath);
+                        const localPath = `${RNFS.DocumentDirectoryPath}/${item.fileInfo.fileName}`;
+                        const exists = await isFileDownloaded(item.fileInfo.fileName);
+                        if (exists) {
+                          openFile(localPath);
+                        } else {
+                          const localFilePath = await downloadFile(item.fileInfo);
+                          if (localFilePath) {
+                            setMessagesData((prev) => {
+                              const updatedData = prev.data.map((m) =>
+                                m._id === item._id ? { ...m, isDownloadedDevice: true } : m
+                              );
+                              return { ...prev, data: updatedData };
+                            });
+                            openFile(localFilePath);
+                          }
                         }
                       }}
                     >
-                      <FileIcon fileType={item.fileInfo.fileType} />
-                      <Text style={{ fontSize: textMediumSize, maxWidth: '80%' }} numberOfLines={1}>
-                        {item.fileInfo.fileName}
-                      </Text>
                       <Text
                         style={{
-                          position: 'absolute',
-                          right: 10,
-                          bottom: 0,
-                          color: 'grey',
+                          fontSize: textMediumSize,
+                          fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                          color: item.status === 'recalled' ? 'grey' : null,
                         }}
                       >
-                        {item.fileInfo.fileSize}KB
+                        {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : null}
                       </Text>
+                      <View style={{ display: item.status === 'recalled' ? 'none' : 'flex' }}>
+                        <FileIcon fileType={getFileType(item.fileInfo.fileName)} />
+                      </View>
+                      <View
+                        style={{
+                          paddingBottom: 0,
+                          display: item.status === 'recalled' ? 'none' : 'flex',
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: textMediumSize,
+                            fontWeight: 'bold',
+                          }}
+                          numberOfLines={1}
+                        >
+                          {shortenFilename(item.fileInfo.fileName, 24)}
+                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Text style={{ color: 'grey', fontSize: 12 }}>
+                            {getFileType(item.fileInfo.fileName) + ' - '}
+                          </Text>
+                          <Text style={{ color: 'grey', fontSize: 12 }}>
+                            {formatFileSize(item.fileInfo.fileSize)}
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            display: item.isDownloadedDevice === true ? 'flex' : 'none',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Ionicons name="checkmark-circle" color={'green'} size={15} />
+                          <Text style={{ color: 'green', fontSize: 12, marginLeft: 5 }}>
+                            Đã có trên máy
+                          </Text>
+                        </View>
+                      </View>
                     </TouchableOpacity>
                   ) : item.messageType === 'folder' ? (
                     <TouchableOpacity
@@ -267,9 +550,29 @@ export default function PersonChat() {
                         borderWidth: 1,
                         borderColor: '#d2e7f2',
                       }}
+                      onLongPress={() => {
+                        setIsMe(false);
+                        setModalHandleVisible(true);
+                        setSelectedMessageId(item._id);
+                        setSelectedContentMessage(item.content);
+                      }}
                     >
                       <Text style={{ fontSize: textMediumSize }}>{item.folderInfo.folderName}</Text>
                       <Text style={{ fontStyle: 'italic' }}>Thư mục</Text>
+                    </TouchableOpacity>
+                  ) : item.messageType === 'videoCall' ? (
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: 'rgba(255, 240, 26, 0.7)',
+                        padding: BASE_UNIT * 0.02,
+                        borderRadius: BASE_UNIT * 0.02,
+                        maxWidth: BASE_UNIT * 0.7,
+                        minHeight: BASE_UNIT * 0.12,
+                        borderWidth: 1,
+                        borderColor: '#d2e7f2',
+                      }}
+                    >
+                      <Text style={{ fontStyle: 'italic' }}>Tham gia cuộc gọi</Text>
                     </TouchableOpacity>
                   ) : (
                     <View
@@ -283,10 +586,18 @@ export default function PersonChat() {
                         borderColor: '#d2e7f2',
                       }}
                     >
-                      <Text style={{ fontSize: textMediumSize }}>{item.content}</Text>
+                      <Text
+                        style={{
+                          fontSize: textMediumSize,
+                          fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                          color: item.status === 'recalled' ? 'grey' : null,
+                        }}
+                      >
+                        {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : item.content}
+                      </Text>
                     </View>
                   )}
-                </View>
+                </TouchableOpacity>
               </View>
             );
           }
@@ -334,7 +645,7 @@ export default function PersonChat() {
           </>
         ) : (
           <>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={pickFile}>
               <Ionicons name="ellipsis-horizontal-outline" size={ICON_MEDIUM_PLUS} color={'grey'} />
             </TouchableOpacity>
             <TouchableOpacity style={{ marginLeft: BASE_UNIT * 0.05 }}>
@@ -350,11 +661,21 @@ export default function PersonChat() {
           </>
         )}
       </Pressable>
+
       <ImagePickerModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onImageSelected={handleImageSelected}
       />
+      <HandleModal
+        visible={modalHandleVisible}
+        setVisible={setModalHandleVisible}
+        onPressOverlay={() => setModalHandleVisible(false)}
+        isMe={isMe}
+        messageId={selectedMessageId}
+        contentMessage={selectedContentMessage}
+      />
+      <LoadingOverlay visible={isLoading} />
     </SafeAreaView>
   );
 }

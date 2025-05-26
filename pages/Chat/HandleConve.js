@@ -6,31 +6,30 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Dimensions,
+  Alert,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { launchImageLibrary } from 'react-native-image-picker';
 import { getListFriend } from '@api/friend/getListFriend';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import frr, { loginResultState } from '@state/PrimaryState';
-import { addNewMembers, createNewGroup, getConversationById } from '@api/chat/conversation';
-import { useNavigation } from '@react-navigation/native';
-import { selectedConversationState } from '@state/ChatState';
-import { getShortNameRegister } from '@utils/getShortName';
+import { useRecoilValue } from 'recoil';
+import { loginResultState } from '@state/PrimaryState';
+import { forwardMessage } from '@api/chat/messages';
+import { useRoute } from '@react-navigation/native';
+import { conversationState } from '@state/ChatState';
 
 // Header Component
-const AddToGroupHeader = ({ selectedUsers, navigation }) => {
+const GroupHeader = ({ selectedUsers, navigation }) => {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Icon name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
-      <Text style={styles.headerTitle}>Thêm mới</Text>
+      <Text style={styles.headerTitle}>Chuyển tiếp</Text>
       <Text style={styles.selectedCount}>Đã chọn: {selectedUsers.length}</Text>
     </View>
   );
 };
+
 // Search Component
 const SearchBar = ({ searchText, setSearchText }) => {
   return (
@@ -47,76 +46,58 @@ const SearchBar = ({ searchText, setSearchText }) => {
   );
 };
 
-const AddMember = ({ navigation }) => {
+const HandleConve = ({ navigation }) => {
+  const route = useRoute();
+  const { messageId } = route.params;
+
+  const loginResult = useRecoilValue(loginResultState);
+  const listConversation = useRecoilValue(conversationState);
+
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedConversations, setSelectedConversations] = useState([]);
+
   const [searchText, setSearchText] = useState('');
   const [participantIds, setParticipantIds] = useState([]);
-  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
 
-  //================================================================
-  const [users, setUsers] = useState([]);
-  const loginResult = useRecoilValue(loginResultState);
+  console.log('list conversations', listConversation);
 
-  useEffect(() => {
-    const fetchFriends = async () => {
-      const result = await getListFriend(loginResult.token);
-      if (Array.isArray(result.data)) {
-        setUsers(result.data);
-        console.log('my friends:', result.data);
-      } else {
-        setError(result);
-      }
-    };
+  const handleFowardMessage = async () => {
+    console.log('Start handle forward');
 
-    fetchFriends();
-  }, []);
+    const response = await forwardMessage(
+      messageId,
+      loginResult.user._id,
+      selectedConversations,
+      loginResult.token
+    );
 
-  const groupMemberIds = selectedConversation.participants.map((member) => member._id);
-  // Lọc danh sách bạn bè chưa có trong nhóm
-  const friendsNotInGroup = users.filter((friend) => !groupMemberIds.includes(friend._id));
-
+    //Tạm thời navigation về Homemessage để load lại conversation// chưa xử lý goback()
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'HomeMessage' }],
+    });
+  };
   //=============================================================
 
-  const toggleUserSelection = (user) => {
-    if (selectedUsers.find((u) => u._id === user._id)) {
-      setSelectedUsers(selectedUsers.filter((u) => u._id !== user._id));
-      setParticipantIds(participantIds.filter((id) => id !== user._id));
+  const toggleConversationSelection = (conve) => {
+    if (selectedConversations.find((u) => u._id === conve._id)) {
+      setSelectedConversations(selectedConversations.filter((u) => u._id !== conve._id));
+      setParticipantIds(participantIds.filter((id) => id !== conve._id));
     } else {
-      setSelectedUsers([...selectedUsers, user]);
-      setParticipantIds([...participantIds, user._id]);
+      setSelectedConversations([...selectedConversations, conve]);
+      setParticipantIds([...participantIds, conve._id]);
     }
   };
-
-  const removeSelectedUser = (userId) => {
-    setSelectedUsers(selectedUsers.filter((user) => user._id !== userId));
-    setParticipantIds(participantIds.filter((id) => id !== userId));
-  };
-
-  const handleAddNewMembers = async () => {
-    try {
-      const result = await addNewMembers(
-        loginResult.token,
-        selectedConversation._id,
-        participantIds
-      );
-      const resultGetNewConversation = await getConversationById(
-        loginResult.token,
-        selectedConversation._id
-      );
-      console.log('DEBUG: resultgetnewconversation', resultGetNewConversation);
-
-      setSelectedConversation(resultGetNewConversation);
-
-      navigation.goBack();
-    } catch (error) {
-      console.log(error.message);
-    }
+  const removeSelectedConversation = (conveId) => {
+    setSelectedConversations(selectedConversations.filter((conve) => conve._id !== conveId));
+    setParticipantIds(participantIds.filter((id) => id !== conveId));
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
-        <AddToGroupHeader selectedUsers={selectedUsers} navigation={navigation} />
+        <GroupHeader selectedUsers={selectedUsers} navigation={navigation} />
+
         <SearchBar searchText={searchText} setSearchText={setSearchText} />
 
         <View style={styles.tabContainer}>
@@ -125,45 +106,29 @@ const AddMember = ({ navigation }) => {
         </View>
 
         <ScrollView style={styles.userList}>
-          {friendsNotInGroup.map((user) => (
+          {listConversation.map((conve) => (
             <TouchableOpacity
-              key={user._id}
+              key={conve._id}
               style={styles.userItem}
-              onPress={() => toggleUserSelection(user)}
+              onPress={() => toggleConversationSelection(conve)}
             >
-              {user.profilePic ? (
-                <Image
-                  source={{
-                    uri: user.profilePic,
-                  }}
-                  style={styles.avatar}
-                />
-              ) : (
-                <View
-                  style={{
-                    width: 50,
-                    height: 50,
-                    backgroundColor: '#006AF5',
-                    borderRadius: 25,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white' }}>{getShortNameRegister(user.fullName)}</Text>
-                </View>
-              )}
-
+              <Image
+                source={{
+                  uri: conve.profilePic || 'https://i.pravatar.cc/150?img=1',
+                }}
+                style={styles.avatar}
+              />
               <View style={styles.userInfo}>
-                <Text style={styles.userName}>{user.fullName}</Text>
-                <Text style={styles.userTime}>{user.phoneNumber}</Text>
+                <Text style={styles.userName}>{conve.groupName || conve.name}</Text>
+                <Text style={styles.userTime}>{conve.phoneNumber || 'Group'}</Text>
               </View>
               <View
                 style={[
                   styles.checkbox,
-                  selectedUsers.find((u) => u._id === user._id) && styles.checkboxSelected,
+                  selectedConversations.find((u) => u._id === conve._id) && styles.checkboxSelected,
                 ]}
               >
-                {selectedUsers.find((u) => u._id === user._id) && (
+                {selectedConversations.find((u) => u._id === conve._id) && (
                   <Icon name="check" size={16} color="#fff" />
                 )}
               </View>
@@ -172,23 +137,23 @@ const AddMember = ({ navigation }) => {
         </ScrollView>
       </View>
 
-      {selectedUsers.length > 0 && (
+      {selectedConversations.length > 0 && (
         <View style={styles.bottomSelectedUsers}>
           <ScrollView horizontal style={styles.selectedUsersContainer}>
-            {selectedUsers.map((user) => (
-              <View key={user._id} style={styles.selectedUserItem}>
-                <Image source={{ uri: user.profilePic }} style={styles.selectedUserAvatar} />
+            {selectedConversations.map((conve) => (
+              <View key={conve._id} style={styles.selectedUserItem}>
+                <Image source={{ uri: conve.profilePic }} style={styles.selectedUserAvatar} />
                 <TouchableOpacity
                   style={styles.removeButton}
-                  onPress={() => removeSelectedUser(user._id)}
+                  onPress={() => removeSelectedConversation(conve._id)}
                 >
                   <Icon name="close" size={16} color="#fff" />
                 </TouchableOpacity>
               </View>
             ))}
           </ScrollView>
-          {selectedUsers.length > 0 && (
-            <TouchableOpacity style={styles.nextButton} onPress={handleAddNewMembers}>
+          {selectedConversations.length > 0 && (
+            <TouchableOpacity style={styles.nextButton} onPress={handleFowardMessage}>
               <Icon name="arrow-forward" size={24} color="#fff" />
             </TouchableOpacity>
           )}
@@ -362,4 +327,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddMember;
+export default HandleConve;

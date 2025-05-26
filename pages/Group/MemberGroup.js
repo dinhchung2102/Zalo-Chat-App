@@ -6,29 +6,22 @@ import {
   Image,
   Modal,
   FlatList,
-  Dimensions,
   SafeAreaView,
 } from 'react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import { selectedConversationState } from '@state/ChatState';
 import { getShortNameRegister } from '@utils/getShortName';
-import {
-  deleteGroup,
-  getConversationById,
-  getListConversation,
-  outGroup,
-  removeMember,
-} from '@api/chat/conversation';
-import { Alert } from 'react-native';
+import { getConversationById, outGroup, removeMember } from '@api/chat/conversation';
+import { removeGroupDeputy, setGroupDeputy, setGroupLeader } from '../../api/chat/conversation';
+import GlobalModal from '../../components/shared/GlobalModal';
 
 const Tab = createMaterialTopTabNavigator();
-const { width } = Dimensions.get('window');
 
-const MemberGroup = ({ navigation, route }) => {
+const MemberGroup = ({ navigation }) => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const loginResult = useRecoilValue(loginResultState);
@@ -36,6 +29,67 @@ const MemberGroup = ({ navigation, route }) => {
   const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
   // console.log(selectedConversation);
   // console.log(selectedConversation.groupLeader);
+
+  //Confirm Modal
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [actionType, setActionType] = useState(null);
+
+  const handleConfirm = async () => {
+    if (actionType === 'setGroupDeputy') {
+      // Xác nhận set phó nhóm
+      const res = await setGroupDeputy(
+        loginResult.token,
+        selectedMember._id,
+        selectedConversation._id
+      );
+      if (res) {
+        setModalVisible(false);
+        setSelectedConversation((prev) => ({
+          ...prev,
+          groupDeputy: selectedMember._id,
+        }));
+      }
+    } else if (actionType === 'setGroupLeader') {
+      // Chuyển lại quyền trưởng nhóm
+      const res = await setGroupLeader(
+        loginResult.token,
+        selectedMember._id,
+        selectedConversation._id
+      );
+      if (res) {
+        setModalVisible(false);
+        setSelectedConversation((prev) => ({
+          ...prev,
+          groupLeader: selectedMember._id,
+        }));
+      }
+    } else if (actionType === 'removeMember') {
+      // Xử lý rời nhóm
+      const result = await removeMember(
+        loginResult.token,
+        selectedConversation._id,
+        selectedMember._id
+      );
+      console.log(result);
+      const refreshConver = await getConversationById(loginResult.token, selectedConversation._id);
+      console.log(refreshConver);
+      setSelectedConversation(refreshConver);
+      setModalVisible(false);
+    } else if (actionType === 'removeGroupDeputy') {
+      // Xóa quyền phó nhóm
+      const res = await removeGroupDeputy(loginResult.token, selectedConversation._id);
+      if (res) {
+        setModalVisible(false);
+        setSelectedConversation((prev) => ({
+          ...prev,
+          groupDeputy: null,
+        }));
+      }
+    }
+    setConfirmModal(false);
+    setActionType(null);
+  };
 
   const dummyData = selectedConversation.participants;
 
@@ -107,8 +161,10 @@ const MemberGroup = ({ navigation, route }) => {
             {item._id === selectedConversation.groupLeader
               ? 'Nhóm trưởng'
               : item._id === selectedConversation.groupDeputy
-                ? 'Nhóm phó'
-                : 'Thành viên'}
+              ? 'Nhóm phó'
+              : item._id === loginResult.user._id
+              ? 'Bạn'
+              : 'Thành viên'}
           </Text>
         </View>
       </View>
@@ -129,30 +185,6 @@ const MemberGroup = ({ navigation, route }) => {
         data={dummyData}
         renderItem={({ item }) => <MemberItem item={item} />}
         keyExtractor={(item) => item._id}
-        ListFooterComponent={
-          loginResult.user._id === selectedConversation.groupLeader && (
-            <View style={{ marginTop: 20, width: '100%', alignItems: 'center' }}>
-              <TouchableOpacity
-                onPress={async () => {
-                  console.log(selectedConversation._id);
-
-                  const resultDelete = await deleteGroup(
-                    loginResult.token,
-                    selectedConversation._id
-                  );
-                  if (resultDelete.status == 200) {
-                    navigation.navigate('HomeMessage');
-                  } else {
-                    console.log('[DEBUG]: Lỗi khi giải tán nhóm', resultDelete);
-                    Alert.alert('Lỗi', resultDelete);
-                  }
-                }}
-              >
-                <Text style={{ color: 'red', fontSize: 16 }}>Giải tán</Text>
-              </TouchableOpacity>
-            </View>
-          )
-        }
       />
     </View>
   );
@@ -212,17 +244,70 @@ const MemberGroup = ({ navigation, route }) => {
                   <Text>Xem trang cá nhân</Text>
                 </TouchableOpacity>
 
-                {/**Đang đầu hàng kkk */}
+                {selectedConversation.groupLeader === loginResult.user._id && (
+                  <TouchableOpacity
+                    style={{
+                      padding: 15,
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#eee',
+                      width: '100%',
+                    }}
+                    onPress={async () => {
+                      setConfirmMessage(
+                        `Xác nhận bổ nhiệm ${selectedMember.fullName} làm trưởng nhóm?`
+                      );
+                      setActionType('setGroupLeader');
+                      setModalVisible(false);
+                      setConfirmModal(true);
+                    }}
+                  >
+                    <Text style={{ color: 'red' }}>Bổ nhiệm làm trưởng nhóm</Text>
+                  </TouchableOpacity>
+                )}
+
+                {/**Bổ nhiệm phó nhóm */}
                 {loginResult.user._id === selectedConversation.groupLeader ? (
                   <View>
                     {/* Nếu groupDeputy chưa được bổ nhiệm */}
-                    {selectedConversation.groupDeputy === null &&
-                    selectedMember._id !== loginResult.user._id ? (
-                      <TouchableOpacity style={[styles.memberAction, styles.primaryAction]}>
-                        <Text style={styles.primaryText}>Bổ nhiệm làm phó nhóm</Text>
+                    {selectedMember._id !== loginResult.user._id ? (
+                      <TouchableOpacity
+                        style={[styles.memberAction, styles.primaryAction]}
+                        onPress={async () => {
+                          if (selectedConversation.groupDeputy != selectedMember._id) {
+                            setConfirmMessage(
+                              `Xác nhận bổ nhiệm ${selectedMember.fullName} làm phó nhóm?`
+                            );
+                            setActionType('setGroupDeputy');
+                            setModalVisible(false);
+                            setConfirmModal(true);
+                          } else {
+                            setConfirmMessage(
+                              `Xác nhận xóa bỏ quyền phó nhóm của: ${selectedMember.fullName}`
+                            );
+                            setActionType('removeGroupDeputy');
+                            setModalVisible(false);
+                            setConfirmModal(true);
+                          }
+                        }}
+                      >
+                        <Text style={styles.primaryText}>
+                          {selectedConversation.groupDeputy === selectedMember._id
+                            ? 'Xóa quyền phó nhóm'
+                            : 'Bổ nhiệm làm phó nhóm'}
+                        </Text>
                       </TouchableOpacity>
                     ) : selectedMember._id === selectedConversation.groupDeputy ? (
-                      <TouchableOpacity style={[styles.memberAction, styles.warningAction]}>
+                      <TouchableOpacity
+                        style={[styles.memberAction, styles.warningAction]}
+                        onPress={async () => {
+                          setConfirmMessage(
+                            `Xác nhận xóa bỏ quyền phó nhóm của: ${selectedMember.fullName}`
+                          );
+                          setActionType('removeGroupDeputy');
+                          setModalVisible(false);
+                          setConfirmModal(true);
+                        }}
+                      >
                         <Text style={styles.warningText}>Xoá quyền phó nhóm</Text>
                       </TouchableOpacity>
                     ) : null}
@@ -254,19 +339,10 @@ const MemberGroup = ({ navigation, route }) => {
                   <TouchableOpacity
                     style={[styles.memberAction, styles.dangerAction]}
                     onPress={async () => {
-                      const result = await removeMember(
-                        loginResult.token,
-                        selectedConversation._id,
-                        selectedMember._id
-                      );
-                      console.log(result);
-                      const refreshConver = await getConversationById(
-                        loginResult.token,
-                        selectedConversation._id
-                      );
-                      console.log(refreshConver);
-                      setSelectedConversation(refreshConver);
+                      setConfirmMessage(`Xác nhận xóa ${selectedMember.fullName} khỏi cộng đồng?`);
+                      setActionType('removeMember');
                       setModalVisible(false);
+                      setConfirmModal(true);
                     }}
                   >
                     <Text style={styles.dangerText}>Xoá khỏi cộng đồng</Text>
@@ -296,6 +372,12 @@ const MemberGroup = ({ navigation, route }) => {
         <Tab.Screen name="Đã chặn" component={BlockedScreen} />
       </Tab.Navigator>
       <MemberInfoModal />
+      <GlobalModal
+        visible={confirmModal}
+        message={confirmMessage}
+        onClose={() => setConfirmModal(false)}
+        onConfirm={handleConfirm}
+      />
     </SafeAreaView>
   );
 };

@@ -1,35 +1,22 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { ICON_MEDIUM } from '@styles/constants/iconSize';
 import { Colors } from '@styles/Colors';
 import { BASE_UNIT } from '@styles/constants/screen';
 import { textMediumSize } from '@styles/constants/fontSize';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getRequests } from '@api/friend/getRequests';
-import { getLoginResult } from '@services/storageService';
-import { useRecoilState } from 'recoil';
-import second, { requestState } from '@state/FriendState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { requestState } from '@state/FriendState';
 import { useNavigation } from '@react-navigation/native';
+import { loginResultState } from '@state/PrimaryState';
 
 export default function FriendTab() {
   const [requests, setRequests] = useRecoilState(requestState);
-  const [error, setError] = useState(''); // Lưu lỗi nếu có
-  const [loginResult, setLoginResult] = useState(null);
+  const [error, setError] = useState('');
+  const loginResult = useRecoilValue(loginResultState);
   const navigation = useNavigation();
-
-  useEffect(() => {
-    const fetchLoginResult = async () => {
-      const result = await getLoginResult();
-      setLoginResult(result);
-      //console.log("📦 Login info:", result);
-    };
-
-    fetchLoginResult();
-  }, []);
-
-  //console.log(requests);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -39,18 +26,13 @@ export default function FriendTab() {
         if (typeof result === 'string') {
           setError(result); // Nếu có lỗi, set lỗi
         } else {
-          // Nếu không có lỗi, cập nhật danh sách yêu cầu kết bạn
           setRequests(result);
-          //console.log(result);
         }
       } else {
         setError('Token không hợp lệ hoặc chưa đăng nhập.');
       }
     };
-
-    if (loginResult) {
-      fetchRequests(); // Gọi hàm khi loginResult thay đổi
-    }
+    fetchRequests();
   }, [loginResult]);
 
   return (
