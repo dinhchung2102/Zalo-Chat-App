@@ -385,7 +385,7 @@ export default function PersonChat() {
 
                 <TouchableOpacity
                   style={{
-                    backgroundColor: 'red',
+                    backgroundColor: 'white',
                     borderRadius: BASE_UNIT * 0.02,
                     maxWidth: BASE_UNIT * 0.7,
                     marginLeft: isFirstMessageFromSender ? 0 : BASE_UNIT * 0.12,
