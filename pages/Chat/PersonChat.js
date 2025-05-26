@@ -318,6 +318,20 @@ export default function PersonChat() {
                       </View>
                     </View>
                   </TouchableOpacity>
+                ) : item.messageType === 'videoCall' ? (
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: 'rgba(255, 240, 26, 0.7)',
+                      padding: BASE_UNIT * 0.02,
+                      borderRadius: BASE_UNIT * 0.02,
+                      maxWidth: BASE_UNIT * 0.7,
+                      minHeight: BASE_UNIT * 0.12,
+                      borderWidth: 1,
+                      borderColor: '#d2e7f2',
+                    }}
+                  >
+                    <Text style={{ fontStyle: 'italic' }}>Tham gia cuộc gọi</Text>
+                  </TouchableOpacity>
                 ) : (
                   //Tin nhắn kiểu text -- isMe
                   <TouchableOpacity
@@ -545,6 +559,20 @@ export default function PersonChat() {
                     >
                       <Text style={{ fontSize: textMediumSize }}>{item.folderInfo.folderName}</Text>
                       <Text style={{ fontStyle: 'italic' }}>Thư mục</Text>
+                    </TouchableOpacity>
+                  ) : item.messageType === 'videoCall' ? (
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: 'rgba(255, 240, 26, 0.7)',
+                        padding: BASE_UNIT * 0.02,
+                        borderRadius: BASE_UNIT * 0.02,
+                        maxWidth: BASE_UNIT * 0.7,
+                        minHeight: BASE_UNIT * 0.12,
+                        borderWidth: 1,
+                        borderColor: '#d2e7f2',
+                      }}
+                    >
+                      <Text style={{ fontStyle: 'italic' }}>Tham gia cuộc gọi</Text>
                     </TouchableOpacity>
                   ) : (
                     <View

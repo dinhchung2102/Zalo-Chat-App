@@ -10,6 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { selectedConversationState } from '@state/ChatState';
 import { loginResultState } from '@state/PrimaryState';
+import uuid from 'react-native-uuid';
+import { sendMessageVideoCall } from '@api/chat/messages';
 
 export default function ChatHeader({
   textColor = 'white',
@@ -21,6 +23,20 @@ export default function ChatHeader({
   const navigation = useNavigation();
   const selectedConversation = useRecoilValue(selectedConversationState);
   const loginResult = useRecoilValue(loginResultState);
+
+  const handleRequestVideoCall = async (messageSend) => {
+    try {
+      const res = await sendMessageVideoCall(
+        selectedConversation._id,
+        messageSend,
+        loginResult.token
+      );
+      console.log('Request video call: ', res);
+    } catch (error) {
+      console.error('Lỗi gửi yêu cầu gọi video:', error);
+    }
+  };
+
   if (linearPrimary && selectedConversation) {
     return (
       <LinearGradient
@@ -66,9 +82,11 @@ export default function ChatHeader({
         </TouchableOpacity>
         <TouchableOpacity
           onPress={async () => {
-            const channelName = 'demo';
-            //Thiếu gửi thông báo đến nhóm
-            navigation.navigate('VideoCall', { channelName });
+            // const channelName = 'demo';
+            // //Thiếu gửi thông báo đến nhóm
+            const messageSend = `${uuid.v4()}`; // tạo mới mỗi lần nhấn
+            await handleRequestVideoCall(messageSend); // gửi đi
+            navigation.navigate('VideoCall', { channelName: messageSend }); // truyền đi
           }}
           style={{ marginRight: BASE_UNIT * 0.08 }}
         >

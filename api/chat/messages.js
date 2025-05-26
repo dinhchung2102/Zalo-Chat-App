@@ -39,6 +39,27 @@ export const sendMessage = async (conversationId, messageText, token) => {
   }
 };
 
+export const sendMessageVideoCall = async (conversationId, messageText, token) => {
+  try {
+    const res = await apiClient.post(
+      `/messages/sendMessage`,
+      {
+        conversationId,
+        content: messageText,
+        messageType: 'videoCall',
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi gửi message:', err);
+  }
+};
+
 export const sendMessageAI = async (prompt, token) => {
   try {
     const res = await apiClient.post(
