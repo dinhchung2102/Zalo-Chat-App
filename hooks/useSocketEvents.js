@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { createSocket } from '@services/socketService';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { requestState } from '@state/FriendState';
 import {
   conversationState,
@@ -10,12 +10,14 @@ import {
 import * as Notifications from 'expo-notifications';
 import { unseenMessages } from '@api/chat/conversation';
 import { loginResultState } from '@state/PrimaryState';
+import { navigate } from '@services/RootNavigation';
+import { getCurrentRouteName } from '@services/RootNavigation';
 
 export default function useSocketEvents(userId, onNewMessage) {
   const setRequests = useSetRecoilState(requestState);
   const setMessages = useSetRecoilState(messagesByConversationState);
   const setConversationData = useSetRecoilState(conversationState);
-  const selectedConversation = useRecoilValue(selectedConversationState);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
   const selectedConversationRef = useRef(selectedConversation);
   const loginResult = useRecoilValue(loginResultState);
 
@@ -184,12 +186,43 @@ export default function useSocketEvents(userId, onNewMessage) {
       }
     };
 
+    const onLeaveGroup = (data) => {
+      // console.log('SOCKET onleaveGroup:', data);
+      // console.log('data.memberId: ', data.memberId);
+      // console.log('loginResult.user._id', loginResult.user._id);
+      // console.log('selectedConversation', selectedConversation);
+      const currentSelected = selectedConversationRef.current;
+      if (data.memberId === userId) {
+        if (!currentSelected || currentSelected._id !== data.conversationId) {
+          setConversationData((prevData) => {
+            const updated = prevData.filter((prev) => prev._id !== data.conversationId);
+            updated.sort((a, b) => new Date(b.latestActivityTime) - new Date(a.latestActivityTime));
+            return [...updated];
+          });
+        } else {
+          setTimeout(() => {
+            //setSelectedConversation(null);
+            navigate('HomeMessage');
+            //Đợi 1 giây cho nó về homemessage trước// Lỗi null nếu còn screens đang cần dùng selectedConversation
+          }, 1000);
+        }
+      }
+    };
+
+    const onGroupUpdated = (data) => {
+      const currentScreen = getCurrentRouteName();
+      if (currentScreen === 'HomeMessage') {
+        navigate('HomeMessage');
+      }
+    };
     // Đăng ký sự kiện
     socket.on('connect', onConnect);
     socket.on('connect_error', onConnectError);
     socket.on('friendRequest', onFriendRequest);
     socket.on('friendRequestAccepted', onFriendRequestAccepted);
     socket.on('newMessage', onNewMessageHandler);
+    socket.on('leaveGroup', onLeaveGroup);
+    socket.on('groupUpdated', onGroupUpdated);
 
     // Cleanup khi unmount hoặc userId thay đổi
     return () => {
@@ -198,6 +231,8 @@ export default function useSocketEvents(userId, onNewMessage) {
       socket.off('friendRequest', onFriendRequest);
       socket.off('friendRequestAccepted', onFriendRequestAccepted);
       socket.off('newMessage', onNewMessageHandler);
+      socket.off('leaveGroup', onLeaveGroup);
+      socket.off('groupUpdated', onGroupUpdated);
 
       socket.disconnect();
       socketRef.current = null;

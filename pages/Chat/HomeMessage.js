@@ -11,10 +11,12 @@ import { loginResultState } from '@state/PrimaryState';
 import ChatSettingModal from '@components/screens/Chat/modals/ChatSettingModal';
 import { useState } from 'react';
 import useNotificationHandler from '@hooks/useNotificationHandler';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function HomeMessage() {
   const loginResult = useRecoilValue(loginResultState);
   const [modalSettingVisible, setModalSettingVisible] = useState(false);
+  const isFocused = useIsFocused();
 
   useSocketEvents(loginResult?.user?._id);
   useNotificationHandler();
@@ -39,7 +41,7 @@ export default function HomeMessage() {
           paddingVertical: BASE_UNIT * 0.03,
         }}
       >
-        <MessageTitleRender />
+        <MessageTitleRender isFocused={isFocused} />
       </View>
       <View style={{ position: 'absolute', bottom: 0 }}>
         <NavigationBar />

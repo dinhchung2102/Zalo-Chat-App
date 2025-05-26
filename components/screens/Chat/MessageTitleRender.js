@@ -20,7 +20,7 @@ import { totalUnseenCountState } from '@state/ChatState';
 import { useLoading } from '@hooks/useLoading';
 import LoadingOverlay from '@components/shared/LoadingOverlay';
 
-export default function MessageTitleRender() {
+export default function MessageTitleRender({ isFocused }) {
   const locale = useTextLanguage({ vietnamese: 'vi', english: 'en' });
   const navigation = useNavigation();
   const loginResult = useRecoilValue(loginResultState);
@@ -28,10 +28,13 @@ export default function MessageTitleRender() {
 
   const [dataConversations, setDataConversations] = useRecoilState(conversationState);
   const setMessages = useSetRecoilState(messagesByConversationState);
-  const setSelectedConversation = useSetRecoilState(selectedConversationState);
+  const [selectedConversation, setSelectedConversation] = useRecoilState(selectedConversationState);
   const setTotalUnseenCount = useSetRecoilState(totalUnseenCountState);
 
   useEffect(() => {
+    //Mỗi lần focus thì load lại
+    if (!isFocused) return;
+
     const fetchConversations = async () => {
       const conversations = await getListConversation(loginResult.token);
       setDataConversations(conversations.data);
@@ -44,7 +47,7 @@ export default function MessageTitleRender() {
     };
 
     withLoading(fetchConversations());
-  }, [loginResult]);
+  }, [loginResult, isFocused]);
 
   useEffect(() => {
     const totalUnseen = dataConversations.reduce((sum, convo) => sum + (convo.unseenCount || 0), 0);
@@ -55,6 +58,7 @@ export default function MessageTitleRender() {
     <View style={styles.container}>
       {dataConversations ? (
         dataConversations.map((item) => {
+          if (!item || !item._id) return null;
           return (
             <TouchableOpacity
               key={item._id}

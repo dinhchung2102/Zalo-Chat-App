@@ -21,7 +21,7 @@ export default function ChatHeader({
   const navigation = useNavigation();
   const selectedConversation = useRecoilValue(selectedConversationState);
   const loginResult = useRecoilValue(loginResultState);
-  if (linearPrimary) {
+  if (linearPrimary && selectedConversation) {
     return (
       <LinearGradient
         style={styles.container}

@@ -50,7 +50,8 @@ export default function PersonChat() {
   const [selectedContentMessage, setSelectedContentMessage] = useState('');
   const { isLoading, withLoading } = useLoading();
 
-  const conversationId = selectedConversation._id;
+  const conversationId =
+    selectedConversation && selectedConversation._id ? selectedConversation._id : '';
 
   const handleSendFile = async (selectedFile) => {
     const senderId = loginResult.user._id;
@@ -159,8 +160,6 @@ export default function PersonChat() {
     updateIsDownloadedFlags();
   }, []);
 
-  console.log(messagesData);
-
   return (
     <SafeAreaView style={styles.container}>
       <ChatHeader
@@ -174,7 +173,8 @@ export default function PersonChat() {
       />
       <ScrollView ref={scrollViewRef} contentContainerStyle={{ paddingBottom: BASE_UNIT * 0.2 }}>
         {messagesData.data.map((item, index, array) => {
-          const isMe = item.senderId._id === loginResult.user._id;
+          const isMe = item.senderId?._id === loginResult.user._id;
+
           const isFirstMessageFromSender =
             index === 0 || item.senderId._id !== array[index - 1].senderId._id;
 

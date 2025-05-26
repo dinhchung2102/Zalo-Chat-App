@@ -37,6 +37,7 @@ import HandleConve from './pages/Chat/HandleConve';
 import PersonalDetailScreen from './pages/Chat/PersonalDetailScreen';
 import GroupDetailScreen from './pages/Chat/GroupDetailScreen';
 import EmailUpdate from './pages/User/EmailUpdate';
+import { navigationRef } from './services/RootNavigation';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -50,7 +51,7 @@ export default function App() {
 
   return (
     <RecoilRoot>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <GlobalModalManager />
         <SocketListener />
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
