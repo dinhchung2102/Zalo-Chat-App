@@ -29,6 +29,13 @@ export function getSocket() {
   }
   return socket;
 }
+
+export const disconnectSocket = () => {
+  if (socket) {
+    socket.disconnect();
+    socket = null;
+  }
+};
 export function SocketListener() {
   const setModal = useSetRecoilState(globalModalState);
 

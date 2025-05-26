@@ -10,12 +10,14 @@ import { useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import ChatSettingModal from '@components/screens/Chat/modals/ChatSettingModal';
 import { useState } from 'react';
+import useNotificationHandler from '@hooks/useNotificationHandler';
 
 export default function HomeMessage() {
   const loginResult = useRecoilValue(loginResultState);
   const [modalSettingVisible, setModalSettingVisible] = useState(false);
 
   useSocketEvents(loginResult?.user?._id);
+  useNotificationHandler();
 
   return (
     <SafeAreaView style={styles.container}>

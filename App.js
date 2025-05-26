@@ -21,7 +21,6 @@ import PersonChat from './pages/Chat/PersonChat';
 import SearchUser from './pages/Public/SearchUser';
 import VideoCall from './pages/Chat/VideoCall';
 import * as Notifications from 'expo-notifications';
-import { useEffect, useRef } from 'react';
 import CreateGroup from './pages/Group/CreateGroup';
 import MemberGroup from './pages/Group/MemberGroup';
 import AddMember from './pages/Group/AddMember';
@@ -38,7 +37,6 @@ import HandleConve from './pages/Chat/HandleConve';
 import PersonalDetailScreen from './pages/Chat/PersonalDetailScreen';
 import GroupDetailScreen from './pages/Chat/GroupDetailScreen';
 import EmailUpdate from './pages/User/EmailUpdate';
-import { navigate, navigationRef } from './services/RootNavigation';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -49,25 +47,10 @@ Notifications.setNotificationHandler({
 });
 export default function App() {
   const Stack = createStackNavigator();
-  const responseListener = useRef();
 
-  useEffect(() => {
-    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log('Người dùng đã nhấn vào thông báo:', response);
-
-      const data = response.notification.request.content.data;
-      if (data?.type === 'newMessage') {
-        navigate('PersonChat', { conversationId: data.conversationId });
-      }
-
-      if (data?.type === 'friendRequest') {
-        navigate('RequestFriend');
-      }
-    });
-  }, []);
   return (
     <RecoilRoot>
-      <NavigationContainer ref={navigationRef}>
+      <NavigationContainer>
         <GlobalModalManager />
         <SocketListener />
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
