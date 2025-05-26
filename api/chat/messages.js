@@ -39,6 +39,25 @@ export const sendMessage = async (conversationId, messageText, token) => {
   }
 };
 
+export const sendMessageAI = async (prompt, token) => {
+  try {
+    const res = await apiClient.post(
+      `/gemini/generate`,
+      {
+        prompt,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    console.error('❌ Lỗi gửi message:', err);
+  }
+};
+
 export const sendFile = async (conversationId, file, senderId, token) => {
   try {
     // Kiểm tra file trước khi gửi

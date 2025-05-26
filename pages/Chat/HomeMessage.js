@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchHeader from '@components/shared/SearchHeader';
 import MessageTitleRender from '@components/screens/Chat/MessageTitleRender';
@@ -12,6 +12,8 @@ import ChatSettingModal from '@components/screens/Chat/modals/ChatSettingModal';
 import { useState } from 'react';
 import useNotificationHandler from '@hooks/useNotificationHandler';
 import { useIsFocused } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { navigate } from '../../services/RootNavigation';
 
 export default function HomeMessage() {
   const loginResult = useRecoilValue(loginResultState);
@@ -47,6 +49,23 @@ export default function HomeMessage() {
         <NavigationBar />
       </View>
       <ChatSettingModal visible={modalSettingVisible} setVisible={setModalSettingVisible} />
+
+      <TouchableOpacity
+        style={{
+          height: 40,
+          width: 40,
+          backgroundColor: '#006AF5',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 20,
+          position: 'absolute',
+          bottom: 70,
+          right: 10,
+        }}
+        onPress={() => navigate('AIChat')}
+      >
+        <Ionicons name="chatbox-ellipses" color={'white'} size={30} />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

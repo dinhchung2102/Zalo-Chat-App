@@ -38,6 +38,7 @@ import PersonalDetailScreen from './pages/Chat/PersonalDetailScreen';
 import GroupDetailScreen from './pages/Chat/GroupDetailScreen';
 import EmailUpdate from './pages/User/EmailUpdate';
 import { navigationRef } from './services/RootNavigation';
+import AIChat from './pages/Chat/AIChat';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -100,6 +101,7 @@ export default function App() {
           <Stack.Screen name="GroupDetailScreen" component={GroupDetailScreen} />
           <Stack.Screen name="PersonalDetailScreen" component={PersonalDetailScreen} />
           <Stack.Screen name="EmailUpdate" component={EmailUpdate} />
+          <Stack.Screen name="AIChat" component={AIChat} />
         </Stack.Navigator>
       </NavigationContainer>
     </RecoilRoot>
