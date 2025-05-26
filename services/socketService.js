@@ -4,21 +4,37 @@ import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { SOCKET_URL } from '@env';
 
-const socket = io(SOCKET_URL, {
-  transports: ['websocket', 'polling'],
-  autoConnect: false,
-  query: {
-    userId: '', // <- cần set sau khi biết loginResult
-    deviceType: 'app', // "app" cho mobile
-  },
-});
+let socket;
 
-export default socket;
+export function createSocket(userId) {
+  if (socket) {
+    socket.disconnect();
+  }
 
+  socket = io(SOCKET_URL, {
+    transports: ['websocket', 'polling'],
+    autoConnect: false,
+    query: {
+      userId,
+      deviceType: 'app',
+    },
+  });
+
+  return socket;
+}
+
+export function getSocket() {
+  if (!socket) {
+    throw new Error('Socket chưa được khởi tạo');
+  }
+  return socket;
+}
 export function SocketListener() {
   const setModal = useSetRecoilState(globalModalState);
 
   useEffect(() => {
+    if (!socket) return; // Nếu socket chưa được tạo thì thoát
+
     socket.connect();
 
     socket.on('forceLogout', (data) => {
