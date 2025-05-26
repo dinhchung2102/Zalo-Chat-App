@@ -137,6 +137,26 @@ export default function useSocketEvents(userId, onNewMessage) {
           });
 
           handleUnseenMessage();
+          if (data.status === 'recalled') {
+            setMessages((prev) => {
+              if (!prev?.data || !Array.isArray(prev.data)) return prev;
+
+              const updatedData = prev.data.map((msg) => {
+                if (msg._id === data._id) {
+                  return {
+                    ...msg,
+                    status: 'recalled',
+                  };
+                }
+                return msg;
+              });
+
+              return {
+                ...prev,
+                data: updatedData,
+              };
+            });
+          }
         } else {
           console.log('💬 Tin nhắn đến:', data);
           Notifications.scheduleNotificationAsync({

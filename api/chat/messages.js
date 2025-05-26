@@ -105,7 +105,7 @@ export const deleteMessage = async (messageId, token) => {
         },
       }
     );
-    console.log('API recall message res.data: ', res.data);
+    console.log('API Xóa message res.data: ', res.data);
     return res.data;
   } catch (err) {
     console.error('❌ Lỗi gửi message:', err);
