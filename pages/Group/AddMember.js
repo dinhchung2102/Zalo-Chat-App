@@ -17,6 +17,7 @@ import frr, { loginResultState } from '@state/PrimaryState';
 import { addNewMembers, createNewGroup, getConversationById } from '@api/chat/conversation';
 import { useNavigation } from '@react-navigation/native';
 import { selectedConversationState } from '@state/ChatState';
+import { getShortNameRegister } from '@utils/getShortName';
 
 // Header Component
 const AddToGroupHeader = ({ selectedUsers, navigation }) => {
@@ -130,12 +131,28 @@ const AddMember = ({ navigation }) => {
               style={styles.userItem}
               onPress={() => toggleUserSelection(user)}
             >
-              <Image
-                source={{
-                  uri: user.profilePic || 'https://i.pravatar.cc/150?img=1',
-                }}
-                style={styles.avatar}
-              />
+              {user.profilePic ? (
+                <Image
+                  source={{
+                    uri: user.profilePic,
+                  }}
+                  style={styles.avatar}
+                />
+              ) : (
+                <View
+                  style={{
+                    width: 50,
+                    height: 50,
+                    backgroundColor: '#006AF5',
+                    borderRadius: 25,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text style={{ color: 'white' }}>{getShortNameRegister(user.fullName)}</Text>
+                </View>
+              )}
+
               <View style={styles.userInfo}>
                 <Text style={styles.userName}>{user.fullName}</Text>
                 <Text style={styles.userTime}>{user.phoneNumber}</Text>

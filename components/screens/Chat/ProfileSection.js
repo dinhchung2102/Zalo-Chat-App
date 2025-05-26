@@ -16,7 +16,7 @@ const ProfileSection = ({ name, avatar, description, isGroup, onEditName }) => {
           </TouchableOpacity>
         )}
       </View>
-      
+
       <View style={styles.nameContainer}>
         <Text style={styles.name}>{name}</Text>
         {onEditName && (
@@ -25,7 +25,7 @@ const ProfileSection = ({ name, avatar, description, isGroup, onEditName }) => {
           </TouchableOpacity>
         )}
       </View>
-      
+
       {description && <Text style={styles.description}>{description}</Text>}
     </View>
   );
@@ -41,6 +41,8 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: 'relative',
     marginBottom: 10,
+    backgroundColor: 'lightgrey',
+    borderRadius: 50,
   },
   avatar: {
     width: 100,
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#777',
     marginTop: 5,
-  }
+  },
 });
 
 export default ProfileSection;

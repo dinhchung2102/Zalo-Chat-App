@@ -92,7 +92,7 @@ const GroupDetailScreen = () => {
             selectedConversation.groupName ||
             'Selected Conversation'
           }
-          avatar={selectedConversation.profilePic || 'https://i.pravatar.cc/150?img=6'}
+          avatar={selectedConversation.profilePic || 'https'}
           isGroup={selectedConversation.isGroup}
           onEditName={() => setModalVisible(true)}
         />
