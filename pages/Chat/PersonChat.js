@@ -406,6 +406,16 @@ export default function PersonChat() {
                         setSelectedMessageId(item._id);
                         setSelectedContentMessage(item.content);
                       }}
+                      style={{
+                        backgroundColor: 'white',
+                        padding: BASE_UNIT * 0.02,
+                        borderRadius: BASE_UNIT * 0.02,
+                        maxWidth: BASE_UNIT * 0.9,
+                        minHeight: BASE_UNIT * 0.12,
+                        borderWidth: 1,
+                        borderColor: '#d2e7f2',
+                        flexDirection: 'row',
+                      }}
                     >
                       <Image
                         source={{ uri: item.fileInfo.fileUrl }}
@@ -415,8 +425,19 @@ export default function PersonChat() {
                           height: undefined,
                           aspectRatio: 1,
                           borderRadius: BASE_UNIT * 0.03,
+                          display: item.status === 'recalled' ? 'none' : 'flex',
                         }}
                       />
+                      <Text
+                        style={{
+                          fontSize: textMediumSize,
+                          fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                          color: item.status === 'recalled' ? 'grey' : null,
+                          display: item.status === 'recalled' ? 'flex' : 'none',
+                        }}
+                      >
+                        {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : item.content}
+                      </Text>
                     </TouchableOpacity>
                   ) : item.messageType === 'file' ? (
                     <TouchableOpacity
@@ -455,8 +476,24 @@ export default function PersonChat() {
                         }
                       }}
                     >
-                      <FileIcon fileType={getFileType(item.fileInfo.fileName)} />
-                      <View style={{ paddingBottom: 0 }}>
+                      <Text
+                        style={{
+                          fontSize: textMediumSize,
+                          fontStyle: item.status === 'recalled' ? 'italic' : 'normal',
+                          color: item.status === 'recalled' ? 'grey' : null,
+                        }}
+                      >
+                        {item.status === 'recalled' ? 'Tin nhắn đã được thu hồi' : null}
+                      </Text>
+                      <View style={{ display: item.status === 'recalled' ? 'none' : 'flex' }}>
+                        <FileIcon fileType={getFileType(item.fileInfo.fileName)} />
+                      </View>
+                      <View
+                        style={{
+                          paddingBottom: 0,
+                          display: item.status === 'recalled' ? 'none' : 'flex',
+                        }}
+                      >
                         <Text
                           style={{
                             fontSize: textMediumSize,

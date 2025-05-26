@@ -87,10 +87,12 @@ export default function useSocketEvents(userId, onNewMessage) {
 
       const currentSelected = selectedConversationRef.current;
 
+      //Hàm xử lý trạng thái xem tin nhắn
       const handleUnseenMessage = async () => {
         await unseenMessages(loginResult.token, data.conversationId, loginResult.user._id);
       };
 
+      //Khi có tin nhắn mới, set lại
       setConversationData((prevData) => {
         const updated = prevData.map((convo) => {
           if (convo._id === data.conversationId) {
@@ -112,8 +114,11 @@ export default function useSocketEvents(userId, onNewMessage) {
         return updated;
       });
 
+      //Nếu người gửi không phải user hiện tại
       if (data.senderId._id !== userId) {
+        //Nếu message gửi cho cuộc trò chuyện đang mở
         if (currentSelected?._id === data.conversationId) {
+          //Thêm vào đoạn tin nhắn đang nhắn
           setMessages((prev) => {
             const exists = prev.data.some((msg) => msg._id === data._id);
             if (!exists) {
@@ -125,6 +130,7 @@ export default function useSocketEvents(userId, onNewMessage) {
             return prev;
           });
 
+          //Cập nhật thời gian cho UI conversation
           setConversationData((prevData) => {
             const updated = prevData.map((convo) => {
               if (convo._id === data.conversationId) {
@@ -136,7 +142,10 @@ export default function useSocketEvents(userId, onNewMessage) {
             return updated;
           });
 
+          //Đã xem tin nhắn
           handleUnseenMessage();
+
+          //Nếu có người thu hồi tin nhắn
           if (data.status === 'recalled') {
             setMessages((prev) => {
               if (!prev?.data || !Array.isArray(prev.data)) return prev;
