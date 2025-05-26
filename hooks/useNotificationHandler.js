@@ -38,7 +38,7 @@ export default function useNotificationHandler() {
           );
           // Điều hướng đến màn hình chat
           navigation.navigate('PersonChat');
-          await unseenMessages(loginResult.token, item._id, loginResult.user._id);
+          await unseenMessages(loginResult.token, data.conversationId, loginResult.user._id);
         } catch (error) {
           console.log('❌ Lỗi khi xử lý thông báo:', error);
         }
