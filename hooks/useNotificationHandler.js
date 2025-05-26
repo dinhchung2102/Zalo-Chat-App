@@ -7,7 +7,8 @@ import {
   messagesByConversationState,
   conversationState,
 } from '@state/ChatState';
-import { getConversationById, getMessagesByConversationId } from '@api/chat/conversation';
+import { getConversationById, unseenMessages } from '@api/chat/conversation';
+import { getMessages } from '@api/chat/messages';
 import { loginResultState } from '@state/PrimaryState';
 import { useRecoilValue } from 'recoil';
 
@@ -24,24 +25,20 @@ export default function useNotificationHandler() {
 
       if (data.type === 'newMessage' && data.conversationId) {
         try {
-          // Gọi API lấy thông tin conversation và messages
           const conversation = await getConversationById(loginResult.token, data.conversationId);
-          const messages = await getMessagesByConversationId(
-            loginResult.token,
-            data.conversationId
-          );
+          const messages = await getMessages(loginResult.token, data.conversationId);
 
-          // Set lại Recoil state
+          // Set lại conversation & message để navigate
           setSelectedConversation(conversation);
-          setMessages({ data: messages });
+          setMessages(messages);
 
           // Reset unseen count (nếu cần)
           setConversations((prev) =>
             prev.map((c) => (c._id === conversation._id ? { ...c, unseenCount: 0 } : c))
           );
-
           // Điều hướng đến màn hình chat
           navigation.navigate('PersonChat');
+          await unseenMessages(loginResult.token, item._id, loginResult.user._id);
         } catch (error) {
           console.log('❌ Lỗi khi xử lý thông báo:', error);
         }
