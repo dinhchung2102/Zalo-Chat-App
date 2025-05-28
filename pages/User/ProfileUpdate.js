@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import { useNavigation } from '@react-navigation/native';
-import { formatDate } from '../../utils/formatDate';
+import { formatDate } from '@utils/formatDate';
 
 export default function ProfileUpdate() {
   const navigation = useNavigation();

@@ -16,8 +16,8 @@ import { loginResultState } from '@state/PrimaryState';
 import { selectedConversationState } from '@state/ChatState';
 import { getShortNameRegister } from '@utils/getShortName';
 import { getConversationById, outGroup, removeMember } from '@api/chat/conversation';
-import { removeGroupDeputy, setGroupDeputy, setGroupLeader } from '../../api/chat/conversation';
-import GlobalModal from '../../components/shared/GlobalModal';
+import { removeGroupDeputy, setGroupDeputy, setGroupLeader } from '@api/chat/conversation';
+import GlobalModal from '@components/shared/GlobalModal';
 
 const Tab = createMaterialTopTabNavigator();
 

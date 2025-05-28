@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
-import { updatePassword } from '../../api/auth/update.profile';
+import { updatePassword } from '@api/auth/update.profile';
 
 export default function PasswordUpdate() {
   const navigation = useNavigation();

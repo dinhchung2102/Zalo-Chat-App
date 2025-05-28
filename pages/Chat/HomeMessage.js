@@ -13,7 +13,7 @@ import { useState } from 'react';
 import useNotificationHandler from '@hooks/useNotificationHandler';
 import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { navigate } from '../../services/RootNavigation';
+import { navigate } from '@services/RootNavigation';
 
 export default function HomeMessage() {
   const loginResult = useRecoilValue(loginResultState);

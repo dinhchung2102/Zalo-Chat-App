@@ -19,10 +19,10 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
 import { getShortNameRegister } from '@utils/getShortName';
 import { useEffect, useRef, useState } from 'react';
-import SimpleHeader from '../../components/shared/SimpleHeader';
-import { sendMessageAI } from '../../api/chat/messages';
+import SimpleHeader from '@components/shared/SimpleHeader';
+import { sendMessageAI } from '@api/chat/messages';
 import uuid from 'react-native-uuid';
-import { aiChatState } from '../../state/ChatState';
+import { aiChatState } from '@state/ChatState';
 
 export default function AIChat() {
   const navigation = useNavigation();

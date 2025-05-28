@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import SimpleHeader from '../../components/shared/SimpleHeader';
+import SimpleHeader from '@components/shared/SimpleHeader';
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { loginResultState } from '@state/PrimaryState';
-import { formatDate } from '../../utils/formatDate';
+import { formatDate } from '@utils/formatDate';
 import { Ionicons } from '@expo/vector-icons';
 import LargeButton from '@components/shared/LargeButton';
 import { useState } from 'react';
 import { useBirthdayPicker } from '@hooks/useBirthdayPicker';
 import { languageState } from '@state/PrimaryState';
-import { updateProfile } from '../../api/auth/update.profile';
+import { updateProfile } from '@api/auth/update.profile';
 
 export default function ProfileUpdate_Handle() {
   const navigation = useNavigation();

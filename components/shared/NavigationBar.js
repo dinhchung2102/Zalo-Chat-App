@@ -7,7 +7,7 @@ import { ICON_MEDIUM } from '@styles/constants/iconSize';
 import { useNavigation } from '@react-navigation/native';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { navigationState } from '@state/PrimaryState';
-import { totalUnseenCountState } from '../../state/ChatState';
+import { totalUnseenCountState } from '@state/ChatState';
 
 export default function NavigationBar() {
   const navigation = useNavigation();

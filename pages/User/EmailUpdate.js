@@ -6,7 +6,7 @@ import { loginResultState } from '@state/PrimaryState';
 import { useState } from 'react';
 import { updateEmail } from '@api/auth/update.profile';
 import { useNavigation } from '@react-navigation/native';
-import { isValidEmail } from '../../utils/emailValidator';
+import { isValidEmail } from '@utils/emailValidator';
 
 export default function EmailUpdate() {
   const [loginResult, setLoginResult] = useRecoilState(loginResultState);

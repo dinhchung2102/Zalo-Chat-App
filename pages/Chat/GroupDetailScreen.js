@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import GlobalModal from '@components/shared/GlobalModal';
 import { loginResultState } from '@state/PrimaryState';
 import { deleteGroup } from '@api/chat/conversation';
-import { outGroup } from '../../api/chat/conversation';
+import { outGroup } from '@api/chat/conversation';
 
 const GroupDetailScreen = () => {
   const selectedConversation = useRecoilValue(selectedConversationState);
