@@ -7,7 +7,7 @@ const ProfileSection = ({ name, avatar, description, isGroup, onEditName }) => {
     <View style={styles.profileSection}>
       <View style={styles.imageContainer}>
         <Image
-          source={avatar ? { uri: avatar } : require('../../../assets/default-avatar.jpg')}
+          source={avatar ? { uri: avatar } : require('../../../../assets/default-avatar.jpg')}
           style={styles.avatar}
         />
         {isGroup && (
